@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "e112.fullname" . }}-config
+  labels:
+    {{- include "e112.labels" . | nindent 4 }}
+data:
+  KAFKA_BOOTSTRAP_SERVERS: {{ .Values.infrastructure.kafkaBootstrapServers | quote }}
+  KEYCLOAK_ISSUER_URI: {{ .Values.infrastructure.keycloakIssuerUri | quote }}
+  KEYCLOAK_ADMIN_URL: {{ .Values.infrastructure.keycloakAdminUrl | quote }}
+  REDIS_HOST: {{ .Values.infrastructure.redisHost | quote }}
+  SPRING_PROFILES_ACTIVE: "k8s"

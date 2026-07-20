@@ -1,0 +1,139 @@
+global:
+  registry: registry.gitlab.com/mchs/emergency-112
+  imageTag: latest
+  imagePullPolicy: IfNotPresent
+  imagePullSecrets: []
+
+# Внешние адреса инфраструктуры (в проде — управляемые сервисы или отдельные чарты)
+infrastructure:
+  kafkaBootstrapServers: kafka:9092
+  keycloakIssuerUri: http://keycloak:8080/realms/emergency-112
+  keycloakAdminUrl: http://keycloak:8080
+  postgresHost: postgres
+  postgresPort: "5432"
+  redisHost: redis
+
+# Секрет с учётными данными (в проде заменить через --set или внешний секрет-менеджер)
+secrets:
+  dbUsername: e112
+  dbPassword: e112secret
+  keycloakAdminUser: admin
+  keycloakAdminPassword: admin
+
+ingress:
+  enabled: true
+  className: nginx
+  tls:
+    enabled: true
+    secretName: emergency-112-tls
+  hosts:
+    dispatcher: dispatch.112.by
+    api: api.112.by
+
+defaults:
+  replicas: 2
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+  autoscaling:
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+
+# Описание всех сервисов системы. deployment.yaml/service.yaml генерируют объекты по range.
+services:
+  gateway-service:
+    image: gateway-service
+    port: 8080
+    springProfile: k8s
+    db: false
+    kafka: false
+    redis: true
+    keycloak: true
+  auth-service:
+    image: auth-service
+    port: 8081
+    db: true
+    dbName: auth_db
+    kafka: true
+    keycloakAdmin: true
+    keycloak: true
+  incident-service:
+    image: incident-service
+    port: 8082
+    db: true
+    dbName: incident_db
+    kafka: true
+    redis: true
+    keycloak: true
+  dispatch-service:
+    image: dispatch-service
+    port: 8083
+    db: true
+    dbName: dispatch_db
+    kafka: true
+    keycloak: true
+  telephony-service:
+    image: telephony-service
+    port: 8084
+    db: true
+    dbName: telephony_db
+    kafka: true
+    keycloak: true
+    extraEnv:
+      AI_SERVICE_URL: http://ai-service:8090
+  gis-service:
+    image: gis-service
+    port: 8085
+    db: true
+    dbName: gis_db
+    kafka: false
+    keycloak: true
+  audit-service:
+    image: audit-service
+    port: 8086
+    db: true
+    dbName: audit_db
+    kafka: true
+    keycloak: true
+  notification-service:
+    image: notification-service
+    port: 8087
+    db: true
+    dbName: notification_db
+    kafka: true
+    keycloak: true
+  realtime-service:
+    image: realtime-service
+    port: 8088
+    db: false
+    kafka: true
+    keycloak: true
+  ai-service:
+    image: ai-service
+    port: 8090
+    healthPath: /health
+    springService: false
+    kafka: true
+    extraEnv:
+      GIS_SERVICE_URL: http://gis-service:8085
+      ENABLE_KAFKA: "true"
+      ENABLE_WHISPER: "false"
+      ENABLE_SPACY: "false"
+  frontend-dispatcher:
+    image: frontend-dispatcher
+    port: 80
+    healthPath: /
+    springService: false
+
+backup:
+  enabled: true
+  schedule: "0 2 * * *"
+  retentionDays: 14
+  storage: 20Gi
+  image: postgis/postgis:17-3.5
