@@ -1,0 +1,236 @@
+name: emergency-112
+
+x-java-env: &java-env
+  SPRING_PROFILES_ACTIVE: docker
+  KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+  KEYCLOAK_ISSUER_URI: http://keycloak:8080/realms/emergency-112
+  JAVA_TOOL_OPTIONS: "-XX:MaxRAMPercentage=75"
+
+services:
+  postgres:
+    image: postgis/postgis:17-3.5
+    container_name: e112-postgres
+    environment:
+      POSTGRES_USER: e112
+      POSTGRES_PASSWORD: e112secret
+      POSTGRES_DB: e112
+    ports: ["5432:5432"]
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./infrastructure/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U e112"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    container_name: e112-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  kafka:
+    image: bitnami/kafka:3.7
+    container_name: e112-kafka
+    ports: ["9094:9094"]
+    environment:
+      KAFKA_CFG_NODE_ID: 0
+      KAFKA_CFG_PROCESS_ROLES: controller,broker
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 0@kafka:9093
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: "true"
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics.sh --bootstrap-server localhost:9092 --list"]
+      interval: 10s
+      timeout: 10s
+      retries: 20
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    container_name: e112-keycloak
+    command: ["start-dev", "--import-realm", "--http-port=8080"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: e112
+      KC_DB_PASSWORD: e112secret
+    ports: ["8180:8080"]
+    volumes:
+      - ./infrastructure/keycloak:/opt/keycloak/data/import:ro
+    depends_on:
+      postgres: { condition: service_healthy }
+
+  gateway-service:
+    build: ./services/gateway-service
+    container_name: e112-gateway
+    environment: *java-env
+    ports: ["8080:8080"]
+    depends_on: [keycloak, incident-service, dispatch-service]
+
+  auth-service:
+    build: ./services/auth-service
+    container_name: e112-auth
+    environment:
+      <<: *java-env
+      KEYCLOAK_ADMIN_URL: http://keycloak:8080
+      KEYCLOAK_ADMIN_USER: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports: ["8081:8081"]
+    depends_on:
+      postgres: { condition: service_healthy }
+
+  incident-service:
+    build: ./services/incident-service
+    container_name: e112-incident
+    environment:
+      <<: *java-env
+      DB_URL: jdbc:postgresql://postgres:5432/incident_db
+      DB_USER: e112
+      DB_PASSWORD: e112secret
+      REDIS_HOST: redis
+    ports: ["8082:8082"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      kafka: { condition: service_healthy }
+      redis: { condition: service_healthy }
+
+  dispatch-service:
+    build: ./services/dispatch-service
+    container_name: e112-dispatch
+    environment:
+      <<: *java-env
+      DB_URL: jdbc:postgresql://postgres:5432/dispatch_db
+      DB_USER: e112
+      DB_PASSWORD: e112secret
+      REDIS_HOST: redis
+    ports: ["8083:8083"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      kafka: { condition: service_healthy }
+
+  telephony-service:
+    build: ./services/telephony-service
+    container_name: e112-telephony
+    environment:
+      <<: *java-env
+      DB_URL: jdbc:postgresql://postgres:5432/telephony_db
+      DB_USER: e112
+      DB_PASSWORD: e112secret
+      AI_SERVICE_URL: http://ai-service:8090
+    ports: ["8084:8084"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      kafka: { condition: service_healthy }
+
+  gis-service:
+    build: ./services/gis-service
+    container_name: e112-gis
+    environment:
+      <<: *java-env
+      DB_URL: jdbc:postgresql://postgres:5432/gis_db
+      DB_USER: e112
+      DB_PASSWORD: e112secret
+    ports: ["8085:8085"]
+    depends_on:
+      postgres: { condition: service_healthy }
+
+  audit-service:
+    build: ./services/audit-service
+    container_name: e112-audit
+    environment:
+      <<: *java-env
+      DB_URL: jdbc:postgresql://postgres:5432/audit_db
+      DB_USER: e112
+      DB_PASSWORD: e112secret
+    ports: ["8086:8086"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      kafka: { condition: service_healthy }
+
+  notification-service:
+    build: ./services/notification-service
+    container_name: e112-notification
+    environment:
+      <<: *java-env
+      DB_URL: jdbc:postgresql://postgres:5432/notification_db
+      DB_USER: e112
+      DB_PASSWORD: e112secret
+    ports: ["8087:8087"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      kafka: { condition: service_healthy }
+
+  realtime-service:
+    build: ./services/realtime-service
+    container_name: e112-realtime
+    environment: *java-env
+    ports: ["8088:8088"]
+    depends_on:
+      kafka: { condition: service_healthy }
+
+  ai-service:
+    build: ./ai-service
+    container_name: e112-ai
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      WHISPER_MODEL: small
+      GIS_SERVICE_URL: http://gis-service:8085
+    ports: ["8090:8090"]
+    depends_on:
+      kafka: { condition: service_healthy }
+
+  frontend-dispatcher:
+    build: ./frontend/dispatcher
+    container_name: e112-frontend
+    ports: ["3000:80"]
+    depends_on: [gateway-service]
+
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    container_name: e112-prometheus
+    volumes:
+      - ./infrastructure/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports: ["9090:9090"]
+
+  grafana:
+    image: grafana/grafana:11.1.0
+    container_name: e112-grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - ./infrastructure/grafana/provisioning:/etc/grafana/provisioning:ro
+      - grafana-data:/var/lib/grafana
+    ports: ["3001:3000"]
+
+  loki:
+    image: grafana/loki:3.1.0
+    container_name: e112-loki
+    command: ["-config.file=/etc/loki/loki-config.yml"]
+    volumes:
+      - ./infrastructure/loki/loki-config.yml:/etc/loki/loki-config.yml:ro
+    ports: ["3100:3100"]
+
+  promtail:
+    image: grafana/promtail:3.1.0
+    container_name: e112-promtail
+    command: ["-config.file=/etc/promtail/promtail.yml"]
+    volumes:
+      - ./infrastructure/promtail/promtail.yml:/etc/promtail/promtail.yml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on: [loki]
+
+volumes:
+  postgres-data:
+  grafana-data:

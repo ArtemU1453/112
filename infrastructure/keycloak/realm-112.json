@@ -1,0 +1,84 @@
+{
+  "realm": "emergency-112",
+  "enabled": true,
+  "displayName": "Система-112 Республики Беларусь",
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "bruteForceProtected": true,
+  "failureFactor": 5,
+  "accessTokenLifespan": 900,
+  "ssoSessionIdleTimeout": 28800,
+  "defaultSignatureAlgorithm": "RS256",
+  "roles": {
+    "realm": [
+      { "name": "ROLE_DISPATCHER", "description": "Диспетчер 112 — приём и ведение карточек" },
+      { "name": "ROLE_SENIOR_DISPATCHER", "description": "Старший диспетчер — назначение нарядов, закрытие карточек" },
+      { "name": "ROLE_ADMIN", "description": "Администратор системы" },
+      { "name": "ROLE_CREW", "description": "Экипаж подразделения (мобильное приложение)" },
+      { "name": "ROLE_ANALYST", "description": "Аналитик — доступ на чтение" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "frontend-dispatcher",
+      "name": "АРМ диспетчера",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["http://localhost:3000/*", "https://dispatch.112.by/*"],
+      "webOrigins": ["http://localhost:3000", "https://dispatch.112.by"],
+      "protocol": "openid-connect",
+      "attributes": { "pkce.code.challenge.method": "S256" }
+    },
+    {
+      "clientId": "backend-services",
+      "name": "Межсервисный клиент",
+      "publicClient": false,
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "secret": "backend-services-secret",
+      "protocol": "openid-connect"
+    },
+    {
+      "clientId": "mobile-crew",
+      "name": "Мобильное приложение экипажа",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["by.mchs.crew:/oauth2redirect", "http://localhost:19006/*"],
+      "protocol": "openid-connect",
+      "attributes": { "pkce.code.challenge.method": "S256" }
+    }
+  ],
+  "users": [
+    {
+      "username": "dispatcher1",
+      "enabled": true,
+      "firstName": "Алеся",
+      "lastName": "Ковалёва",
+      "email": "dispatcher1@112.by",
+      "credentials": [{ "type": "password", "value": "dispatcher1", "temporary": false }],
+      "realmRoles": ["ROLE_DISPATCHER"]
+    },
+    {
+      "username": "senior1",
+      "enabled": true,
+      "firstName": "Виктор",
+      "lastName": "Мороз",
+      "email": "senior1@112.by",
+      "credentials": [{ "type": "password", "value": "senior1", "temporary": false }],
+      "realmRoles": ["ROLE_DISPATCHER", "ROLE_SENIOR_DISPATCHER"]
+    },
+    {
+      "username": "sysadmin",
+      "enabled": true,
+      "firstName": "Администратор",
+      "lastName": "Системы",
+      "email": "admin@112.by",
+      "credentials": [{ "type": "password", "value": "sysadmin", "temporary": false }],
+      "realmRoles": ["ROLE_ADMIN", "ROLE_SENIOR_DISPATCHER", "ROLE_DISPATCHER"]
+    }
+  ],
+  "clientScopeMappings": {},
+  "scopeMappings": []
+}

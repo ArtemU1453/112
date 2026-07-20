@@ -1,0 +1,119 @@
+stages:
+  - build
+  - test
+  - package
+  - deploy
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end -DskipITs=false"
+  DOCKER_TLS_CERTDIR: "/certs"
+  REGISTRY: $CI_REGISTRY_IMAGE
+
+.java-cache: &java-cache
+  cache:
+    key: maven-$CI_COMMIT_REF_SLUG
+    paths: [.m2/repository]
+
+.java-service:
+  image: maven:3.9-eclipse-temurin-21
+  stage: test
+  <<: *java-cache
+  script:
+    - cd services/$SERVICE
+    - mvn $MAVEN_CLI_OPTS verify
+  artifacts:
+    when: always
+    reports:
+      junit: services/$SERVICE/target/surefire-reports/TEST-*.xml
+    expire_in: 1 week
+  services:
+    - name: docker:27-dind
+      alias: docker
+  variables:
+    DOCKER_HOST: tcp://docker:2376
+    TESTCONTAINERS_HOST_OVERRIDE: docker
+
+test:gateway-service:        { extends: .java-service, variables: { SERVICE: gateway-service } }
+test:auth-service:           { extends: .java-service, variables: { SERVICE: auth-service } }
+test:incident-service:       { extends: .java-service, variables: { SERVICE: incident-service } }
+test:dispatch-service:       { extends: .java-service, variables: { SERVICE: dispatch-service } }
+test:telephony-service:      { extends: .java-service, variables: { SERVICE: telephony-service } }
+test:gis-service:            { extends: .java-service, variables: { SERVICE: gis-service } }
+test:audit-service:          { extends: .java-service, variables: { SERVICE: audit-service } }
+test:notification-service:   { extends: .java-service, variables: { SERVICE: notification-service } }
+test:realtime-service:       { extends: .java-service, variables: { SERVICE: realtime-service } }
+
+test:ai-service:
+  image: python:3.12-slim
+  stage: test
+  script:
+    - cd ai-service
+    - pip install -r requirements.txt -r requirements-dev.txt
+    - pytest --junitxml=report.xml
+  artifacts:
+    reports:
+      junit: ai-service/report.xml
+
+test:frontend:
+  image: node:22-alpine
+  stage: test
+  script:
+    - cd frontend/dispatcher
+    - npm ci
+    - npm run lint
+    - npm run build
+  artifacts:
+    paths: [frontend/dispatcher/dist]
+    expire_in: 1 day
+
+.docker-build:
+  image: docker:27
+  stage: package
+  services: [docker:27-dind]
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build -t $REGISTRY/$IMAGE:$CI_COMMIT_SHORT_SHA -t $REGISTRY/$IMAGE:latest $CONTEXT
+    - docker push $REGISTRY/$IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker push $REGISTRY/$IMAGE:latest
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+package:gateway:      { extends: .docker-build, variables: { IMAGE: gateway-service,      CONTEXT: services/gateway-service } }
+package:auth:         { extends: .docker-build, variables: { IMAGE: auth-service,         CONTEXT: services/auth-service } }
+package:incident:     { extends: .docker-build, variables: { IMAGE: incident-service,    CONTEXT: services/incident-service } }
+package:dispatch:     { extends: .docker-build, variables: { IMAGE: dispatch-service,    CONTEXT: services/dispatch-service } }
+package:telephony:    { extends: .docker-build, variables: { IMAGE: telephony-service,   CONTEXT: services/telephony-service } }
+package:gis:          { extends: .docker-build, variables: { IMAGE: gis-service,         CONTEXT: services/gis-service } }
+package:audit:        { extends: .docker-build, variables: { IMAGE: audit-service,       CONTEXT: services/audit-service } }
+package:notification: { extends: .docker-build, variables: { IMAGE: notification-service, CONTEXT: services/notification-service } }
+package:realtime:     { extends: .docker-build, variables: { IMAGE: realtime-service,    CONTEXT: services/realtime-service } }
+package:ai:           { extends: .docker-build, variables: { IMAGE: ai-service,          CONTEXT: ai-service } }
+package:frontend:     { extends: .docker-build, variables: { IMAGE: frontend-dispatcher, CONTEXT: frontend/dispatcher } }
+
+deploy:staging:
+  image: alpine/helm:3.15.2
+  stage: deploy
+  script:
+    - helm upgrade --install emergency-112 helm/emergency-112
+      --namespace emergency-staging --create-namespace
+      --set global.imageTag=$CI_COMMIT_SHORT_SHA
+      --set global.registry=$REGISTRY
+  environment: { name: staging }
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+deploy:production:
+  image: alpine/helm:3.15.2
+  stage: deploy
+  script:
+    - helm upgrade --install emergency-112 helm/emergency-112
+      --namespace emergency --create-namespace
+      --set global.imageTag=$CI_COMMIT_SHORT_SHA
+      --set global.registry=$REGISTRY
+      -f helm/emergency-112/values-production.yaml
+  environment: { name: production }
+  when: manual
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
