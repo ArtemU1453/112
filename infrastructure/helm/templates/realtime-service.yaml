@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: realtime-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: realtime-service
+  template:
+    metadata:
+      labels:
+        app: realtime-service
+    spec:
+      containers:
+        - name: realtime-service
+          image: "{{ .Values.realtimeService.image.repository }}:{{ .Values.realtimeService.image.tag }}"
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: realtime-service
+spec:
+  type: {{ .Values.realtimeService.service.type }}
+  selector:
+    app: realtime-service
+  ports:
+    - port: {{ .Values.realtimeService.service.port }}
+      targetPort: 8080

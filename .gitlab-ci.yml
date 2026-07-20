@@ -1,0 +1,62 @@
+stages:
+  - build
+  - pack
+  - smoke
+  - deploy
+
+variables:
+  MAVEN_CLI_OPTS: "-B -DskipTests"
+
+build-backend:
+  image: maven:3.9.4-eclipse-temurin-21
+  stage: build
+  script:
+    - echo "Building Java services..."
+    - for d in services/*; do if [ -f $d/pom.xml ]; then mvn -f $d/pom.xml $MAVEN_CLI_OPTS package || true; fi; done
+
+build-ai:
+  image: python:3.11
+  stage: build
+  script:
+    - echo "Preparing AI service dependencies"
+    - pip install --upgrade pip
+    - pip install -r services/ai-service/requirements.txt || true
+    - python -m pip wheel -r services/ai-service/requirements.txt -w services/ai-service/dist || true
+
+package-images:
+  image: docker:24.0.2
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_TLS_CERTDIR: ""
+  stage: pack
+  script:
+    - echo "Building docker images for all services"
+    - for d in services/*; do if [ -f "$d/Dockerfile" ]; then image=$(basename "$d"); docker build -t "$image:ci" "$d" || true; fi; done
+
+smoke-tests:
+  image: docker:24.0.2
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_TLS_CERTDIR: ""
+  stage: smoke
+  script:
+    - chmod +x infrastructure/ci/run_smoke_tests.sh
+    - ./infrastructure/ci/run_smoke_tests.sh
+
+deploy-helm:
+  image: alpine/helm:3.14.0
+  stage: deploy
+  script:
+    - helm version
+    - helm dependency update infrastructure/helm/platform || true
+    - helm upgrade --install easur-platform infrastructure/helm/platform --namespace easur --create-namespace --wait --timeout 5m
+  environment:
+    name: production
+  artifacts:
+    paths:
+      - release/
+    expire_in: 1 hour

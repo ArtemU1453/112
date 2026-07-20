@@ -1,0 +1,7 @@
+replicaCount: 1
+image:
+  repository: ai-service
+  tag: latest
+service:
+  type: ClusterIP
+  port: 8080

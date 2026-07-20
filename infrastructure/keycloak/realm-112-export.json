@@ -1,0 +1,227 @@
+{
+  "realm": "112",
+  "enabled": true,
+  "sslRequired": "external",
+  "roles": {
+    "realm": [
+      { "name": "admin" },
+      { "name": "dispatcher" },
+      { "name": "responder" },
+      { "name": "auditor" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "gateway-client",
+      "enabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "serviceAccountsEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["*"],
+      "webOrigins": ["+"],
+      "attributes": {
+        "access.token.lifespan": "300"
+      },
+      "defaultClientScopes": ["roles", "web-origins"]
+    },
+    {
+      "clientId": "auth-service-client",
+      "enabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "serviceAccountsEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["*"],
+      "webOrigins": ["+"],
+      "attributes": {
+        "access.token.lifespan": "300"
+      },
+      "defaultClientScopes": ["roles", "web-origins"]
+    },
+    {
+      "clientId": "dispatch-service-client",
+      "enabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "serviceAccountsEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["*"],
+      "webOrigins": ["+"],
+      "attributes": {
+        "access.token.lifespan": "300"
+      },
+      "defaultClientScopes": ["roles", "web-origins"]
+    },
+    {
+      "clientId": "incident-service-client",
+      "enabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "serviceAccountsEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["*"],
+      "webOrigins": ["+"],
+      "attributes": {
+        "access.token.lifespan": "300"
+      },
+      "defaultClientScopes": ["roles", "web-origins"]
+    },
+    {
+      "clientId": "telephony-service-client",
+      "enabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "serviceAccountsEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["*"],
+      "webOrigins": ["+"],
+      "attributes": {
+        "access.token.lifespan": "300"
+      },
+      "defaultClientScopes": ["roles", "web-origins"]
+    },
+    {
+      "clientId": "gis-service-client",
+      "enabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "serviceAccountsEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["*"],
+      "webOrigins": ["+"],
+      "attributes": {
+        "access.token.lifespan": "300"
+      },
+      "defaultClientScopes": ["roles", "web-origins"]
+    },
+    {
+      "clientId": "notification-service-client",
+      "enabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "serviceAccountsEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["*"],
+      "webOrigins": ["+"],
+      "attributes": {
+        "access.token.lifespan": "300"
+      },
+      "defaultClientScopes": ["roles", "web-origins"]
+    },
+    {
+      "clientId": "realtime-service-client",
+      "enabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "serviceAccountsEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["*"],
+      "webOrigins": ["+"],
+      "attributes": {
+        "access.token.lifespan": "300"
+      },
+      "defaultClientScopes": ["roles", "web-origins"]
+    },
+    {
+      "clientId": "audit-service-client",
+      "enabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "serviceAccountsEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["*"],
+      "webOrigins": ["+"],
+      "attributes": {
+        "access.token.lifespan": "300"
+      },
+      "defaultClientScopes": ["roles", "web-origins"]
+    }
+  ],
+  "clientRoles": {
+    "gateway-client": [
+      { "name": "gateway_admin" },
+      { "name": "gateway_dispatcher" },
+      { "name": "gateway_responder" },
+      { "name": "gateway_auditor" }
+    ],
+    "auth-service-client": [
+      { "name": "auth_admin" },
+      { "name": "auth_dispatcher" },
+      { "name": "auth_responder" },
+      { "name": "auth_auditor" }
+    ],
+    "dispatch-service-client": [
+      { "name": "dispatch_admin" },
+      { "name": "dispatch_dispatcher" },
+      { "name": "dispatch_responder" }
+    ],
+    "incident-service-client": [
+      { "name": "incident_admin" },
+      { "name": "incident_dispatcher" },
+      { "name": "incident_responder" },
+      { "name": "incident_auditor" }
+    ],
+    "telephony-service-client": [
+      { "name": "telephony_admin" },
+      { "name": "telephony_operator" },
+      { "name": "telephony_responder" }
+    ],
+    "gis-service-client": [
+      { "name": "gis_admin" },
+      { "name": "gis_viewer" },
+      { "name": "gis_responder" }
+    ],
+    "notification-service-client": [
+      { "name": "notification_admin" },
+      { "name": "notification_sender" },
+      { "name": "notification_recipient" }
+    ],
+    "realtime-service-client": [
+      { "name": "realtime_admin" },
+      { "name": "realtime_subscriber" },
+      { "name": "realtime_publisher" }
+    ],
+    "audit-service-client": [
+      { "name": "audit_admin" },
+      { "name": "audit_viewer" },
+      { "name": "audit_responder" }
+    ]
+  },
+  "users": [
+    {
+      "username": "admin",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [ { "type": "password", "value": "admin", "temporary": false } ],
+      "realmRoles": ["admin"],
+      "clientRoles": {
+        "gateway-client": ["gateway_admin"],
+        "auth-service-client": ["auth_admin"]
+      }
+    },
+    {
+      "username": "dispatcher",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [ { "type": "password", "value": "dispatcher", "temporary": false } ],
+      "realmRoles": ["dispatcher"],
+      "clientRoles": {
+        "gateway-client": ["gateway_dispatcher"],
+        "auth-service-client": ["auth_user"]
+      }
+    },
+    {
+      "username": "responder",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [ { "type": "password", "value": "responder", "temporary": false } ],
+      "realmRoles": ["responder"],
+      "clientRoles": {
+        "gateway-client": ["gateway_responder"],
+        "auth-service-client": ["auth_user"]
+      }
+    }
+  ],
+  "defaultRoles": ["offline_access", "uma_authorization"]
+}

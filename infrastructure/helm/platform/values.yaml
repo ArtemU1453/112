@@ -1,0 +1,105 @@
+gatewayService:
+  enabled: true
+  image:
+    repository: gateway-service
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 8080
+
+authService:
+  enabled: true
+  image:
+    repository: auth-service
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 8080
+
+notificationService:
+  enabled: true
+  image:
+    repository: notification-service
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 8080
+
+realtimeService:
+  enabled: true
+  image:
+    repository: realtime-service
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 8080
+
+dispatchService:
+  enabled: true
+  image:
+    repository: dispatch-service
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 8080
+  env:
+    spring_profiles_active: "prod"
+    spring_security_oauth2_resourceserver_jwt_issuer_uri: "http://keycloak:8080/realms/112"
+    spring_security_oauth2_resourceserver_jwt_jwk_set_uri: "http://keycloak:8080/realms/112/protocol/openid-connect/certs"
+
+incidentService:
+  enabled: true
+  image:
+    repository: incident-service
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 8080
+  env:
+    spring_profiles_active: "prod"
+    spring_security_oauth2_resourceserver_jwt_issuer_uri: "http://keycloak:8080/realms/112"
+    spring_security_oauth2_resourceserver_jwt_jwk_set_uri: "http://keycloak:8080/realms/112/protocol/openid-connect/certs"
+
+telephonyService:
+  enabled: true
+  image:
+    repository: telephony-service
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 8080
+  env:
+    spring_profiles_active: "prod"
+    spring_security_oauth2_resourceserver_jwt_issuer_uri: "http://keycloak:8080/realms/112"
+    spring_security_oauth2_resourceserver_jwt_jwk_set_uri: "http://keycloak:8080/realms/112/protocol/openid-connect/certs"
+
+gisService:
+  enabled: true
+  image:
+    repository: gis-service
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 8080
+  env:
+    spring_profiles_active: "prod"
+    spring_security_oauth2_resourceserver_jwt_issuer_uri: "http://keycloak:8080/realms/112"
+    spring_security_oauth2_resourceserver_jwt_jwk_set_uri: "http://keycloak:8080/realms/112/protocol/openid-connect/certs"
+
+aiService:
+  enabled: true
+  image:
+    repository: ai-service
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 8080
+
+auditService:
+  enabled: true
+  image:
+    repository: audit-service
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 8080

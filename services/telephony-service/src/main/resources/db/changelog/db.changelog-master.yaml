@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: copilot
+      changes:
+        - createTable:
+            tableName: telephony_service_call
+            columns:
+              - column: { name: id, type: bigint, autoIncrement: true, constraints: { primaryKey: true, nullable: false } }
+              - column: { name: caller, type: varchar(255) }
+              - column: { name: destination, type: varchar(255) }
+              - column: { name: status, type: varchar(64) }
+              - column: { name: created_at, type: timestamp }

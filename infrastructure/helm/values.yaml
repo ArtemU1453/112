@@ -1,0 +1,32 @@
+gatewayService:
+  enabled: true
+  image:
+    repository: gateway-service
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 8080
+authService:
+  enabled: true
+  image:
+    repository: auth-service
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 8080
+notificationService:
+  enabled: true
+  image:
+    repository: notification-service
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 8080
+realtimeService:
+  enabled: true
+  image:
+    repository: realtime-service
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 8080

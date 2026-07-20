@@ -1,0 +1,11 @@
+replicaCount: 2
+image:
+  repository: gateway-service
+  tag: latest
+service:
+  type: ClusterIP
+  port: 8080
+env:
+  spring_profiles_active: "prod"
+  spring_security_oauth2_resourceserver_jwt_issuer_uri: "http://keycloak:8080/realms/112"
+  spring_security_oauth2_resourceserver_jwt_jwk_set_uri: "http://keycloak:8080/realms/112/protocol/openid-connect/certs"

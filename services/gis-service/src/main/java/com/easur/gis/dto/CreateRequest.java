@@ -1,0 +1,6 @@
+package com.easur.gis.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public record CreateRequest(@NotBlank String name, @NotNull Double latitude, @NotNull Double longitude) {}

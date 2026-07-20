@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-realtime-events
+      author: scaffold
+      changes:
+        - createTable:
+            tableName: realtime_events
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: event_type
+                  type: varchar(255)
+              - column:
+                  name: payload
+                  type: text
+              - column:
+                  name: created_at
+                  type: timestamp

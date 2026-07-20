@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: copilot
+      changes:
+        - createTable:
+            tableName: incident_service_incident
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: reference
+                  type: varchar(64)
+              - column:
+                  name: title
+                  type: varchar(255)
+              - column:
+                  name: severity
+                  type: varchar(64)
+              - column:
+                  name: status
+                  type: varchar(64)
+              - column:
+                  name: address
+                  type: varchar(255)
+              - column:
+                  name: created_at
+                  type: timestamp
