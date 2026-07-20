@@ -1,9 +1,14 @@
-# Dispatch Service
+# dispatch-service
 
-Manages dispatch tasks: assignment of crews to incidents, task lifecycle and integration with Kafka and GIS.
+Управление оперативными подразделениями и нарядами системы 112.
 
-Build:
+- Порт: **8083**, БД: `dispatch_db`
+- Подбор ближайшего свободного наряда (формула гаверсинусов) — `POST /api/v1/assignments/auto`
+- Статусная модель подразделения: AVAILABLE → DISPATCHED → EN_ROUTE → ON_SCENE → RETURNING → AVAILABLE
+- Kafka consumer: `incident.created` (автодиспетчеризация для CRITICAL/HIGH)
+- Kafka producer: `dispatch.assigned`, `unit.status-changed`, `audit.events`
+- Оптимистическая блокировка подразделения (`@Version`)
 
-```
-mvn -f services/dispatch-service/pom.xml package
-```
+## Тесты
+
+`mvn verify` — unit-тесты домена и сервиса + интеграционный тест (Testcontainers PostgreSQL).

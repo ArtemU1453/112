@@ -1,80 +1,88 @@
-# EASUR Platform
+# Система-112 Республики Беларусь — платформа диспетчеризации экстренных служб
 
-Монорепозиторий для интегрированной системы управления чрезвычайными ситуациями и диспетчеризации.
+Промышленная микросервисная система приёма и обработки экстренных вызовов (МЧС / 112):
+приём вызова, ИИ-анализ речи, классификация происшествия, геопривязка, диспетчеризация
+подразделений, уведомления, аудит и мониторинг в реальном времени.
 
-## Структура проекта
+## Архитектура
 
 ```
-easur-platform/
-├── services/                    # Микросервисы
-│   ├── auth-service            # Сервис аутентификации и авторизации
-│   ├── incident-service        # Сервис управления инцидентами
-│   ├── dispatch-service        # Сервис диспетчеризации
-│   ├── telephony-service       # Сервис телефонии (CTI)
-│   ├── ai-service              # Сервис AI/ML для анализа
-│   ├── gis-service             # Геоинформационная система
-│   ├── notification-service    # Сервис уведомлений
-│   ├── realtime-service        # Сервис реал-тайм обновлений
-│   └── audit-service           # Сервис аудита
-│
-├── shared/                      # Общие библиотеки и модули
-│   ├── contracts               # API контракты и типы
-│   ├── events                  # Event-driven модели
-│   └── common                  # Утилиты и общие компоненты
-│
-├── infrastructure/             # Инфраструктура
-│   ├── kubernetes              # K8s конфигурации
-│   ├── terraform               # IaC скрипты
-│   └── monitoring              # Мониторинг и логирование
-│
-└── docs/                        # Документация
+ Гражданин ──► Телефония (SIP/PSTN) ──► telephony-service ──► ai-service (Whisper/NER)
+                                              │ Kafka
+ Диспетчер ──► frontend-dispatcher ──► gateway-service ──► incident-service ──► dispatch-service
+                       ▲  WebSocket                            │ Kafka             │ Kafka
+                       └──────────── realtime-service ◄────────┴───────────────────┤
+                                                                                   ▼
+                                        audit-service ◄── Kafka ──► notification-service
+                                              gis-service (PostGIS, маршруты, зоны выезда)
 ```
 
-## Микросервисы
+| Сервис | Порт | Назначение |
+|---|---|---|
+| gateway-service | 8080 | API Gateway (Spring Cloud Gateway), маршрутизация, JWT |
+| auth-service | 8081 | Управление пользователями/ролями поверх Keycloak |
+| incident-service | 8082 | Карточки происшествий (ядро домена, CQRS) |
+| dispatch-service | 8083 | Подразделения, наряды, назначения |
+| telephony-service | 8084 | Регистрация вызовов, привязка записей разговоров |
+| gis-service | 8085 | Геокодирование, PostGIS, зоны ответственности |
+| audit-service | 8086 | Журнал аудита всех событий (Kafka consumer) |
+| notification-service | 8087 | SMS/Push/E-mail уведомления |
+| realtime-service | 8088 | WebSocket-трансляция событий диспетчерам |
+| ai-service | 8090 | FastAPI: транскрибация, NER, классификация, рекомендации |
+| frontend-dispatcher | 3000 | АРМ диспетчера (React 19 + OpenLayers) |
 
-### auth-service
-Сервис аутентификации и авторизации. Управляет пользователями, ролями и доступом.
+Инфраструктура: PostgreSQL 17 + PostGIS, Kafka, Redis, Keycloak, Prometheus, Grafana, Loki.
 
-### incident-service
-Управление инцидентами (создание, обновление, отслеживание статуса).
+## Быстрый старт (Docker Compose)
 
-### dispatch-service
-Распределение инцидентов и управление ресурсами.
+```bash
+docker compose up -d --build
+# АРМ диспетчера:  http://localhost:3000
+# Keycloak:        http://localhost:8180 (admin/admin)
+# Grafana:         http://localhost:3001 (admin/admin)
+# OpenAPI шлюза:   http://localhost:8080/swagger-ui.html
+```
 
-### telephony-service
-Интеграция с телефонией, управление звонками и CTI.
+## Kubernetes
 
-### ai-service
-AI/ML модели для анализа данных и предсказаний.
+```bash
+helm dependency update helm/emergency-112
+helm install emergency-112 helm/emergency-112 -n emergency --create-namespace
+```
 
-### gis-service
-Геолокация, карты и геопространственный анализ.
+## Kafka-топики
 
-### notification-service
-Уведомления через различные каналы (email, SMS, push, webhook).
+| Топик | Producer | Consumers |
+|---|---|---|
+| `incident.created` | incident-service | dispatch, realtime, audit, notification |
+| `incident.updated` | incident-service | realtime, audit |
+| `dispatch.assigned` | dispatch-service | incident, realtime, audit, notification |
+| `unit.status-changed` | dispatch-service | realtime, audit |
+| `call.received` | telephony-service | ai-service, audit |
+| `call.analyzed` | ai-service | telephony, incident, realtime, audit |
+| `notification.requested` | * | notification-service |
+| `audit.events` | * | audit-service |
 
-### realtime-service
-Вебсокеты и real-time обновления для клиентов.
+## Роли (RBAC, Keycloak realm `emergency-112`)
 
-### audit-service
-Логирование и аудит всех операций в системе.
+`ROLE_DISPATCHER` — приём и ведение карточек; `ROLE_SENIOR_DISPATCHER` — назначение нарядов,
+закрытие; `ROLE_ADMIN` — администрирование; `ROLE_CREW` — мобильный экипаж; `ROLE_ANALYST` — чтение.
 
-## Общие модули (shared/)
+## Сборка и тесты
 
-- **contracts**: Типы данных, API контракты, интерфейсы
-- **events**: Event-driven моделях для коммуникации между сервисами
-- **common**: Утилиты, хелперы, конфигурации
+```bash
+for s in services/*; do (cd "$s" && mvn -q verify); done   # unit + integration (Testcontainers)
+cd ai-service && pip install -r requirements.txt && pytest
+cd frontend/dispatcher && npm ci && npm run build
+```
 
-## Инфраструктура
+## Резервное копирование
 
-- **kubernetes/**: K8s manifests для развёртывания
-- **terraform/**: Инфраструктура как код
-- **monitoring/**: Prometheus, Grafana, ELK конфигурации
-
-## Установка и запуск
-
-[Будет добавлено в процессе разработки]
+`infrastructure/backup/backup.sh` — pg_dump всех БД в S3/каталог, `restore.sh` — восстановление.
+CronJob для Kubernetes — `helm/emergency-112/templates/backup-cronjob.yaml`.
 
 ## Документация
 
-Более подробная документация находится в директории `/docs`.
+- `docs/architecture.md` — архитектурные решения (DDD, CQRS, hexagonal)
+- `docs/operations.md` — эксплуатация, мониторинг, алерты
+- README в каталоге каждого сервиса

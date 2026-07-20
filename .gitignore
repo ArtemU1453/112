@@ -1,53 +1,22 @@
-# Dependencies
+target/
+*.class
+*.jar
+!.mvn/wrapper/*.jar
 node_modules/
 dist/
 build/
-*.lock
-
-# Environment variables
 .env
 .env.local
-.env.*.local
-
-# IDE
-.vscode/
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
 .idea/
-*.swp
-*.swo
-*~
-.DS_Store
 *.iml
-
-# Logs
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Testing
-coverage/
-.nyc_output/
-
-# Docker
-docker-compose.override.yml
-
-# Terraform
-terraform/.terraform/
-terraform/**/*.tfstate
-terraform/**/*.tfstate.*
-terraform/**/.terraform.lock.hcl
-
-# Build artifacts
-dist/
-build/
-*.tgz
-
-# Temporary files
-tmp/
-temp/
-*.tmp
-
-# OS
-Thumbs.db
+.vscode/
 .DS_Store
+*.log
+models/whisper/
+grafana-data/
+postgres-data/

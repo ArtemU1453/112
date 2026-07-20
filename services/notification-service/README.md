@@ -1,10 +1,12 @@
-# Notification Service
+# notification-service
 
-Spring Boot service to persist and publish notifications.
+Отправка уведомлений (SMS/Email/Push) с журналом доставки.
 
-Run locally:
+- Порт: **8087**, БД: `notification_db`
+- Гексагональная архитектура: порт `ChannelSender`, адаптеры Email (SMTP), SMS (HTTP-шлюз), Push
+- Kafka consumers: `notification.requested` (прямые запросы), `dispatch.assigned` (push экипажу)
+- Журнал статусов PENDING/SENT/FAILED с текстом ошибки
 
-```bash
-mvn -DskipTests package
-java -jar target/notification-service-0.1.0.jar
-```
+## Тесты
+
+`mvn verify` — IT на Testcontainers PostgreSQL (маршрутизация по каналам, журнал).

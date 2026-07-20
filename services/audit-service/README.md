@@ -1,10 +1,13 @@
-# Audit Service
+# audit-service
 
-Service to record audit logs and publish them to Kafka.
+Централизованный журнал аудита системы 112.
 
-Run locally:
+- Порт: **8086**, БД: `audit_db`
+- Единый Kafka consumer топика `audit.events` — принимает события всех сервисов
+- Хранение `details` в JSONB с GIN-индексом
+- REST-поиск с фильтрами (сервис, действие, сущность, актор, период) и пагинацией
+- Доступ: `ROLE_ADMIN`, `ROLE_ANALYST`, `ROLE_SENIOR_DISPATCHER`
 
-```bash
-mvn -DskipTests package
-java -jar target/audit-service-0.1.0.jar
-```
+## Тесты
+
+`mvn verify` — IT на Testcontainers PostgreSQL (запись из consumer + поиск).

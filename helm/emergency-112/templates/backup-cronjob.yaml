@@ -1,0 +1,69 @@
+{{- if .Values.backup.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "e112.fullname" . }}-backups
+  labels:
+    {{- include "e112.labels" . | nindent 4 }}
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: {{ .Values.backup.storage }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "e112.fullname" . }}-backup
+  labels:
+    {{- include "e112.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.backup.schedule | quote }}
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: pg-backup
+              image: {{ .Values.backup.image }}
+              command: ["/bin/bash", "-c"]
+              args:
+                - |
+                  set -euo pipefail
+                  STAMP="$(date +%Y%m%d_%H%M%S)"
+                  DBS="incident_db dispatch_db telephony_db gis_db audit_db notification_db auth_db keycloak"
+                  mkdir -p "/backups/$STAMP"
+                  for db in $DBS; do
+                    echo "backup: $db"
+                    pg_dump --format=custom --compress=6 --file="/backups/$STAMP/$db.dump" "$db"
+                  done
+                  find /backups -mindepth 1 -maxdepth 1 -type d -mtime +{{ .Values.backup.retentionDays }} -exec rm -rf {} +
+                  echo "backup completed: /backups/$STAMP"
+              env:
+                - name: PGHOST
+                  value: {{ .Values.infrastructure.postgresHost | quote }}
+                - name: PGPORT
+                  value: {{ .Values.infrastructure.postgresPort | quote }}
+                - name: PGUSER
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ include "e112.fullname" . }}-secrets
+                      key: DB_USER
+                - name: PGPASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ include "e112.fullname" . }}-secrets
+                      key: DB_PASSWORD
+              volumeMounts:
+                - name: backups
+                  mountPath: /backups
+          volumes:
+            - name: backups
+              persistentVolumeClaim:
+                claimName: {{ include "e112.fullname" . }}-backups
+{{- end }}

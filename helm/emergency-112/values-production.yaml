@@ -1,0 +1,29 @@
+global:
+  imageTag: stable
+  imagePullPolicy: Always
+
+defaults:
+  replicas: 3
+  resources:
+    requests:
+      cpu: 500m
+      memory: 768Mi
+    limits:
+      cpu: "2"
+      memory: 2Gi
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 65
+
+ingress:
+  enabled: true
+  tls:
+    enabled: true
+
+backup:
+  enabled: true
+  schedule: "0 1 * * *"
+  retentionDays: 30
+  storage: 100Gi

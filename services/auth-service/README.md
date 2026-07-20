@@ -1,54 +1,20 @@
-# Auth Service
+# auth-service
 
-Сервис аутентификации и авторизации для платформы EASUR.
+Управление сотрудниками службы 112 поверх Keycloak: создание учётных записей,
+назначение ролей RBAC, блокировка, локальные профили (подразделение, табельный номер).
 
-## Функциональность
-
-- Управление пользователями
-- Аутентификация (локальная, LDAP, OAuth2)
-- Управление ролями и разрешениями
-- Управление API ключами
-- MFA (multi-factor authentication)
-
-## Технический стек
-
-- Node.js / Nest.js (или другой выбранный фреймворк)
-- PostgreSQL / MongoDB
-- Redis (для сессий и кэша)
-- JWT для токенов
-
-## Структура проекта
-
-```
-auth-service/
-├── src/
-│   ├── modules/
-│   ├── controllers/
-│   ├── services/
-│   ├── entities/
-│   └── main.ts
-├── test/
-├── docker/
-├── package.json
-└── README.md
-```
-
-## Переменные окружения
-
-```
-DATABASE_URL=
-REDIS_URL=
-JWT_SECRET=
-JWT_EXPIRY=
-```
-
-## API Endpoints
-
-[Будет добавлено]
+- Порт: **8081**, БД: `auth_db`, Kafka producer: `audit.events`
+- Роли: операции записи — `ROLE_ADMIN`; чтение — `ROLE_ADMIN`, `ROLE_SENIOR_DISPATCHER`, `ROLE_ANALYST`
+- OpenAPI: `GET /swagger-ui.html`
 
 ## Запуск
 
 ```bash
-npm install
-npm run dev
+mvn spring-boot:run   # требуется Postgres, Kafka, Keycloak (docker compose up postgres kafka keycloak)
+```
+
+## Тесты
+
+```bash
+mvn verify
 ```

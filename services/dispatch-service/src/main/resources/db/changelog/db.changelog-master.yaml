@@ -1,27 +1,3 @@
 databaseChangeLog:
-  - changeSet:
-      id: 1
-      author: copilot
-      changes:
-        - createTable:
-            tableName: dispatch_service_task
-            columns:
-              - column:
-                  name: id
-                  type: bigint
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
-                  name: incident_reference
-                  type: varchar(128)
-              - column:
-                  name: assignment
-                  type: varchar(512)
-              - column:
-                  name: status
-                  type: varchar(64)
-              - column:
-                  name: created_at
-                  type: timestamp
+  - include:
+      file: db/changelog/001-dispatch-init.sql

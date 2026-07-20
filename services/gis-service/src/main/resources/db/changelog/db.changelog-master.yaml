@@ -1,13 +1,5 @@
 databaseChangeLog:
-  - changeSet:
-      id: 1
-      author: copilot
-      changes:
-        - createTable:
-            tableName: gis_service_point
-            columns:
-              - column: { name: id, type: bigint, autoIncrement: true, constraints: { primaryKey: true, nullable: false } }
-              - column: { name: name, type: varchar(255) }
-              - column: { name: latitude, type: double precision }
-              - column: { name: longitude, type: double precision }
-              - column: { name: created_at, type: timestamp }
+  - include:
+      file: db/changelog/001-gis-init.sql
+  - include:
+      file: db/changelog/002-gis-seed.sql

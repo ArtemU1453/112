@@ -1,0 +1,13 @@
+apiVersion: v2
+name: emergency-112
+description: Промышленная система диспетчеризации экстренных служб 112/МЧС Республики Беларусь
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+maintainers:
+  - name: Emergency-112 Platform Team
+keywords:
+  - emergency
+  - dispatch
+  - mchs
+  - 112

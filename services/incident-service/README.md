@@ -1,38 +1,16 @@
-# Incident Service
+# incident-service
 
-Сервис управления инцидентами.
+Ядро домена системы 112: карточки происшествий, статусная модель, классификация,
+история изменений, операционная статистика.
 
-## Функциональность
+- Порт: **8082**, БД: `incident_db` (+pg_trgm), кэш: Redis
+- CQRS: `IncidentCommandService` (мутации) / `IncidentQueryService` (чтение, кэш статистики)
+- Kafka producer: `incident.created`, `incident.updated`
+- Kafka consumer: `dispatch.assigned` (перевод в DISPATCHED), `call.analyzed` (автосоздание карточки от ИИ)
+- Статусная модель: RECEIVED → CLASSIFIED → DISPATCHED → IN_PROGRESS → RESOLVED → CLOSED, ветка CANCELLED;
+  недопустимые переходы отклоняются с 409
+- Оптимистическая блокировка (`@Version`) — конкурентное редактирование двух диспетчеров даёт 409
 
-- Создание и регистрация инцидентов
-- Отслеживание статуса инцидента
-- Управление приоритетом
-- История изменений
-- Интеграция с другими сервисами
+## Тесты
 
-## API Контракты
-
-Находятся в `shared/contracts/incident.ts`
-
-## Структура
-
-```
-incident-service/
-├── src/
-│   ├── modules/
-│   ├── controllers/
-│   ├── services/
-│   ├── entities/
-│   └── main.ts
-├── test/
-├── docker/
-├── package.json
-└── README.md
-```
-
-## Запуск
-
-```bash
-npm install
-npm run dev
-```
+`mvn verify` — unit-тесты + интеграционные (Testcontainers: PostgreSQL 17 + Kafka).

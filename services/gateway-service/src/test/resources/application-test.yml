@@ -1,0 +1,41 @@
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisReactiveAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+  cloud:
+    gateway:
+      default-filters: []
+      routes:
+        - id: auth-service
+          uri: http://localhost:8081
+          predicates: [Path=/api/v1/users/**]
+        - id: incident-service
+          uri: http://localhost:8082
+          predicates: [Path=/api/v1/incidents/**]
+        - id: dispatch-service
+          uri: http://localhost:8083
+          predicates: [Path=/api/v1/units/**]
+        - id: telephony-service
+          uri: http://localhost:8084
+          predicates: [Path=/api/v1/calls/**]
+        - id: gis-service
+          uri: http://localhost:8085
+          predicates: [Path=/api/v1/gis/**]
+        - id: audit-service
+          uri: http://localhost:8086
+          predicates: [Path=/api/v1/audit/**]
+        - id: notification-service
+          uri: http://localhost:8087
+          predicates: [Path=/api/v1/notifications/**]
+        - id: realtime-service
+          uri: http://localhost:8088
+          predicates: [Path=/ws/**]
+        - id: ai-service
+          uri: http://localhost:8090
+          predicates: [Path=/api/v1/ai/**]
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9999/jwks
