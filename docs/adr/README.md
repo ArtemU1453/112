@@ -36,5 +36,7 @@ Architecture Decision Records фиксируют значимые архитек
 | [ADR-023](ADR-023-integration-security-pki.md) | Безопасность интеграций: mTLS, подпись сообщений, PKI | Accepted |
 | [ADR-024](ADR-024-production-go-live-operational-acceptance.md) | Ввод в промышленную эксплуатацию и операционная приёмка | Accepted |
 | [ADR-025](ADR-025-architecture-review-board-continuous-evolution.md) | Architecture Review Board и непрерывная эволюция | Accepted |
+| [ADR-026](ADR-026-national-digital-twin-simulation-platform.md) | Национальный цифровой двойник и платформа моделирования (изолированная) | Accepted |
+| [ADR-027](ADR-027-ai-experimentation-synthetic-data-isolation.md) | Экспериментирование с ИИ и изоляция синтетических данных | Accepted |
 
 Нумерация сквозная и неизменяемая. Новый ADR получает следующий свободный номер.

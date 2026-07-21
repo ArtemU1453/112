@@ -223,6 +223,35 @@
   [Deprecation Policy](standards/Deprecation-Policy-Standard.md) ·
   [Long-Term Maintenance](standards/Long-Term-Maintenance-Standard.md)
 
+## Digital Twin, Simulation & Strategic Planning (Stage 12)
+
+- Индекс: [Цифровой двойник и моделирование](simulation/README.md) — изолированный контур, вне промышленной эксплуатации
+- Стратегия/дорожные карты: [National Digital Twin Strategy](simulation/national-digital-twin-strategy.md) ·
+  [Strategic Modernization Roadmap](simulation/strategic-modernization-roadmap.md) ·
+  [Strategic Planning Framework](simulation/strategic-planning-framework.md)
+- Архитектура/данные: [Digital Twin Architecture](simulation/digital-twin-architecture.md) ·
+  [Simulation Architecture](simulation/simulation-architecture.md) ·
+  [Training Platform Architecture](simulation/training-platform-architecture.md) ·
+  [Simulation Data Model](simulation/simulation-data-model.md)
+- Эксплуатация: [Exercise Management Guide](simulation/exercise-management-guide.md) ·
+  [Digital Twin Operations Handbook](simulation/digital-twin-operations-handbook.md)
+- ADR/RFC: [ADR-026 цифровой двойник](adr/ADR-026-national-digital-twin-simulation-platform.md) ·
+  [ADR-027 эксперименты ИИ/синтетика](adr/ADR-027-ai-experimentation-synthetic-data-isolation.md) ·
+  [RFC-0009](rfc/RFC-0009-digital-twin-simulation-platform.md)
+- Стандарты/политики: [Scenario Modeling](standards/Scenario-Modeling-Standard.md) ·
+  [Simulation Governance](standards/Simulation-Governance-Standard.md) ·
+  [AI Experimentation Policy](standards/AI-Experimentation-Policy.md) ·
+  [Digital Twin Governance](standards/Digital-Twin-Governance-Standard.md) ·
+  [Scenario Versioning](standards/Scenario-Versioning-Standard.md) ·
+  [Simulation Validation](standards/Simulation-Validation-Standard.md) ·
+  [Training Evaluation](standards/Training-Evaluation-Standard.md) ·
+  [Experiment Approval](standards/Experiment-Approval-Standard.md) ·
+  [Strategic Planning Methodology](standards/Strategic-Planning-Methodology.md) ·
+  [Exercise Data Governance](standards/Exercise-Data-Governance-Standard.md) ·
+  [Synthetic Data](standards/Synthetic-Data-Standard.md) ·
+  [Simulation Security](standards/Simulation-Security-Standard.md) ·
+  [Research & Innovation](standards/Research-And-Innovation-Standard.md)
+
 ## Риски
 
 - [Risk Register](risk/risk-register.md)
