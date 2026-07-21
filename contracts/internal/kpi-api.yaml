@@ -1,0 +1,48 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — KPI API (internal)
+  version: 1.0.0
+  description: >
+    Конфигурируемые KPI (Stage 8.3): автоматический расчёт из DWH. Определения — Metrics Catalog;
+    происхождение — Data Lineage. KPI не хардкодятся (конфигурируемость).
+servers: [{ url: https://api.112.by/internal/kpi/v1 }]
+paths:
+  /kpi:
+    get:
+      summary: Список зарегистрированных KPI (определения)
+      responses:
+        '200': { description: KPI, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/KpiDefinition' } } } } }
+  /kpi/{key}/values:
+    get:
+      summary: Значения KPI за период по области
+      parameters:
+        - { name: key, in: path, required: true, schema: { type: string } }
+        - { name: from, in: query, schema: { type: string, format: date } }
+        - { name: to, in: query, schema: { type: string, format: date } }
+        - { name: scope, in: query, schema: { type: string, description: регион/подразделение } }
+      responses:
+        '200': { description: Значения, content: { application/json: { schema: { $ref: '#/components/schemas/KpiValues' } } } }
+components:
+  schemas:
+    KpiDefinition:
+      type: object
+      properties:
+        key: { type: string }
+        name: { type: string }
+        unit: { type: string }
+        formula: { type: string }
+        normative: { type: number, description: Норматив (конфигурируемый) }
+        source: { type: string }
+      required: [key, name]
+    KpiValues:
+      type: object
+      properties:
+        key: { type: string }
+        points: { type: array, items: { type: object, properties: { at: { type: string, format: date }, value: { type: number } } } }
+        target: { type: number }
+        lineageRef: { type: string }
+      required: [key, points]
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []

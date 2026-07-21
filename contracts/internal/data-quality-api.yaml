@@ -1,0 +1,36 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Data Quality API (internal)
+  version: 1.0.0
+  description: >
+    Контроль качества данных (Stage 8.9). Дубликаты/полнота/непротиворечивость/актуальность/
+    происхождение. Метрики качества; происхождение не скрывается.
+servers: [{ url: https://api.112.by/internal/data-quality/v1 }]
+paths:
+  /quality/metrics:
+    get:
+      summary: Метрики качества данных по витринам/наборам
+      parameters: [{ name: dataset, in: query, schema: { type: string } }]
+      responses:
+        '200': { description: Метрики, content: { application/json: { schema: { $ref: '#/components/schemas/QualityMetrics' } } } }
+  /quality/issues:
+    get:
+      summary: Выявленные проблемы качества (дубликаты/пропуски/противоречия)
+      parameters: [{ name: dataset, in: query, schema: { type: string } }]
+      responses:
+        '200': { description: Проблемы, content: { application/json: { schema: { type: array, items: { type: object, additionalProperties: true } } } } }
+components:
+  schemas:
+    QualityMetrics:
+      type: object
+      properties:
+        dataset: { type: string }
+        completeness: { type: number, minimum: 0, maximum: 1 }
+        consistency: { type: number, minimum: 0, maximum: 1 }
+        freshnessHours: { type: number }
+        duplicates: { type: integer }
+      required: [dataset]
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []

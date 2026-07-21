@@ -48,6 +48,9 @@
 | CAP-MOBILE-001 | Мобильная платформа/SDK (единый кросс-платформенный стек) | ADR-016 | Единый кросс-платформенный стек + Mobile SDK | Approved | Stage 7 |
 | CAP-SYNC-001 | Offline-first синхронизация данных | ADR-017 | Дельта-синхронизация + outbox + версионирование | Approved | Stage 7 |
 | CAP-MDM-001 | Управление мобильными устройствами (MDM/EMM) | ADR-018 | Адаптеры MDM (Android Enterprise/ведомственный) | Approved | Stage 7 |
+| CAP-DWH-001 | Аналитическое хранилище данных (DWH) | ADR-019 | Self-hosted аналитическая БД/OLAP (из событий/снапшотов) | Approved | Stage 8 |
+| CAP-BI-001 | BI и визуализация/дашборды | ADR-020 | Self-hosted BI (Grafana/Metabase/Superset) | Approved | Stage 8 |
+| CAP-AIANALYTICS-001 | Аналитический ИИ (адаптеры, объяснимость) | ADR-021 | Адаптеры моделей/методов (self-hosted, с методикой) | Approved | Stage 8 |
 
 ## Возможности со статусом Proposed
 

@@ -1,0 +1,57 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Reporting API (admin)
+  version: 1.0.0
+  description: >
+    Формирование отчётов (Stage 8.5): шаблоны, регламентные/пользовательские, расписание, версии,
+    подпись, экспорт. Отчёты воспроизводимы (фиксированный срез); показатели прослеживаются.
+servers: [{ url: https://api.112.by/admin/reporting/v1 }]
+paths:
+  /templates:
+    get:
+      summary: Список шаблонов отчётов
+      responses: { '200': { description: Шаблоны, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/ReportTemplate' } } } } } }
+  /reports:
+    post:
+      summary: Сформировать отчёт (по шаблону и срезу)
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/ReportRequest' } } } }
+      responses:
+        '201': { description: Отчёт создан, content: { application/json: { schema: { $ref: '#/components/schemas/Report' } } } }
+  /reports/{id}/export:
+    get:
+      summary: Экспорт отчёта
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+        - { name: format, in: query, schema: { type: string, enum: [PDF, CSV, XLSX] } }
+      responses: { '200': { description: Файл, content: { application/octet-stream: { schema: { type: string, format: binary } } } } }
+components:
+  schemas:
+    ReportTemplate:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        kind: { type: string, enum: [SCHEDULED, CUSTOM] }
+        version: { type: integer }
+      required: [id, name, version]
+    ReportRequest:
+      type: object
+      properties:
+        templateId: { type: string }
+        period: { type: object, properties: { from: { type: string, format: date }, to: { type: string, format: date } } }
+        parameters: { type: object, additionalProperties: true }
+      required: [templateId, period]
+    Report:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        templateId: { type: string }
+        version: { type: integer }
+        snapshotRef: { type: string, description: Ссылка на фиксированный срез DWH (воспроизводимость) }
+        signature: { type: string, description: Цифровая подпись (если применяется) }
+        createdAt: { type: string, format: date-time }
+      required: [id, templateId, version]
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []

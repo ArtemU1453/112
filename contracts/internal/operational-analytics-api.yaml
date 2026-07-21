@@ -1,0 +1,41 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Operational Analytics API (internal)
+  version: 1.0.0
+  description: >
+    Аналитика оперативной деятельности (Stage 8.1): вызовы/инциденты/подразделения/реагирование/
+    время/нагрузка/очереди/маршруты. Поверх DWH (ADR-019). Показатели прослеживаются (lineage).
+servers: [{ url: https://api.112.by/internal/analytics/v1 }]
+paths:
+  /metrics/query:
+    post:
+      summary: Запросить аналитический показатель по измерениям и периоду
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                metric: { type: string, description: Имя метрики из каталога (Metrics Catalog) }
+                dimensions: { type: array, items: { type: string } }
+                from: { type: string, format: date }
+                to: { type: string, format: date }
+                filters: { type: object, additionalProperties: true }
+              required: [metric, from, to]
+      responses:
+        '200':
+          description: Результат
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metric: { type: string }
+                  series: { type: array, items: { type: object, additionalProperties: true } }
+                  lineageRef: { type: string, description: Ссылка на происхождение (Data Lineage) }
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []

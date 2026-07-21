@@ -1,0 +1,39 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Dashboards API (internal)
+  version: 1.0.0
+  description: >
+    Данные дашбордов по уровням управления (Stage 8.2, ADR-020). Real-time/history, drill-down,
+    фильтрация, экспорт. Доступ по RBAC/уровню (BI Security Standard).
+servers: [{ url: https://api.112.by/internal/dashboards/v1 }]
+paths:
+  /dashboards/{level}:
+    get:
+      summary: Показатели дашборда для уровня управления
+      parameters:
+        - { name: level, in: path, required: true, schema: { type: string, enum: [DISPATCHER, SENIOR_DISPATCHER, DUTY_OFFICER, GARRISON, REGIONAL, CENTRAL] } }
+        - { name: from, in: query, schema: { type: string, format: date-time } }
+        - { name: to, in: query, schema: { type: string, format: date-time } }
+        - { name: compareTo, in: query, schema: { type: string, description: период сравнения } }
+      responses:
+        '200':
+          description: Данные дашборда
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  level: { type: string }
+                  widgets: { type: array, items: { type: object, additionalProperties: true } }
+  /dashboards/{level}/export:
+    get:
+      summary: Экспорт дашборда (с сохранением контекста)
+      parameters:
+        - { name: level, in: path, required: true, schema: { type: string } }
+        - { name: format, in: query, schema: { type: string, enum: [PDF, CSV] } }
+      responses: { '200': { description: Файл, content: { application/octet-stream: { schema: { type: string, format: binary } } } } }
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []

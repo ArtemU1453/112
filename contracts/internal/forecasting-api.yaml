@@ -1,0 +1,51 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Forecasting API (internal)
+  version: 1.0.0
+  description: >
+    Прогнозирование (Stage 8.7, ADR-021). Вызовы/нагрузка/потребность в силах/сезонность/сценарии.
+    Каждый прогноз содержит неопределённость; не единственное основание для решений.
+servers: [{ url: https://api.112.by/internal/forecasting/v1 }]
+paths:
+  /forecast:
+    post:
+      summary: Построить прогноз
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                target: { type: string, enum: [CALL_VOLUME, LOAD, RESOURCE_DEMAND, SEASONAL] }
+                horizonDays: { type: integer }
+                scope: { type: string }
+                scenario: { type: object, additionalProperties: true, description: Допущения сценарного анализа }
+              required: [target, horizonDays]
+      responses:
+        '200': { description: Прогноз, content: { application/json: { schema: { $ref: '#/components/schemas/Forecast' } } } }
+components:
+  schemas:
+    Forecast:
+      type: object
+      properties:
+        target: { type: string }
+        points:
+          type: array
+          items:
+            type: object
+            properties:
+              at: { type: string, format: date }
+              value: { type: number }
+              lower: { type: number, description: Нижняя граница интервала }
+              upper: { type: number, description: Верхняя граница интервала }
+            required: [at, value, lower, upper]
+        uncertainty: { type: number, description: Показатель неопределённости (обязательно) }
+        methodologyRef: { type: string }
+        validationRef: { type: string, description: Ссылка на валидацию (Forecast Validation) }
+        advisoryOnly: { type: boolean, default: true }
+      required: [target, points, uncertainty, advisoryOnly]
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []
