@@ -18,6 +18,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Установка зависимостей валидаторов
+        run: python -m pip install --upgrade pip pyyaml
       - name: Проверка структуры репозитория и правил (Repository Governance Standard)
         run: python scripts/validate_architecture.py
       - name: Проверка каталога версий (TVMS)
