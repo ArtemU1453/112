@@ -252,6 +252,34 @@
   [Simulation Security](standards/Simulation-Security-Standard.md) ·
   [Research & Innovation](standards/Research-And-Innovation-Standard.md)
 
+## Knowledge, Regulations & Decision Support (Stage 13)
+
+- Индекс: [Знания, нормативы и поддержка решений](knowledge/README.md) — SSOT нормативной информации, только утверждённые версии, неизменяемая история
+- Стратегия/рамки: [National Knowledge Governance Strategy](knowledge/national-knowledge-governance-strategy.md) ·
+  [SOP Management Framework](knowledge/sop-management-framework.md) ·
+  [Knowledge Evolution Roadmap](knowledge/knowledge-evolution-roadmap.md)
+- Архитектура/руководства: [Knowledge Platform Architecture](knowledge/knowledge-platform-architecture.md) ·
+  [SOP Governance Guide](knowledge/sop-governance-guide.md) ·
+  [Rules Catalog Specification](knowledge/rules-catalog-specification.md) ·
+  [Reference Data Governance Guide](knowledge/reference-data-governance-guide.md) ·
+  [Knowledge Search Architecture](knowledge/knowledge-search-architecture.md) ·
+  [Knowledge Analytics Guide](knowledge/knowledge-analytics-guide.md) ·
+  [Knowledge Operations Handbook](knowledge/knowledge-operations-handbook.md)
+- ADR/RFC: [ADR-028 платформа знаний](adr/ADR-028-national-knowledge-decision-support-platform.md) ·
+  [RFC-0010](rfc/RFC-0010-knowledge-decision-support-platform.md) (утверждает `CAP-KNOW-001`, переводит `CAP-SEARCH-001` в Approved)
+- Стандарты: [Regulatory Document](standards/Regulatory-Document-Standard.md) ·
+  [Knowledge Lifecycle](standards/Knowledge-Lifecycle-Standard.md) ·
+  [Competency Management](standards/Competency-Management-Standard.md) ·
+  [Knowledge Platform Governance](standards/Knowledge-Platform-Governance-Standard.md) ·
+  [Document Versioning](standards/Document-Versioning-Standard.md) ·
+  [SOP Lifecycle](standards/SOP-Lifecycle-Standard.md) · [Rule Authoring](standards/Rule-Authoring-Standard.md) ·
+  [Knowledge Publication](standards/Knowledge-Publication-Standard.md) ·
+  [Reference Information](standards/Reference-Information-Standard.md) ·
+  [Semantic Search Governance](standards/Semantic-Search-Governance-Standard.md) ·
+  [Knowledge Quality](standards/Knowledge-Quality-Standard.md) ·
+  [Training Content Governance](standards/Training-Content-Governance-Standard.md) ·
+  [Knowledge Retention](standards/Knowledge-Retention-Standard.md)
+
 ## Риски
 
 - [Risk Register](risk/risk-register.md)
