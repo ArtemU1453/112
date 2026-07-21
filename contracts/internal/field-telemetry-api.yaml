@@ -1,0 +1,38 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Field Telemetry API (internal)
+  version: 1.0.0
+  description: >
+    Полевая телеметрия через адаптеры (Stage 7.9, ADR-015). GPS/терминалы/датчики/носимые/внешние
+    источники. Отделена от прикладной логики. История append-only. Общий контракт (расширяет 6.8).
+servers: [{ url: https://api.112.by/internal/field-telemetry/v1 }]
+paths:
+  /telemetry:
+    post:
+      summary: Принять полевую телеметрию (батч из offline-буфера)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sourceType: { type: string, enum: [GPS, TERMINAL, ONBOARD, SENSOR, WEARABLE, EXTERNAL] }
+                sourceId: { type: string }
+                points: { type: array, items: { $ref: '#/components/schemas/TelemetryPoint' } }
+              required: [sourceType, points]
+      responses: { '202': { description: Принято } }
+components:
+  schemas:
+    TelemetryPoint:
+      type: object
+      properties:
+        unitId: { type: string, format: uuid }
+        lat: { type: number }
+        lon: { type: number }
+        speed: { type: number }
+        heading: { type: number }
+        at: { type: string, format: date-time }
+      required: [lat, lon, at]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]

@@ -1,0 +1,52 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Media API (internal)
+  version: 1.0.0
+  description: >
+    Работа с медиа (Stage 7.8): фото/видео/голос/документы, метаданные, контроль целостности,
+    привязка к инциденту. Хранилище — File Storage Abstraction (ADR-013). Общий контракт.
+servers: [{ url: https://api.112.by/internal/media/v1 }]
+paths:
+  /media:
+    post:
+      summary: Загрузить медиа-объект (с метаданными и контрольной суммой)
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file: { type: string, format: binary }
+                metadata: { $ref: '#/components/schemas/MediaMetadata' }
+              required: [file, metadata]
+      responses:
+        '201': { description: Создано, content: { application/json: { schema: { $ref: '#/components/schemas/MediaObject' } } } }
+  /media/{id}:
+    get:
+      summary: Получить медиа-объект
+      parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses:
+        '200': { description: Содержимое, content: { application/octet-stream: { schema: { type: string, format: binary } } } }
+components:
+  schemas:
+    MediaMetadata:
+      type: object
+      properties:
+        kind: { type: string, enum: [PHOTO, VIDEO, VOICE, DOCUMENT] }
+        incidentId: { type: string, format: uuid }
+        capturedAt: { type: string, format: date-time }
+        lat: { type: number }
+        lon: { type: number }
+        author: { type: string }
+        checksum: { type: string }
+      required: [kind, checksum]
+    MediaObject:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        storageKey: { type: string }
+        metadata: { $ref: '#/components/schemas/MediaMetadata' }
+      required: [id, storageKey]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]

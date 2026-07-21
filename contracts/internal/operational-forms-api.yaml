@@ -1,0 +1,39 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Operational Forms API (internal)
+  version: 1.0.0
+  description: >
+    Цифровые формы (Stage 7.7): рапорт/доклад/чек-листы/осмотр/разведка/пострадавшие/оборудование/
+    расход. Шаблоны версионируются; заполнение offline-first. Общий контракт.
+servers: [{ url: https://api.112.by/internal/forms/v1 }]
+paths:
+  /templates:
+    get:
+      summary: Список шаблонов форм (версионированных)
+      responses: { '200': { description: Шаблоны, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/FormTemplate' } } } } } }
+  /submissions:
+    post:
+      summary: Отправить заполненную форму (может приходить из outbox)
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/FormSubmission' } } } }
+      responses: { '201': { description: Принято } }
+components:
+  schemas:
+    FormTemplate:
+      type: object
+      properties:
+        id: { type: string }
+        kind: { type: string, enum: [REPORT, BRIEFING, CHECKLIST, OBJECT_INSPECTION, RECON, CASUALTIES, EQUIPMENT_USE, MATERIAL_CONSUMPTION] }
+        version: { type: integer }
+        schema: { type: object, additionalProperties: true }
+      required: [id, kind, version]
+    FormSubmission:
+      type: object
+      properties:
+        templateId: { type: string }
+        templateVersion: { type: integer }
+        incidentId: { type: string, format: uuid }
+        data: { type: object, additionalProperties: true }
+        submittedAt: { type: string, format: date-time }
+      required: [templateId, data]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]

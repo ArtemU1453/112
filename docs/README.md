@@ -121,6 +121,26 @@
   [Geospatial Privacy](standards/Geospatial-Privacy-Standard.md) · [Spatial Analytics Governance](standards/Spatial-Analytics-Governance-Standard.md)
 - Контракты 6.1–6.10 (API First): [`contracts/internal`](../contracts/README.md)
 
+## Mobile Ecosystem (Stage 7)
+
+- [Mobile Architecture](mobile/mobile-architecture.md) · [Synchronization Architecture](mobile/synchronization-architecture.md) ·
+  [Mobile SDK Guide](mobile/mobile-sdk-guide.md) · [Mobile Design System](mobile/mobile-design-system.md)
+- ADR: [ADR-016 стек](adr/ADR-016-mobile-technology-stack.md) · [ADR-017 offline-sync](adr/ADR-017-offline-first-synchronization.md) ·
+  [ADR-018 MDM](adr/ADR-018-mdm-integration-abstraction.md); [RFC-0004](rfc/RFC-0004-mobile-ecosystem.md)
+- Стандарты (обязательные): [Offline Synchronization](standards/Offline-Synchronization-Standard.md) ·
+  [Field Operations](standards/Field-Operations-Standard.md) · [Incident Command](standards/Incident-Command-Standard.md) ·
+  [Mobile Security](standards/Mobile-Security-Standard.md) · [Media Governance](standards/Media-Governance-Standard.md) ·
+  [Operational Forms](standards/Operational-Forms-Standard.md)
+- Стандарты (дополнительные): [Offline Data Governance](standards/Offline-Data-Governance-Standard.md) ·
+  [Mobile Synchronization](standards/Mobile-Synchronization-Standard.md) · [Device Security](standards/Device-Security-Standard.md) ·
+  [Field Telemetry](standards/Field-Telemetry-Standard.md) · [Operational Messaging](standards/Operational-Messaging-Standard.md) ·
+  [Mobile Accessibility](standards/Mobile-Accessibility-Standard.md) · [Mobile Performance](standards/Mobile-Performance-Standard.md) ·
+  [Battery Optimization](standards/Battery-Optimization-Standard.md) · [Mobile Audit](standards/Mobile-Audit-Standard.md) ·
+  [Mobile Lifecycle Management](standards/Mobile-Lifecycle-Management-Standard.md)
+- Приложения: [`apps/mobile-crew`](../apps/mobile-crew/README.md) · [`apps/mobile-commander`](../apps/mobile-commander/README.md) ·
+  [`apps/mobile-command`](../apps/mobile-command/README.md); токены [`libraries/mobile-design-tokens`](../libraries/mobile-design-tokens/README.md)
+- Контракты 7.x (API First): [`contracts/internal`](../contracts/README.md)
+
 ## Риски
 
 - [Risk Register](risk/risk-register.md)

@@ -1,0 +1,34 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Operational Messaging API (internal)
+  version: 1.0.0
+  description: >
+    Операционный обмен сообщениями (Stage 7.6): индивидуальные/групповые/системные, приоритет,
+    подтверждение получения, журнал доставки. Поверх Notification Platform (Stage 4). Общий контракт.
+servers: [{ url: https://api.112.by/internal/op-messaging/v1 }]
+paths:
+  /messages:
+    post:
+      summary: Отправить сообщение (инд./групп./системное)
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/Message' } } } }
+      responses: { '202': { description: Принято к доставке } }
+  /messages/{id}/ack:
+    post:
+      summary: Подтвердить получение сообщения
+      parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses: { '204': { description: OK } }
+components:
+  schemas:
+    Message:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        kind: { type: string, enum: [INDIVIDUAL, GROUP, SYSTEM] }
+        recipients: { type: array, items: { type: string } }
+        priority: { type: string, enum: [CRITICAL, HIGH, NORMAL, LOW] }
+        body: { type: string }
+        incidentId: { type: string, format: uuid }
+        sentAt: { type: string, format: date-time }
+      required: [kind, recipients, priority, body]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]

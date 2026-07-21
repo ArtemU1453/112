@@ -26,5 +26,8 @@ Architecture Decision Records фиксируют значимые архитек
 | [ADR-013](ADR-013-object-storage.md) | Объектное хранилище (S3-совместимое, self-hosted) | Accepted |
 | [ADR-014](ADR-014-routing-navigation-abstraction.md) | Абстракция маршрутизации и навигации (self-hosted) | Accepted |
 | [ADR-015](ADR-015-cartographic-telemetry-provider-abstraction.md) | Абстракция картографии и телеметрии (self-hosted) | Accepted |
+| [ADR-016](ADR-016-mobile-technology-stack.md) | Технологический стек мобильной экосистемы (единый) | Accepted |
+| [ADR-017](ADR-017-offline-first-synchronization.md) | Offline-First и синхронизация данных | Accepted |
+| [ADR-018](ADR-018-mdm-integration-abstraction.md) | Абстракция интеграции с MDM | Accepted |
 
 Нумерация сквозная и неизменяемая. Новый ADR получает следующий свободный номер.

@@ -45,6 +45,9 @@
 | CAP-ROUTING-001 | Маршрутизация/навигация (ETA, расстояние, объезды) | ADR-014 | Self-hosted OSS-движок (OSRM/Valhalla/GraphHopper) | Approved | Stage 6 |
 | CAP-MAP-001 | Картографические данные/слои/тайлы | ADR-015 | Self-hosted (открытые данные/OSM-совместимые) | Approved | Stage 6 |
 | CAP-TELEMETRY-001 | Телеметрия местоположения техники (адаптеры) | ADR-015 | Адаптеры источников (GPS/АРМ/трекеры) | Approved | Stage 6 |
+| CAP-MOBILE-001 | Мобильная платформа/SDK (единый кросс-платформенный стек) | ADR-016 | Единый кросс-платформенный стек + Mobile SDK | Approved | Stage 7 |
+| CAP-SYNC-001 | Offline-first синхронизация данных | ADR-017 | Дельта-синхронизация + outbox + версионирование | Approved | Stage 7 |
+| CAP-MDM-001 | Управление мобильными устройствами (MDM/EMM) | ADR-018 | Адаптеры MDM (Android Enterprise/ведомственный) | Approved | Stage 7 |
 
 ## Возможности со статусом Proposed
 
