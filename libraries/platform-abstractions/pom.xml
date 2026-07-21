@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ЕАСУР — platform-abstractions: порты (интерфейсы) Core Platform (Stage 4).
+  Абстракции без привязки к конкретным поставщикам (TAP): хранилище файлов, поиск, каналы
+  уведомлений, ИИ-провайдеры, сообщения, интеграция, документы. Реализации — адаптеры в сервисах.
+  БЕЗ бизнес-логики (запрет Stage 4).
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>by.mchs.e112</groupId>
+  <artifactId>platform-abstractions</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+  <name>platform-abstractions</name>
+  <description>Порты Core Platform ЕАСУР (адаптеры реализуются в сервисах)</description>
+  <properties>
+    <maven.compiler.release>21</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>by.mchs.e112</groupId>
+      <artifactId>platform-commons</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+  </dependencies>
+</project>

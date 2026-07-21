@@ -1,0 +1,64 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Configuration Platform API (internal)
+  version: 1.0.0
+  description: >
+    Внутренний контракт централизованного управления параметрами, профилями и feature flags
+    (Configuration Platform, Stage 4). Контракт определён ДО реализации (API First, ARTICLE 12).
+    Прикладная логика отсутствует.
+servers:
+  - url: https://api.112.by/internal/config/v1
+tags:
+  - name: parameters
+  - name: feature-flags
+paths:
+  /parameters/{scope}:
+    get:
+      tags: [parameters]
+      summary: Получить параметры конфигурации по области
+      parameters:
+        - { name: scope, in: path, required: true, schema: { type: string } }
+        - { name: profile, in: query, required: false, schema: { type: string } }
+      responses:
+        '200':
+          description: Параметры
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: { type: string }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /feature-flags:
+    get:
+      tags: [feature-flags]
+      summary: Список feature flags
+      responses:
+        '200':
+          description: Флаги
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/FeatureFlag' }
+components:
+  schemas:
+    FeatureFlag:
+      type: object
+      properties:
+        key: { type: string }
+        enabled: { type: boolean }
+        description: { type: string }
+        owner: { type: string }
+      required: [key, enabled]
+    ProblemDetail:
+      $ref: '../shared/problem-detail.yaml#/components/schemas/ProblemDetail'
+  responses:
+    NotFound:
+      description: Не найдено
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/ProblemDetail' }
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []

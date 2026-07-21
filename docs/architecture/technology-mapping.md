@@ -37,13 +37,21 @@
 | CAP-STORAGE-001 | Объектное хранилище (бэкапы, артефакты, зеркала) | ADR-013 | S3-совместимое (self-hosted, напр. MinIO) | Approved | Stage 3 |
 | CAP-TRACE-001 | Распределённая трассировка | ADR-012 | OpenTelemetry + Grafana Tempo | Approved | Stage 3 |
 | CAP-REGISTRY-001 | Реестр контейнерных образов (локальный) | ADR-005, ADR-010 | OCI-реестр (self-hosted/зеркало) | Approved | Stage 3 |
+| CAP-SDK-001 | Внутренний SDK и общие библиотеки | Internal SDK Governance Standard | platform-commons / platform-sdk (JVM) | Approved | Stage 4 |
+| CAP-NOTIFY-001 | Универсальные уведомления (каналы через адаптеры) | Notification Platform | notification-service (гексагон) | Approved | Stage 4 |
+| CAP-AI-001 | Интеграция ИИ (STT/TTS/LLM/OCR/классификация/NER) | AI Provider Abstraction Standard | Адаптеры провайдеров (модель не фиксируется) | Approved | Stage 4 |
+| CAP-SEARCH-001 | Универсальный поиск (полнотекст/атрибуты) | — (RFC ожидается) | Поисковый движок (S3-независим; TBD) | Proposed | — |
+| CAP-DOC-001 | Генерация/экспорт документов | Document Lifecycle Management Standard | Адаптер рендеринга (движок TBD) | Proposed | — |
 
 ## Возможности со статусом Proposed
 
-На текущем этапе таких возможностей нет: `CAP-SECRETS-001`, `CAP-STORAGE-001`, `CAP-TRACE-001`
-переведены в Approved на Stage 3 (ADR-011/013/012, RFC-0002). Новые возможности со статусом
-Proposed добавляются здесь и утверждаются через RFC + новый ADR (TAP «Изменение технологии»);
-до утверждения документы ссылаются на возможность, а не продукт.
+`CAP-SEARCH-001` (универсальный поиск) и `CAP-DOC-001` (генерация документов) — требования и
+абстракции (порты) зафиксированы на Stage 4, конкретный движок не утверждён. Выбор технологии —
+через RFC + новый ADR с обновлением данной таблицы (TAP «Изменение технологии»); до утверждения
+документы и код ссылаются на возможность и порт, а не на продукт.
+
+Ранее предложенные `CAP-SECRETS-001`, `CAP-STORAGE-001`, `CAP-TRACE-001` переведены в Approved на
+Stage 3 (ADR-011/013/012, RFC-0002).
 
 ## Синхронизация
 

@@ -1,0 +1,25 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Time Service API (internal)
+  version: 1.0.0
+  description: >
+    Внутренний контракт единого сервиса времени (Time Service): источник времени (UTC), часовые
+    пояса, отметка событий. Синхронизация — локальные NTP (AGSDS).
+servers:
+  - url: https://api.112.by/internal/time/v1
+paths:
+  /now:
+    get:
+      summary: Текущее время (UTC)
+      responses:
+        '200':
+          description: Момент времени
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  utc: { type: string, format: date-time }
+                  defaultZone: { type: string, example: Europe/Minsk }
+                required: [utc]
+  securitySchemes: {}

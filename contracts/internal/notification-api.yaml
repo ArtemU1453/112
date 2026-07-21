@@ -1,0 +1,57 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Notification Platform API (internal)
+  version: 1.0.0
+  description: >
+    Внутренний контракт универсальной отправки уведомлений (Notification Platform). Каналы
+    (IN_APP/EMAIL/SMS/PUSH/SYSTEM_EVENT) подключаются адаптерами (TAP). API First, без бизнес-логики.
+servers:
+  - url: https://api.112.by/internal/notifications/v1
+paths:
+  /notifications:
+    post:
+      summary: Запросить отправку уведомления
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NotificationRequest' }
+      responses:
+        '202':
+          description: Принято к отправке
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/DeliveryResult' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+components:
+  schemas:
+    NotificationRequest:
+      type: object
+      properties:
+        channel: { type: string, enum: [IN_APP, EMAIL, SMS, PUSH, SYSTEM_EVENT] }
+        recipient: { type: string }
+        subject: { type: string }
+        body: { type: string }
+        attributes:
+          type: object
+          additionalProperties: { type: string }
+      required: [channel, recipient, body]
+    DeliveryResult:
+      type: object
+      properties:
+        accepted: { type: boolean }
+        providerId: { type: string }
+        error: { type: string }
+      required: [accepted]
+    ProblemDetail:
+      $ref: '../shared/problem-detail.yaml#/components/schemas/ProblemDetail'
+  responses:
+    BadRequest:
+      description: Ошибка валидации
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/ProblemDetail' }
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []

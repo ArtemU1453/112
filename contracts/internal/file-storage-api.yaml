@@ -1,0 +1,66 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — File Storage API (internal)
+  version: 1.0.0
+  description: >
+    Внутренний контракт абстракции файлового хранилища (File Storage Abstraction). Поставщик не
+    фиксируется (S3-совместимое, ADR-013; CAP-STORAGE-001). Документы/аудио/вложения/экспорт.
+servers:
+  - url: https://api.112.by/internal/files/v1
+paths:
+  /files/{key}:
+    put:
+      summary: Загрузить объект
+      parameters:
+        - { name: key, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema: { type: string, format: binary }
+      responses:
+        '201':
+          description: Создано
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/StoredObject' }
+    get:
+      summary: Скачать объект
+      parameters:
+        - { name: key, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: Содержимое
+          content:
+            application/octet-stream:
+              schema: { type: string, format: binary }
+        '404': { $ref: '#/components/responses/NotFound' }
+    delete:
+      summary: Удалить объект
+      parameters:
+        - { name: key, in: path, required: true, schema: { type: string } }
+      responses:
+        '204': { description: Удалено }
+components:
+  schemas:
+    StoredObject:
+      type: object
+      properties:
+        key: { type: string }
+        contentType: { type: string }
+        sizeBytes: { type: integer, format: int64 }
+        checksum: { type: string }
+        createdAt: { type: string, format: date-time }
+      required: [key, sizeBytes]
+    ProblemDetail:
+      $ref: '../shared/problem-detail.yaml#/components/schemas/ProblemDetail'
+  responses:
+    NotFound:
+      description: Не найдено
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/ProblemDetail' }
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []

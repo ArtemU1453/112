@@ -1,0 +1,33 @@
+# ЕАСУР — общий компонент ошибки RFC 7807 (Error Handling Framework, API Guidelines).
+# Переиспользуется всеми контрактами платформы через $ref.
+components:
+  schemas:
+    ProblemDetail:
+      type: object
+      description: Единый формат ошибки (application/problem+json, RFC 7807).
+      properties:
+        type: { type: string, format: uri }
+        title: { type: string }
+        status: { type: integer }
+        code: { type: string, description: Стабильный код ошибки (ErrorCode) }
+        detail: { type: string }
+        instance: { type: string }
+        correlationId: { type: string }
+        timestamp: { type: string, format: date-time }
+        violations:
+          type: array
+          items:
+            type: object
+            properties:
+              field: { type: string }
+              messageKey: { type: string }
+              message: { type: string }
+      required: [title, status, code]
+    Page:
+      type: object
+      description: Метаданные страницы (API Guidelines — пагинация).
+      properties:
+        page: { type: integer }
+        size: { type: integer }
+        totalElements: { type: integer, format: int64 }
+        totalPages: { type: integer }

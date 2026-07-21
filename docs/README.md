@@ -72,6 +72,28 @@
 - [Air-Gapped & Sovereign Deployment Standard](standards/Air-Gapped-And-Sovereign-Deployment-Standard.md)
 - IaC: [`infrastructure/`](../infrastructure/README.md) · [`kubernetes/platform/`](../kubernetes/platform/README.md)
 
+## Core Platform (Stage 4)
+
+- Архитектура: [Core Platform](core-platform/core-platform-architecture.md) ·
+  [Identity](core-platform/identity-architecture.md) · [Integration](core-platform/integration-architecture.md) ·
+  [Messaging](core-platform/messaging-architecture.md) · [Security](core-platform/security-architecture.md) ·
+  [AI Integration](core-platform/ai-integration-architecture.md)
+- Разработчику: [SDK Documentation](core-platform/sdk-documentation.md) ·
+  [Common Libraries Guide](core-platform/common-libraries-guide.md) · [API Guidelines](core-platform/api-guidelines.md)
+- Библиотеки: [`libraries/platform-commons`](../libraries/platform-commons/README.md) ·
+  [`platform-sdk`](../libraries/platform-sdk/README.md) · порты `platform-abstractions`
+- Контракты API (API First): [`contracts/`](../contracts/README.md)
+- Стандарты Stage 4: [Shared Domain Kernel](standards/Shared-Domain-Kernel-Standard.md) ·
+  [Internal SDK Governance](standards/Internal-SDK-Governance-Standard.md) ·
+  [API Lifecycle](standards/API-Lifecycle-Management-Standard.md) ·
+  [Event Governance](standards/Event-Governance-Standard.md) ·
+  [Canonical Data Model](standards/Canonical-Data-Model-Standard.md) ·
+  [Integration Governance](standards/Integration-Governance-Standard.md) ·
+  [AI Provider Abstraction](standards/AI-Provider-Abstraction-Standard.md) ·
+  [Document Lifecycle](standards/Document-Lifecycle-Management-Standard.md) ·
+  [Operational Telemetry](standards/Operational-Telemetry-Standard.md) ·
+  [Service Maturity Model](standards/Service-Maturity-Model.md)
+
 ## Риски
 
 - [Risk Register](risk/risk-register.md)
