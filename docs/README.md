@@ -60,6 +60,18 @@
 - Каталог версий (SSOT): [`config/toolchain/`](../config/toolchain/README.md)
 - Шаблоны документов: [`docs/templates/`](templates/) · Гайды разработчика: [`docs/developer-experience/`](developer-experience/quick-start.md)
 
+## Платформа (Stage 3)
+
+- [Платформенная документация — индекс](platform/README.md)
+- Архитектура: [Platform](platform/platform-architecture.md) · [Infrastructure](platform/infrastructure-architecture.md) ·
+  [Deployment](deployment/deployment-architecture.md) · [Network](platform/network-architecture.md) ·
+  [Security](security/security-architecture.md) · [Observability](platform/observability-architecture.md)
+- Эксплуатация: [Backup Policy](platform/backup-policy.md) · [Disaster Recovery Plan](platform/disaster-recovery-plan.md) ·
+  [Operational Procedures](platform/operational-procedures.md) · [Runbooks](platform/runbooks/README.md) ·
+  [Platform Operations Framework](governance/Platform-Operations-Framework.md)
+- [Air-Gapped & Sovereign Deployment Standard](standards/Air-Gapped-And-Sovereign-Deployment-Standard.md)
+- IaC: [`infrastructure/`](../infrastructure/README.md) · [`kubernetes/platform/`](../kubernetes/platform/README.md)
+
 ## Риски
 
 - [Risk Register](risk/risk-register.md)

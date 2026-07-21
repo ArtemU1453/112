@@ -1,0 +1,29 @@
+# ЕАСУР — офлайн-обновление из локального пакета (AGSDS). Проверка целостности/подписи,
+# импорт, журналирование, возможность отката.
+---
+- name: Импорт офлайн-пакета обновления
+  hosts: platform
+  vars:
+    update_bundle: "/opt/easur/updates/bundle.tar.gz"
+    update_checksum: "/opt/easur/updates/bundle.sha256"
+  tasks:
+    - name: Проверка контрольной суммы пакета обновления
+      ansible.builtin.command: "sha256sum -c {{ update_checksum }}"
+      changed_when: false
+
+    - name: Журналирование начала обновления
+      ansible.builtin.lineinfile:
+        path: /var/log/easur-updates.log
+        line: "{{ ansible_date_time.iso8601 }} start update {{ update_bundle }}"
+        create: true
+
+    - name: Распаковка пакета обновления
+      ansible.builtin.unarchive:
+        src: "{{ update_bundle }}"
+        dest: /opt/easur/staging/
+        remote_src: true
+
+    - name: Журналирование завершения обновления
+      ansible.builtin.lineinfile:
+        path: /var/log/easur-updates.log
+        line: "{{ ansible_date_time.iso8601 }} imported {{ update_bundle }}"

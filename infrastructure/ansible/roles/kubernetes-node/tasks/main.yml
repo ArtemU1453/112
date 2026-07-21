@@ -1,0 +1,20 @@
+# ЕАСУР — подготовка узла Kubernetes (ADR-005/010). Пакеты — из локального зеркала (AGSDS).
+---
+- name: Установить компоненты Kubernetes (kubelet, kubeadm, kubectl)
+  ansible.builtin.package:
+    name:
+      - kubelet
+      - kubeadm
+      - kubectl
+    state: present
+
+- name: Включить и запустить kubelet
+  ansible.builtin.service:
+    name: kubelet
+    enabled: true
+    state: started
+
+- name: Зафиксировать версии компонентов (управление версиями — TVMS)
+  ansible.builtin.command: "apt-mark hold kubelet kubeadm kubectl"
+  changed_when: false
+  when: ansible_os_family == "Debian"

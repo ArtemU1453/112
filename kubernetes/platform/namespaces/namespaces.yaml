@@ -1,0 +1,40 @@
+# ЕАСУР — платформенные namespaces с Pod Security Admission (Platform Security).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: emergency-112
+  labels:
+    app.kubernetes.io/part-of: emergency-112
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: emergency-112-platform
+  labels:
+    app.kubernetes.io/part-of: emergency-112
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: emergency-112-monitoring
+  labels:
+    app.kubernetes.io/part-of: emergency-112
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: emergency-112-data
+  labels:
+    app.kubernetes.io/part-of: emergency-112
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted

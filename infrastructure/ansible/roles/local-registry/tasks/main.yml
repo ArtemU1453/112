@@ -1,0 +1,23 @@
+# ЕАСУР — локальный реестр образов для изолированного контура (AGSDS, CAP-REGISTRY-001).
+---
+- name: Создать каталог данных реестра
+  ansible.builtin.file:
+    path: /opt/easur/registry/data
+    state: directory
+    mode: "0750"
+
+- name: Запустить локальный OCI-реестр (зеркало образов)
+  ansible.builtin.command: >
+    ctr run --detach --net-host
+    --mount type=bind,src=/opt/easur/registry/data,dst=/var/lib/registry,options=rbind:rw
+    {{ local_registry_url }}/registry:2 easur-registry
+  args:
+    creates: /opt/easur/registry/.started
+  register: registry_started
+
+- name: Отметить запуск реестра
+  ansible.builtin.file:
+    path: /opt/easur/registry/.started
+    state: touch
+    mode: "0644"
+  when: registry_started is changed

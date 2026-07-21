@@ -1,0 +1,9 @@
+# ЕАСУР — IngressClass платформы (API Gateway Platform). Контроллер — ingress-nginx (TVMS).
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: easur-nginx
+  labels:
+    app.kubernetes.io/part-of: emergency-112
+spec:
+  controller: k8s.io/ingress-nginx

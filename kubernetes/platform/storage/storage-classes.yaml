@@ -1,0 +1,21 @@
+# ЕАСУР — StorageClass платформы (Infrastructure Architecture). provisioner подставляется под
+# целевую платформу хранения контура; ниже — безопасные значения по умолчанию.
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: easur-standard
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+provisioner: kubernetes.io/no-provisioner
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: easur-fast
+provisioner: kubernetes.io/no-provisioner
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true

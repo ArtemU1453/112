@@ -1,0 +1,9 @@
+# ЕАСУР — общие переменные (без секретов). Версии — согласно каталогу версий (TVMS).
+---
+timezone: "Europe/Minsk"
+# Локальные зеркала для air-gapped (AGSDS). Адреса — из окружения.
+local_registry_url: "registry.easur.local:5000"
+offline_mode: true
+ntp_servers:
+  - "ntp1.easur.local"
+  - "ntp2.easur.local"

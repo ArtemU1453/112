@@ -1,0 +1,21 @@
+# ЕАСУР — главный плейбук подготовки платформы (ADR-010). Идемпотентен.
+---
+- name: Базовая подготовка всех узлов
+  hosts: platform
+  roles:
+    - common
+
+- name: Контейнерный рантайм
+  hosts: control_plane:workers
+  roles:
+    - container-runtime
+
+- name: Узлы Kubernetes
+  hosts: control_plane:workers
+  roles:
+    - kubernetes-node
+
+- name: Локальный реестр образов (air-gapped)
+  hosts: registry
+  roles:
+    - local-registry

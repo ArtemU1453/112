@@ -1,0 +1,6 @@
+# ЕАСУР — containerd: systemd cgroups + локальное зеркало реестра (AGSDS).
+version = 2
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+  SystemdCgroup = true
+[plugins."io.containerd.grpc.v1.cri".registry.mirrors."{{ local_registry_url }}"]
+  endpoint = ["http://{{ local_registry_url }}"]
