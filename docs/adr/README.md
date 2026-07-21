@@ -32,5 +32,7 @@ Architecture Decision Records фиксируют значимые архитек
 | [ADR-019](ADR-019-analytics-data-warehouse.md) | Аналитическое хранилище данных (DWH, self-hosted) | Accepted |
 | [ADR-020](ADR-020-bi-visualization.md) | Платформа BI и визуализации (self-hosted) | Accepted |
 | [ADR-021](ADR-021-ai-analytics-abstraction.md) | Абстракция аналитического ИИ и объяснимость | Accepted |
+| [ADR-022](ADR-022-national-integration-platform.md) | Национальная интеграционная платформа (ESB/gateway, self-hosted) | Accepted |
+| [ADR-023](ADR-023-integration-security-pki.md) | Безопасность интеграций: mTLS, подпись сообщений, PKI | Accepted |
 
 Нумерация сквозная и неизменяемая. Новый ADR получает следующий свободный номер.

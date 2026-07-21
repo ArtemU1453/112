@@ -321,3 +321,25 @@ analytics:
     recommended: "17"
     category: Supported
     note: "Аналитическое хранилище на PostgreSQL/расширениях (ADR-019); OLAP-решение при росте объёмов."
+
+integration:
+  apacheCamel:
+    min: "4.4"
+    recommended: "4.8"
+    category: Supported
+    note: "Пример self-hosted интеграционного слоя (маршрутизация/трансформация, ADR-022, CAP-INTEG-PLATFORM-001)."
+  grpc:
+    min: "1.66"
+    recommended: "1.66"
+    category: Supported
+    note: "Транспорт gRPC интеграций (ADR-022; Integration Architecture)."
+  openapiSpec:
+    min: "3.1"
+    recommended: "3.1"
+    category: Supported
+    note: "Контракты интеграций (Contract First, API Governance Guide)."
+  step-ca:
+    min: "0.27"
+    recommended: "0.27"
+    category: Supported
+    note: "Пример self-hosted PKI/УЦ для mTLS/сертификатов (ADR-023, CAP-MSGSIGN-001)."

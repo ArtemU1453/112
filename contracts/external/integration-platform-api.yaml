@@ -1,0 +1,51 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — National Integration Platform API (external/interagency)
+  version: 1.0.0
+  description: >
+    Единая точка межведомственного обмена (Stage 9.1, ADR-022). Приём/отправка сообщений через
+    платформу (прямой обход запрещён). Транспорты — через адаптеры; трансформация в канонический
+    формат. Безопасность — mTLS + подпись (ADR-023). Все сообщения трассируются.
+servers: [{ url: https://gw.112.by/interagency/v1 }]
+paths:
+  /messages:
+    post:
+      summary: Принять межведомственное сообщение (async, идемпотентно)
+      parameters:
+        - { name: X-Message-Id, in: header, required: true, schema: { type: string }, description: Ключ идемпотентности }
+        - { name: X-Correlation-Id, in: header, required: true, schema: { type: string } }
+        - { name: X-Signature, in: header, required: false, schema: { type: string }, description: JWS-подпись (если применяется) }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CanonicalMessage' }
+      responses:
+        '202':
+          description: Принято к обработке (подтверждение)
+          content: { application/json: { schema: { $ref: '#/components/schemas/Ack' } } }
+        '409': { description: Дубликат (идемпотентность) }
+        '422': { description: Неописанный формат/несовместимая версия }
+components:
+  schemas:
+    CanonicalMessage:
+      type: object
+      properties:
+        messageType: { type: string, description: Тип по реестру схем (Event Schema Governance) }
+        schemaVersion: { type: string }
+        sourceSystem: { type: string, description: Идентификатор из реестра внешних систем }
+        payload: { type: object, additionalProperties: true, description: Канонический формат (Canonical Data Model) }
+      required: [messageType, schemaVersion, sourceSystem, payload]
+    Ack:
+      type: object
+      properties:
+        messageId: { type: string }
+        status: { type: string, enum: [ACCEPTED, PROCESSED, REJECTED] }
+        receivedAt: { type: string, format: date-time }
+      required: [messageId, status]
+  securitySchemes:
+    mutualTls: { type: mutualTLS }
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - mutualTls: []
+    bearerAuth: []

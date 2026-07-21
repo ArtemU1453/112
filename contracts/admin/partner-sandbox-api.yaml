@@ -1,0 +1,30 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Partner Sandbox API (admin)
+  version: 1.0.0
+  description: >
+    Изолированная среда тестирования интеграций (Stage 9.9). Тестовые данные, эмуляция сервисов,
+    contract testing, проверка совместимости. Не влияет на продуктив.
+servers: [{ url: https://sandbox.112.by/interagency/v1 }]
+paths:
+  /contract-tests:
+    post:
+      summary: Запустить контрактное тестирование интеграции
+      requestBody: { required: true, content: { application/json: { schema: { type: object, properties: { apiId: { type: string }, version: { type: string }, role: { type: string, enum: [PROVIDER, CONSUMER] } }, required: [apiId, version] } } } }
+      responses:
+        '200':
+          description: Результат тестов
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  passed: { type: boolean }
+                  compatibility: { type: string, enum: [COMPATIBLE, BREAKING] }
+                  details: { type: array, items: { type: string } }
+                required: [passed]
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []

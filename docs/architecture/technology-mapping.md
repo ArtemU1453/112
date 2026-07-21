@@ -51,6 +51,8 @@
 | CAP-DWH-001 | Аналитическое хранилище данных (DWH) | ADR-019 | Self-hosted аналитическая БД/OLAP (из событий/снапшотов) | Approved | Stage 8 |
 | CAP-BI-001 | BI и визуализация/дашборды | ADR-020 | Self-hosted BI (Grafana/Metabase/Superset) | Approved | Stage 8 |
 | CAP-AIANALYTICS-001 | Аналитический ИИ (адаптеры, объяснимость) | ADR-021 | Адаптеры моделей/методов (self-hosted, с методикой) | Approved | Stage 8 |
+| CAP-INTEG-PLATFORM-001 | Национальная интеграционная платформа (ESB/gateway) | ADR-022 | Self-hosted integration gateway/ESB (адаптеры транспортов) | Approved | Stage 9 |
+| CAP-MSGSIGN-001 | Безопасность интеграций (mTLS, подпись, PKI) | ADR-023 | mTLS + JWS-подпись + ведомственная PKI (Vault) | Approved | Stage 9 |
 
 ## Возможности со статусом Proposed
 

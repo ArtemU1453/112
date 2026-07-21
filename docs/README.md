@@ -158,6 +158,22 @@
   [Data Retention for Analytics](standards/Data-Retention-for-Analytics-Standard.md)
 - Контракты 8.1–8.10 (API First): [`contracts/`](../contracts/README.md)
 
+## National Integration & Interagency Interoperability (Stage 9)
+
+- Архитектура/руководства: [National Integration Architecture](integration/national-integration-architecture.md) ·
+  [API Governance Guide](integration/api-governance-guide.md) · [Integration Security Architecture](integration/integration-security-architecture.md) ·
+  [Canonical Data Model](integration/canonical-data-model.md) · [External Systems Registry Spec](integration/external-systems-registry-specification.md) ·
+  [Partner Integration Guide](integration/partner-integration-guide.md) · [Integration Monitoring Guide](integration/integration-monitoring-guide.md) ·
+  [Interoperability Handbook](integration/interoperability-handbook.md)
+- ADR: [ADR-022 платформа](adr/ADR-022-national-integration-platform.md) · [ADR-023 безопасность](adr/ADR-023-integration-security-pki.md); [RFC-0006](rfc/RFC-0006-national-integration.md)
+- Стандарты (обязательные): [Contract Governance](standards/Contract-Governance-Standard.md) · [Reference Data Management](standards/Reference-Data-Management-Standard.md)
+- Стандарты (дополнительные): [API Versioning](standards/API-Versioning-Standard.md) · [Contract Testing](standards/Contract-Testing-Standard.md) ·
+  [Integration Certification](standards/Integration-Certification-Standard.md) · [Event Schema Governance](standards/Event-Schema-Governance-Standard.md) ·
+  [Message Reliability](standards/Message-Reliability-Standard.md) · [Data Exchange Security](standards/Data-Exchange-Security-Standard.md) ·
+  [Partner Onboarding](standards/Partner-Onboarding-Standard.md) · [Canonical Identifier](standards/Canonical-Identifier-Standard.md) ·
+  [Integration SLA](standards/Integration-SLA-Standard.md) · [Cross-System Audit](standards/Cross-System-Audit-Standard.md)
+- Контракты 9.x (API First): [`contracts/external`](../contracts/external/README.md), [`contracts/admin`](../contracts/README.md)
+
 ## Риски
 
 - [Risk Register](risk/risk-register.md)

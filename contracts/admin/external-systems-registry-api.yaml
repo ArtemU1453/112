@@ -1,0 +1,41 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — External Systems Registry API (admin)
+  version: 1.0.0
+  description: >
+    Реестр внешних систем (Stage 9.2). Регистрация/обновление/отзыв. Подключение без регистрации
+    запрещено. Журнал изменений append-only.
+servers: [{ url: https://api.112.by/admin/systems-registry/v1 }]
+paths:
+  /systems:
+    get:
+      summary: Список внешних систем
+      responses: { '200': { description: Системы, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/ExternalSystem' } } } } } }
+    post:
+      summary: Зарегистрировать внешнюю систему
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/ExternalSystem' } } } }
+      responses: { '201': { description: Зарегистрирована } }
+  /systems/{id}/revoke:
+    post:
+      summary: Отозвать доступ внешней системы
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, properties: { reason: { type: string }, approvedBy: { type: string } }, required: [reason, approvedBy] } } } }
+      responses: { '200': { description: Доступ отозван } }
+components:
+  schemas:
+    ExternalSystem:
+      type: object
+      properties:
+        id: { type: string, description: Канонический идентификатор }
+        owner: { type: string }
+        purpose: { type: string }
+        interfaces: { type: array, items: { type: string } }
+        contractVersions: { type: array, items: { type: string } }
+        criticality: { type: string, enum: [CRITICAL, HIGH, MEDIUM, LOW] }
+        security: { type: object, properties: { mtls: { type: boolean }, signing: { type: boolean }, scopes: { type: array, items: { type: string } } } }
+        sla: { type: object, properties: { availability: { type: string }, latencyP95Ms: { type: integer }, support: { type: string } } }
+      required: [id, owner, purpose, criticality]
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []
