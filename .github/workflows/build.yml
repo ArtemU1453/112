@@ -1,0 +1,103 @@
+name: build
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - "services/**"
+      - "ai-service/**"
+      - "frontend/**"
+      - "libraries/build/**"
+      - ".github/workflows/build.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      java: ${{ steps.filter.outputs.java }}
+      ai: ${{ steps.filter.outputs.ai }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            java:
+              - 'services/**'
+              - 'libraries/build/**'
+            ai:
+              - 'ai-service/**'
+            frontend:
+              - 'frontend/**'
+
+  build-java:
+    needs: changes
+    if: needs.changes.outputs.java == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - gateway-service
+          - auth-service
+          - incident-service
+          - dispatch-service
+          - telephony-service
+          - gis-service
+          - audit-service
+          - notification-service
+          - realtime-service
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK (LTS согласно каталогу версий)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: Compile ${{ matrix.service }}
+        working-directory: services/${{ matrix.service }}
+        run: mvn -B -ntp clean test-compile
+
+  build-ai:
+    needs: changes
+    if: needs.changes.outputs.ai == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install ai-service deps
+        working-directory: ai-service
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-dev.txt
+
+  build-frontend:
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/dispatcher/package-lock.json
+      - name: Build frontend
+        working-directory: frontend/dispatcher
+        run: |
+          npm ci
+          npm run build

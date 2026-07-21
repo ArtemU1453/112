@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ЕАСУР — родительская Maven-конфигурация (Parent Build Configuration).
+  Единые настройки сборки, версия Java и управление плагинами для Java-сервисов.
+  Авторитетный источник версий инструментов/платформ — config/toolchain/versions.yaml (TVMS);
+  значения ниже синхронизируются с каталогом (Dependency/Toolchain Governance Standards).
+  Конфигурации анализаторов — в config/quality/.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>by.mchs.e112</groupId>
+  <artifactId>easur-parent</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+  <name>easur-parent</name>
+  <description>Родительская сборочная конфигурация ЕАСУР (Java-сервисы)</description>
+
+  <properties>
+    <!-- Синхронизировано с config/toolchain/versions.yaml -->
+    <java.version>21</java.version>
+    <maven.compiler.release>21</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <!-- Версии плагинов качества (роли — Toolchain Governance Standard) -->
+    <checkstyle.plugin.version>3.5.0</checkstyle.plugin.version>
+    <checkstyle.version>10.18.1</checkstyle.version>
+    <spotbugs.plugin.version>4.8.6.4</spotbugs.plugin.version>
+    <pmd.plugin.version>3.25.0</pmd.plugin.version>
+    <surefire.version>3.5.0</surefire.version>
+    <failsafe.version>3.5.0</failsafe.version>
+
+    <!-- Общая конфигурация анализаторов (централизованно в config/quality) -->
+    <quality.config.dir>${maven.multiModuleProjectDirectory}/config/quality</quality.config.dir>
+  </properties>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <release>${maven.compiler.release}</release>
+            <parameters>true</parameters>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${surefire.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>${failsafe.version}</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>integration-test</goal>
+                <goal>verify</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>${checkstyle.plugin.version}</version>
+          <dependencies>
+            <dependency>
+              <groupId>com.puppycrawl.tools</groupId>
+              <artifactId>checkstyle</artifactId>
+              <version>${checkstyle.version}</version>
+            </dependency>
+          </dependencies>
+          <configuration>
+            <configLocation>${quality.config.dir}/checkstyle.xml</configLocation>
+            <consoleOutput>true</consoleOutput>
+            <failsOnError>true</failsOnError>
+            <includeTestSourceDirectory>false</includeTestSourceDirectory>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>com.github.spotbugs</groupId>
+          <artifactId>spotbugs-maven-plugin</artifactId>
+          <version>${spotbugs.plugin.version}</version>
+          <configuration>
+            <effort>Max</effort>
+            <threshold>Medium</threshold>
+            <excludeFilterFile>${quality.config.dir}/spotbugs-exclude.xml</excludeFilterFile>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-pmd-plugin</artifactId>
+          <version>${pmd.plugin.version}</version>
+          <configuration>
+            <rulesets>
+              <ruleset>${quality.config.dir}/pmd-ruleset.xml</ruleset>
+            </rulesets>
+            <printFailingErrors>true</printFailingErrors>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>

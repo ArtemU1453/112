@@ -19,5 +19,6 @@ Architecture Decision Records фиксируют значимые архитек
 | [ADR-006](ADR-006-cicd.md) | CI/CD | Accepted |
 | [ADR-007](ADR-007-authorization.md) | Система авторизации | Accepted |
 | [ADR-008](ADR-008-message-broker.md) | Брокер сообщений | Accepted |
+| [ADR-009](ADR-009-ci-platform-github-actions.md) | Основная CI-платформа: GitHub Actions (дополняет ADR-006) | Accepted |
 
 Нумерация сквозная и неизменяемая. Новый ADR получает следующий свободный номер.

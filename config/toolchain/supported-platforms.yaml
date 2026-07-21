@@ -1,0 +1,42 @@
+# Supported Platforms — ЕАСУР
+# Поддерживаемые платформы разработки и исполнения. Дополняет versions.yaml.
+schemaVersion: "1.0"
+updatedAt: "2026-07-21"
+
+platforms:
+  linux:
+    status: Supported
+    role: ["local-development", "ci", "production"]
+    constraints:
+      - "Целевая платформа исполнения (контейнеры/Kubernetes)."
+      - "Рекомендуется для локальной разработки (полное соответствие prod)."
+  windows:
+    status: Supported
+    role: ["local-development"]
+    constraints:
+      - "Разработка только через Dev Container / WSL2 для воспроизводимости."
+      - "Нативный запуск инфраструктурных контейнеров — через Docker Desktop."
+  macos:
+    status: Supported
+    role: ["local-development"]
+    constraints:
+      - "Разработка через Dev Container или локальный Docker."
+      - "Учитывать архитектуру CPU (arm64/amd64) при сборке образов (multi-arch)."
+  docker:
+    status: Supported
+    role: ["local-development", "ci", "test", "stage", "production"]
+    constraints:
+      - "Единые базовые образы согласно versions.yaml."
+      - "Многостадийные сборки; non-root runtime где возможно."
+  devContainer:
+    status: Supported
+    role: ["local-development"]
+    constraints:
+      - "Единственный поддерживаемый способ гарантированно воспроизводимой среды."
+      - "Версии инструментов фиксируются согласно versions.yaml."
+  ci:
+    status: Supported
+    role: ["ci"]
+    constraints:
+      - "GitHub Actions (основная, ADR-009) + GitLab CI (ADR-006)."
+      - "Сборка в чистом окружении; проверка соответствия versions.yaml."

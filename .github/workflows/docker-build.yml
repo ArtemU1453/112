@@ -1,0 +1,58 @@
+name: docker-build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "services/**"
+      - "ai-service/**"
+      - "frontend/**"
+      - ".github/workflows/docker-build.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-images:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: gateway-service
+            context: services/gateway-service
+          - image: auth-service
+            context: services/auth-service
+          - image: incident-service
+            context: services/incident-service
+          - image: dispatch-service
+            context: services/dispatch-service
+          - image: telephony-service
+            context: services/telephony-service
+          - image: gis-service
+            context: services/gis-service
+          - image: audit-service
+            context: services/audit-service
+          - image: notification-service
+            context: services/notification-service
+          - image: realtime-service
+            context: services/realtime-service
+          - image: ai-service
+            context: ai-service
+          - image: frontend-dispatcher
+            context: frontend/dispatcher
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build image (${{ matrix.image }})
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          push: false
+          tags: |
+            easur/${{ matrix.image }}:${{ github.sha }}
+            easur/${{ matrix.image }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

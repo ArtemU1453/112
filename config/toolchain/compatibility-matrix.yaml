@@ -1,0 +1,87 @@
+# Compatibility Matrix — ЕАСУР
+# Совместимость ключевых инструментов. Дополняет versions.yaml (SSOT версий).
+# supportStatus: Supported | Deprecated | EndOfLife
+schemaVersion: "1.0"
+updatedAt: "2026-07-21"
+
+matrix:
+  java:
+    compatible: ["21"]
+    incompatible: ["8", "11", "17-and-below-for-loom-features"]
+    minSupported: "21"
+    recommended: "21"
+    supportStatus: Supported
+    notes: "Виртуальные потоки требуют 21+ (ADR-001)."
+
+  springBoot:
+    compatible: ["3.3.x"]
+    incompatible: ["2.x", "3.0-3.2 (не тестировалось)"]
+    minSupported: "3.3"
+    recommended: "3.3"
+    supportStatus: Supported
+    requires:
+      java: ">=21"
+
+  springCloud:
+    compatible: ["2023.0.x"]
+    incompatible: ["2022.x-and-below"]
+    minSupported: "2023.0"
+    recommended: "2023.0"
+    supportStatus: Supported
+    requires:
+      springBoot: "3.3.x"
+
+  node:
+    compatible: ["20.x", "22.x"]
+    incompatible: ["<18", "odd-non-LTS"]
+    minSupported: "20"
+    recommended: "22"
+    supportStatus: Supported
+
+  postgresql:
+    compatible: ["16", "17"]
+    incompatible: ["<14"]
+    minSupported: "16"
+    recommended: "17"
+    supportStatus: Supported
+    requires:
+      postgis: ">=3.4"
+
+  kafka:
+    compatible: ["3.7", "3.8"]
+    incompatible: ["<3.5"]
+    minSupported: "3.7"
+    recommended: "3.8"
+    supportStatus: Supported
+
+  kubernetes:
+    compatible: ["1.29", "1.30"]
+    incompatible: ["<1.27"]
+    minSupported: "1.29"
+    recommended: "1.30"
+    supportStatus: Supported
+    requires:
+      helm: ">=3.15"
+
+  helm:
+    compatible: ["3.15.x"]
+    incompatible: ["<3.14"]
+    minSupported: "3.15"
+    recommended: "3.15"
+    supportStatus: Supported
+
+  keycloak:
+    compatible: ["25", "26"]
+    incompatible: ["<24"]
+    minSupported: "25"
+    recommended: "26"
+    supportStatus: Supported
+
+  react:
+    compatible: ["19.x"]
+    incompatible: ["<18"]
+    minSupported: "19"
+    recommended: "19"
+    supportStatus: Supported
+    requires:
+      node: ">=20"

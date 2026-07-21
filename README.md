@@ -81,8 +81,18 @@ cd frontend/dispatcher && npm ci && npm run build
 `infrastructure/backup/backup.sh` — pg_dump всех БД в S3/каталог, `restore.sh` — восстановление.
 CronJob для Kubernetes — `helm/emergency-112/templates/backup-cronjob.yaml`.
 
+## Инженерная основа (Stage 2)
+
+- Быстрый старт разработчика: `docs/developer-experience/quick-start.md`; среда — `.devcontainer/`.
+- Единый каталог версий (SSOT): `config/toolchain/versions.yaml` (TVMS).
+- Скрипты: `./scripts/{bootstrap,build,test,lint,verify}.sh`.
+- CI: GitHub Actions (`.github/workflows/`, основная — ADR-009) + GitLab CI (`.gitlab-ci.yml`, ADR-006).
+- Окружения разработки: `docker/compose.{dev,test,tools,monitoring}.yml`; Kubernetes — `kubernetes/` (Kustomize).
+- Конфигурации качества: `config/quality/` (Checkstyle, PMD, SpotBugs, ESLint, Prettier, yamllint, markdownlint, hadolint, gitleaks).
+
 ## Документация
 
+- `docs/README.md` — индекс SSOT (Vision, Architecture, ADR/RFC, governance, стандарты)
 - `docs/architecture.md` — архитектурные решения (DDD, CQRS, hexagonal)
 - `docs/operations.md` — эксплуатация, мониторинг, алерты
 - README в каталоге каждого сервиса

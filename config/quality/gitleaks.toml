@@ -1,0 +1,19 @@
+# ЕАСУР — конфигурация gitleaks (Secret Scanning, Security Standards)
+title = "EASUR gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Разрешённые плейсхолдеры для локальной разработки (не реальные секреты)"
+paths = [
+  '''.*\.example$''',
+  '''docs/.*''',
+  '''environments/.*\.env\.example''',
+]
+# Известные dev-плейсхолдеры из docker-compose/keycloak realm (не производственные секреты)
+regexes = [
+  '''e112secret''',
+  '''(?i)admin:admin''',
+  '''changeme''',
+]

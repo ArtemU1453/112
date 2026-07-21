@@ -1,0 +1,21 @@
+# ЕАСУР — инструменты разработчика (линтеры/сканеры), запускаемые по требованию.
+name: easur-tools
+
+services:
+  yamllint:
+    image: cytopia/yamllint:latest
+    volumes: ["..:/data:ro"]
+    working_dir: /data
+    entrypoint: ["yamllint", "-c", "config/quality/yamllint.yml", "."]
+
+  markdownlint:
+    image: davidanson/markdownlint-cli2:latest
+    volumes: ["..:/workdir:ro"]
+    working_dir: /workdir
+    entrypoint: ["markdownlint-cli2", "--config", "config/quality/.markdownlint.jsonc", "**/*.md", "#node_modules"]
+
+  hadolint:
+    image: hadolint/hadolint:latest
+    volumes: ["..:/data:ro"]
+    working_dir: /data
+    entrypoint: ["sh", "-c", "find services ai-service frontend -name Dockerfile -exec hadolint --config config/quality/.hadolint.yaml {} +"]

@@ -1,0 +1,15 @@
+# Deprecated Versions — ЕАСУР
+# Реестр устаревших/снятых с поддержки версий. Пусто на Baseline v1.0 (проект новый):
+# все утверждённые версии актуальны. Записи добавляются при выводе версий из эксплуатации.
+#
+# Формат записи:
+#   - tool: <имя из versions.yaml>
+#     version: "<номер>"
+#     deprecatedAt: "<YYYY-MM-DD>"
+#     endOfLifeAt: "<YYYY-MM-DD>"
+#     replacement: "<рекомендуемая замена>"
+#     migrationPlan: "config/toolchain/migration-policy.md#<якорь> | RFC-XXXX"
+schemaVersion: "1.0"
+updatedAt: "2026-07-21"
+
+deprecated: []

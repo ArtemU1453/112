@@ -1,0 +1,16 @@
+title: "[Idea] "
+labels: ["discussion:idea"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: "Идея / предложение"
+      description: "Опишите идею. Для изменений архитектуры используйте RFC (docs/rfc/)."
+    validations:
+      required: true
+  - type: textarea
+    id: value
+    attributes:
+      label: "Ожидаемая ценность"
+    validations:
+      required: true

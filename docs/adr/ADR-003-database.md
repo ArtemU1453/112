@@ -15,7 +15,7 @@
 
 | Потребность | Варианты | Выбор |
 |-------------|----------|-------|
-| Транзакционное реляционное хранилище | PostgreSQL, MySQL/MariaDB, Oracle | **PostgreSQL 16/17** |
+| Транзакционное реляционное хранилище | PostgreSQL, MySQL/MariaDB, Oracle | **PostgreSQL** |
 | Геоданные | PostGIS, отдельная geo-БД, вычисления в коде | **PostGIS** (расширение PostgreSQL) |
 | Гибкие payload'ы аудита | JSONB в PostgreSQL, отдельная документная БД | **JSONB (PostgreSQL)** |
 | Кэш/rate limiting | Redis, Memcached, Hazelcast | **Redis** |

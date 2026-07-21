@@ -1,0 +1,92 @@
+name: test
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - "services/**"
+      - "ai-service/**"
+      - "frontend/**"
+      - ".github/workflows/test.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      java: ${{ steps.filter.outputs.java }}
+      ai: ${{ steps.filter.outputs.ai }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            java:
+              - 'services/**'
+              - 'libraries/build/**'
+            ai:
+              - 'ai-service/**'
+            frontend:
+              - 'frontend/**'
+
+  test-java:
+    needs: changes
+    if: needs.changes.outputs.java == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - gateway-service
+          - auth-service
+          - incident-service
+          - dispatch-service
+          - telephony-service
+          - gis-service
+          - audit-service
+          - notification-service
+          - realtime-service
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: Verify ${{ matrix.service }} (unit + Testcontainers IT)
+        working-directory: services/${{ matrix.service }}
+        run: mvn -B -ntp verify
+      - name: Publish test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-${{ matrix.service }}
+          path: services/${{ matrix.service }}/target/surefire-reports/*.xml
+          if-no-files-found: ignore
+
+  test-ai:
+    needs: changes
+    if: needs.changes.outputs.ai == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run pytest
+        working-directory: ai-service
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-dev.txt
+          pytest -q

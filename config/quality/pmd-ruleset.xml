@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ЕАСУР — набор правил PMD (Coding Standards / Toolchain Governance Standard).
+  Версия PMD — согласно config/toolchain/versions.yaml.
+-->
+<ruleset name="EASUR PMD Ruleset"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>Базовый набор правил PMD для Java-сервисов ЕАСУР</description>
+
+  <rule ref="category/java/bestpractices.xml">
+    <!-- JUnit 5 тесты не требуют public; отключаем шумные правила для тестов -->
+    <exclude name="JUnitTestsShouldIncludeAssert"/>
+    <exclude name="GuardLogStatement"/>
+  </rule>
+
+  <rule ref="category/java/errorprone.xml">
+    <exclude name="BeanMembersShouldSerialize"/>
+    <exclude name="DataflowAnomalyAnalysis"/>
+  </rule>
+
+  <rule ref="category/java/design.xml">
+    <exclude name="LawOfDemeter"/>
+    <exclude name="LoosePackageCoupling"/>
+    <exclude name="TooManyMethods"/>
+  </rule>
+
+  <rule ref="category/java/codestyle.xml">
+    <exclude name="AtLeastOneConstructor"/>
+    <exclude name="OnlyOneReturn"/>
+    <exclude name="LongVariable"/>
+    <exclude name="ShortClassName"/>
+    <exclude name="CommentDefaultAccessModifier"/>
+  </rule>
+</ruleset>

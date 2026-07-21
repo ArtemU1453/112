@@ -1,0 +1,35 @@
+# ЕАСУР — локальный стек наблюдаемости (Observability by Design).
+# Конфигурации переиспользуются из infrastructure/monitoring.
+name: easur-monitoring
+
+networks:
+  easur-mon-net:
+    driver: bridge
+
+volumes:
+  mon-prometheus:
+  mon-grafana:
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    ports: ["9090:9090"]
+    volumes:
+      - ../infrastructure/monitoring/prometheus:/etc/prometheus:ro
+      - mon-prometheus:/prometheus
+    networks: [easur-mon-net]
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    ports: ["3001:3000"]
+    volumes:
+      - mon-grafana:/var/lib/grafana
+    networks: [easur-mon-net]
+
+  loki:
+    image: grafana/loki:3.1.1
+    ports: ["3100:3100"]
+    networks: [easur-mon-net]

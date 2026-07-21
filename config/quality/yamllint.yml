@@ -1,0 +1,23 @@
+# ЕАСУР — конфигурация yamllint (Toolchain Governance Standard)
+extends: default
+yaml-files:
+  - '*.yml'
+  - '*.yaml'
+rules:
+  line-length:
+    max: 160
+    level: warning
+  document-start: disable
+  truthy:
+    allowed-values: ['true', 'false']
+    check-keys: false
+  comments:
+    min-spaces-from-content: 1
+  indentation:
+    spaces: 2
+    indent-sequences: true
+ignore: |
+  node_modules/
+  dist/
+  target/
+  helm/emergency-112/templates/
