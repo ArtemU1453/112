@@ -1,0 +1,37 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Geospatial Analytics API (internal)
+  version: 1.0.0
+  description: >
+    Геопространственная аналитика (Stage 6.10): тепловые карты, зоны покрытия, время прибытия,
+    плотность происшествий, прогноз нагрузки, отчёты. Данные обезличены/агрегированы
+    (Geospatial Privacy Standard). Прогнозы вспомогательны.
+servers: [{ url: https://api.112.by/internal/geo-analytics/v1 }]
+paths:
+  /heatmap:
+    get:
+      summary: Тепловая карта происшествий (агрегаты по площадям)
+      parameters:
+        - { name: from, in: query, schema: { type: string, format: date } }
+        - { name: to, in: query, schema: { type: string, format: date } }
+        - { name: type, in: query, schema: { type: string } }
+      responses:
+        '200': { description: Ячейки тепловой карты, content: { application/json: { schema: { type: array, items: { type: object, properties: { cell: { type: string }, count: { type: integer } } } } } } }
+  /coverage:
+    get:
+      summary: Анализ зон покрытия по времени прибытия
+      parameters:
+        - { name: serviceType, in: query, schema: { type: string, enum: [FIRE, MEDICAL, POLICE, GAS, RESCUE] } }
+        - { name: thresholdSeconds, in: query, schema: { type: integer } }
+      responses:
+        '200': { description: Показатели покрытия, content: { application/json: { schema: { type: object, additionalProperties: true } } } }
+  /reports/arrival-time:
+    get:
+      summary: Статистический отчёт по времени прибытия
+      parameters:
+        - { name: from, in: query, schema: { type: string, format: date } }
+        - { name: to, in: query, schema: { type: string, format: date } }
+      responses:
+        '200': { description: Отчёт, content: { application/json: { schema: { type: object, additionalProperties: true } } } }
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]

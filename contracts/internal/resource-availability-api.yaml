@@ -1,0 +1,31 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Resource Availability API (internal)
+  version: 1.0.0
+  description: >
+    Доступность сил и средств (Stage 6.4): состояние, загрузка, занятость, резерв, обслуживание,
+    временная недоступность, прогноз освобождения (оценочный). dispatch-service.
+servers: [{ url: https://api.112.by/internal/availability/v1 }]
+paths:
+  /availability:
+    get:
+      summary: Сводка доступности по типу/зоне
+      parameters:
+        - { name: type, in: query, schema: { type: string } }
+        - { name: zoneId, in: query, schema: { type: string, format: uuid } }
+      responses:
+        '200': { description: Доступность, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Availability' } } } } }
+components:
+  schemas:
+    Availability:
+      type: object
+      properties:
+        unitId: { type: string, format: uuid }
+        status: { type: string }
+        busy: { type: boolean }
+        reserve: { type: boolean }
+        maintenance: { type: boolean }
+        estimatedFreeAt: { type: string, format: date-time, description: Оценочный прогноз освобождения }
+      required: [unitId, status]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]

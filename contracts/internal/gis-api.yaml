@@ -1,0 +1,66 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — GIS Platform API (internal)
+  version: 1.0.0
+  description: >
+    Пространственные объекты, слои и поиск (Stage 6.1). Реализуется gis-service (PostGIS). CRS
+    обмена — WGS84 (EPSG:4326). API First. Координаты меняются только с фиксацией.
+servers: [{ url: https://api.112.by/internal/gis/v1 }]
+paths:
+  /layers:
+    get:
+      summary: Список слоёв карты (базовые/тематические)
+      responses:
+        '200': { description: Слои, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Layer' } } } } }
+  /spatial-search:
+    post:
+      summary: Пространственный поиск объектов (в радиусе/полигоне/по атрибутам)
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/SpatialQuery' } } }
+      responses:
+        '200': { description: Объекты, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/SpatialObject' } } } } }
+  /stations/nearest:
+    get:
+      summary: Ближайшие станции по типу (KNN)
+      parameters:
+        - { name: serviceType, in: query, required: true, schema: { type: string, enum: [FIRE, MEDICAL, POLICE, GAS, RESCUE] } }
+        - { name: lat, in: query, required: true, schema: { type: number } }
+        - { name: lon, in: query, required: true, schema: { type: number } }
+        - { name: limit, in: query, schema: { type: integer, default: 3 } }
+      responses:
+        '200': { description: Станции, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/SpatialObject' } } } } }
+components:
+  schemas:
+    Layer:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        kind: { type: string, enum: [BASE, THEMATIC] }
+        geometryType: { type: string, enum: [POINT, LINESTRING, POLYGON] }
+        crs: { type: string, default: "EPSG:4326" }
+      required: [id, name, kind]
+    SpatialQuery:
+      type: object
+      properties:
+        layer: { type: string }
+        center: { $ref: '#/components/schemas/Coordinate' }
+        radiusMeters: { type: number }
+        attributes: { type: object, additionalProperties: true }
+      required: [layer]
+    SpatialObject:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        type: { type: string }
+        name: { type: string }
+        location: { $ref: '#/components/schemas/Coordinate' }
+        attributes: { type: object, additionalProperties: true }
+      required: [id, type]
+    Coordinate:
+      type: object
+      properties: { lat: { type: number }, lon: { type: number } }
+      required: [lat, lon]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]

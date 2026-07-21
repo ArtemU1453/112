@@ -1,0 +1,47 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Address Intelligence API (internal)
+  version: 1.0.0
+  description: >
+    Нормализация, проверка, похожие адреса, геокодирование и обратное геокодирование (Stage 6.2).
+    Неоднозначные адреса возвращают кандидатов на подтверждение диспетчером. gis-service.
+servers: [{ url: https://api.112.by/internal/address/v1 }]
+paths:
+  /normalize:
+    post:
+      summary: Нормализация и проверка адреса
+      requestBody: { required: true, content: { application/json: { schema: { type: object, properties: { raw: { type: string } }, required: [raw] } } } }
+      responses:
+        '200': { description: Результат, content: { application/json: { schema: { $ref: '#/components/schemas/AddressResult' } } } }
+  /geocode:
+    post:
+      summary: Геокодирование (адрес → координаты); неоднозначность → список кандидатов
+      requestBody: { required: true, content: { application/json: { schema: { type: object, properties: { address: { type: string } }, required: [address] } } } }
+      responses:
+        '200': { description: Кандидаты, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/AddressResult' } } } } }
+  /reverse-geocode:
+    get:
+      summary: Обратное геокодирование (координаты → ближайший адрес)
+      parameters:
+        - { name: lat, in: query, required: true, schema: { type: number } }
+        - { name: lon, in: query, required: true, schema: { type: number } }
+      responses:
+        '200': { description: Адрес, content: { application/json: { schema: { $ref: '#/components/schemas/AddressResult' } } } }
+components:
+  schemas:
+    AddressResult:
+      type: object
+      properties:
+        normalized: { type: string }
+        region: { type: string }
+        district: { type: string }
+        settlement: { type: string }
+        street: { type: string }
+        house: { type: string }
+        lat: { type: number }
+        lon: { type: number }
+        confidence: { type: number, minimum: 0, maximum: 1 }
+        ambiguous: { type: boolean }
+      required: [normalized]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]

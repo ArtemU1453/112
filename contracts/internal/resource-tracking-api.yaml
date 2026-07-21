@@ -1,0 +1,43 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Resource Tracking API (internal)
+  version: 1.0.0
+  description: >
+    Отслеживание техники по телеметрии через адаптеры (Stage 6.8, ADR-015). События местоположения/
+    движения/прибытия/убытия/завершения/возврата. Историю перемещений удалять запрещено (append-only).
+servers: [{ url: https://api.112.by/internal/tracking/v1 }]
+paths:
+  /telemetry:
+    post:
+      summary: Принять телеметрическое событие (через адаптер источника)
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/TelemetryEvent' } } } }
+      responses: { '202': { description: Принято } }
+  /tracks/{unitId}:
+    get:
+      summary: Трек перемещений подразделения (append-only)
+      parameters: [{ name: unitId, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses:
+        '200': { description: Точки трека, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/TrackPoint' } } } } }
+components:
+  schemas:
+    TelemetryEvent:
+      type: object
+      properties:
+        unitId: { type: string, format: uuid }
+        kind: { type: string, enum: [POSITION, ARRIVED, DEPARTED, TASK_COMPLETED, RETURNED] }
+        lat: { type: number }
+        lon: { type: number }
+        speed: { type: number }
+        heading: { type: number }
+        at: { type: string, format: date-time }
+        source: { type: string, description: Идентификатор адаптера источника }
+      required: [unitId, kind, at, source]
+    TrackPoint:
+      type: object
+      properties:
+        lat: { type: number }
+        lon: { type: number }
+        at: { type: string, format: date-time }
+      required: [lat, lon, at]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]

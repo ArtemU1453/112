@@ -1,0 +1,33 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Operational Map API (internal)
+  version: 1.0.0
+  description: >
+    Данные оперативной карты (Stage 6.7): инциденты, подразделения, маршруты, зоны; фильтрация,
+    поиск, временная шкала. Все изменения отражаются на карте (realtime). Слои self-hosted (ADR-015).
+servers: [{ url: https://api.112.by/internal/operational-map/v1 }]
+paths:
+  /map/state:
+    get:
+      summary: Снимок состояния карты (с фильтрами)
+      parameters:
+        - { name: bbox, in: query, schema: { type: string, description: "minLon,minLat,maxLon,maxLat" } }
+        - { name: types, in: query, schema: { type: string, description: "фильтр типов через запятую" } }
+        - { name: status, in: query, schema: { type: string } }
+      responses:
+        '200':
+          description: Состояние карты
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  incidents: { type: array, items: { type: object, additionalProperties: true } }
+                  units: { type: array, items: { type: object, additionalProperties: true } }
+                  routes: { type: array, items: { type: object, additionalProperties: true } }
+                  zones: { type: array, items: { type: object, additionalProperties: true } }
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []
