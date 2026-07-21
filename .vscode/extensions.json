@@ -1,0 +1,14 @@
+{
+  "recommendations": [
+    "vscjava.vscode-java-pack",
+    "pivotal.vscode-boot-dev-pack",
+    "ms-python.python",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "redhat.vscode-yaml",
+    "editorconfig.editorconfig",
+    "ms-azuretools.vscode-docker",
+    "davidanson.vscode-markdownlint",
+    "ms-kubernetes-tools.vscode-kubernetes-tools"
+  ]
+}

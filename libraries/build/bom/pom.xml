@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ЕАСУР — Bill of Materials (Dependency Management).
+  Централизованное управление версиями внутренних библиотек и общих зависимостей проекта
+  (Dependency Governance Standard). Импортируется сервисами через <dependencyManagement>.
+  Версии платформ/фреймворков (Spring Boot и т. п.) — согласно config/toolchain/versions.yaml;
+  прикладные сервисы наследуют платформенные BOM (например, spring-boot-dependencies) отдельно.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>by.mchs.e112</groupId>
+  <artifactId>easur-bom</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+  <name>easur-bom</name>
+  <description>Bill of Materials ЕАСУР — централизованные версии зависимостей</description>
+
+  <properties>
+    <!-- Синхронизировано с config/toolchain/versions.yaml -->
+    <springdoc.version>2.6.0</springdoc.version>
+    <testcontainers.version>1.20.1</testcontainers.version>
+    <hypersistence-utils.version>3.8.3</hypersistence-utils.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Общие внешние зависимости, разделяемые сервисами (единые версии, DepGS) -->
+      <dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        <version>${springdoc.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.hypersistence</groupId>
+        <artifactId>hypersistence-utils-hibernate-63</artifactId>
+        <version>${hypersistence-utils.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.testcontainers</groupId>
+        <artifactId>testcontainers-bom</artifactId>
+        <version>${testcontainers.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>

@@ -1,0 +1,30 @@
+# ЕАСУР — изолированная инфраструктура для интеграционных тестов (Testing Strategy).
+# Эфемерные сервисы без постоянных volume; порты не публикуются наружу.
+name: easur-test
+
+networks:
+  easur-test-net:
+    driver: bridge
+
+services:
+  postgres-test:
+    image: postgis/postgis:17-3.5
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: test_db
+    networks: [easur-test-net]
+    tmpfs: ["/var/lib/postgresql/data"]
+
+  kafka-test:
+    image: bitnami/kafka:3.8
+    environment:
+      KAFKA_CFG_NODE_ID: "0"
+      KAFKA_CFG_PROCESS_ROLES: controller,broker
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 0@kafka-test:9093
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka-test:9092
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+    networks: [easur-test-net]

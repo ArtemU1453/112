@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ЕАСУР — исключения SpotBugs (config/quality) -->
+<FindBugsFilter>
+  <!-- Сгенерированный код и тесты -->
+  <Match>
+    <Class name="~.*\.generated\..*"/>
+  </Match>
+  <Match>
+    <Source name="~.*Test\.java"/>
+  </Match>
+</FindBugsFilter>

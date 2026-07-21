@@ -1,0 +1,45 @@
+name: "🧩 Task"
+description: "Техническая задача реализации (Backlog: Task)"
+title: "[TASK][<CTX>-000] <краткое описание>"
+labels: ["type:task", "status:triage"]
+body:
+  - type: input
+    id: backlog-id
+    attributes:
+      label: "Идентификатор Backlog"
+      placeholder: "INC-000"
+    validations:
+      required: true
+  - type: input
+    id: parent
+    attributes:
+      label: "Родительский Feature/Story"
+      placeholder: "ссылка/идентификатор"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: "Техническое описание"
+    validations:
+      required: true
+  - type: checkboxes
+    id: dor
+    attributes:
+      label: "Definition of Ready"
+      options:
+        - label: "Критерии приёмки определены"
+        - label: "Соответствие архитектуре подтверждено (или заведён RFC)"
+        - label: "Контракты/миграции определены (API First / Database First)"
+        - label: "Определён уровень тестирования"
+    validations:
+      required: true
+  - type: checkboxes
+    id: dod
+    attributes:
+      label: "Definition of Done (проверяется при закрытии)"
+      options:
+        - label: "Тесты написаны и проходят"
+        - label: "Code Review пройден"
+        - label: "Quality Gates зелёные"
+        - label: "Документация синхронизирована"

@@ -1,0 +1,9 @@
+{
+  // ЕАСУР — конфигурация markdownlint (Documentation Standards)
+  "default": true,
+  "MD013": false,          // длина строки — не ограничиваем (таблицы/ссылки)
+  "MD033": false,          // допускаем инлайн-HTML в отдельных случаях
+  "MD041": false,          // первый заголовок не обязан быть H1 во всех файлах
+  "MD024": { "siblings_only": true },
+  "MD029": { "style": "ordered" }
+}

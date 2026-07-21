@@ -1,0 +1,210 @@
+# Toolchain Version Catalog — ЕАСУР
+# SINGLE SOURCE OF TRUTH для версий инструментов, языков, платформ и ключевых библиотек.
+# Никакие конкретные номера версий не дублируются в архитектурной/инженерной документации —
+# все документы ссылаются на этот каталог (см. Toolchain Version Management Standard, TVMS,
+# и Technology Abstraction Policy, TAP).
+#
+# category: LTS | Supported | Preview | Experimental | Deprecated | EndOfLife
+# Каждая запись: min (мин. поддерживаемая), recommended (рекомендуемая), category.
+
+schemaVersion: "1.0"
+updatedAt: "2026-07-21"
+
+languagesRuntimes:
+  java:
+    min: "21"
+    recommended: "21"
+    category: LTS
+    note: "LTS-линия; рантаймы доменных сервисов (см. ADR-001)."
+  node:
+    min: "20"
+    recommended: "22"
+    category: LTS
+    note: "Сборка frontend и инструменты (см. ADR-004)."
+  typescript:
+    min: "5.4"
+    recommended: "5.6"
+    category: Supported
+  python:
+    min: "3.12"
+    recommended: "3.12"
+    category: Supported
+    note: "ai-service и вспомогательные инструменты (см. ADR-001)."
+
+buildSystems:
+  maven:
+    min: "3.9"
+    recommended: "3.9"
+    category: Supported
+  npm:
+    min: "10"
+    recommended: "10"
+    category: Supported
+    note: "Выбран npm (единый пакетный менеджер frontend); pnpm не используется без ADR."
+  dockerBuildx:
+    min: "0.14"
+    recommended: "0.16"
+    category: Supported
+
+containerization:
+  dockerEngine:
+    min: "26"
+    recommended: "27"
+    category: Supported
+  dockerCompose:
+    min: "2.27"
+    recommended: "2.29"
+    category: Supported
+
+orchestration:
+  kubernetes:
+    min: "1.29"
+    recommended: "1.30"
+    category: Supported
+  helm:
+    min: "3.15"
+    recommended: "3.15"
+    category: Supported
+  kustomize:
+    min: "5.4"
+    recommended: "5.4"
+    category: Supported
+
+data:
+  postgresql:
+    min: "16"
+    recommended: "17"
+    category: Supported
+    note: "С расширением PostGIS (см. ADR-003)."
+  postgis:
+    min: "3.4"
+    recommended: "3.5"
+    category: Supported
+  liquibase:
+    min: "4.27"
+    recommended: "4.29"
+    category: Supported
+  redis:
+    min: "7.2"
+    recommended: "7.4"
+    category: Supported
+
+messaging:
+  kafka:
+    min: "3.7"
+    recommended: "3.8"
+    category: Supported
+
+identity:
+  keycloak:
+    min: "25"
+    recommended: "26"
+    category: Supported
+
+frameworks:
+  springBoot:
+    min: "3.3"
+    recommended: "3.3"
+    category: Supported
+  springCloud:
+    min: "2023.0"
+    recommended: "2023.0"
+    category: Supported
+  react:
+    min: "19"
+    recommended: "19"
+    category: Supported
+  fastapi:
+    min: "0.111"
+    recommended: "0.115"
+    category: Supported
+
+testing:
+  junit:
+    min: "5.10"
+    recommended: "5.11"
+    category: Supported
+  mockito:
+    min: "5.11"
+    recommended: "5.14"
+    category: Supported
+  testcontainers:
+    min: "1.20"
+    recommended: "1.20"
+    category: Supported
+  pytest:
+    min: "8.0"
+    recommended: "8.3"
+    category: Supported
+
+apiDocs:
+  openapi:
+    min: "3.1"
+    recommended: "3.1"
+    category: Supported
+  springdoc:
+    min: "2.6"
+    recommended: "2.6"
+    category: Supported
+
+qualityTools:
+  checkstyle:
+    min: "10.17"
+    recommended: "10.18"
+    category: Supported
+  spotbugs:
+    min: "4.8"
+    recommended: "4.8"
+    category: Supported
+  pmd:
+    min: "7.3"
+    recommended: "7.5"
+    category: Supported
+  eslint:
+    min: "9.0"
+    recommended: "9.9"
+    category: Supported
+  prettier:
+    min: "3.3"
+    recommended: "3.3"
+    category: Supported
+  stylelint:
+    min: "16.0"
+    recommended: "16.9"
+    category: Supported
+  markdownlint:
+    min: "0.41"
+    recommended: "0.41"
+    category: Supported
+  yamllint:
+    min: "1.35"
+    recommended: "1.35"
+    category: Supported
+  hadolint:
+    min: "2.12"
+    recommended: "2.12"
+    category: Supported
+    note: "Dockerfile-линт (роль dockerfilelint)."
+
+security:
+  gitleaks:
+    min: "8.18"
+    recommended: "8.18"
+    category: Supported
+  trivy:
+    min: "0.53"
+    recommended: "0.54"
+    category: Supported
+    note: "Сканирование зависимостей/образов, генерация SBOM."
+  syft:
+    min: "1.9"
+    recommended: "1.11"
+    category: Supported
+    note: "Генерация SBOM (CycloneDX/SPDX)."
+
+ci:
+  githubActions:
+    min: "current"
+    recommended: "current"
+    category: Supported
+    note: "Основная CI-платформа (см. ADR-009). GitLab CI сохранён (ADR-006)."

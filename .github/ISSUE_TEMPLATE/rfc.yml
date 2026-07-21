@@ -1,0 +1,41 @@
+name: "🔧 RFC — Request for Change"
+description: "Предложить изменение архитектуры (создаёт RFC в docs/rfc/)"
+title: "[RFC] <краткое название изменения>"
+labels: ["type:rfc", "area:architecture"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        RFC — единственный путь изменения утверждённой архитектуры (Constitution, EAGF).
+        Канонический шаблон: docs/rfc/RFC-template.md; процесс: docs/rfc/README.md.
+  - type: textarea
+    id: reason
+    attributes:
+      label: "Причина изменения"
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: "Существующее архитектурное решение"
+    validations:
+      required: true
+  - type: textarea
+    id: proposed
+    attributes:
+      label: "Предлагаемое решение"
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: "Impact Analysis"
+      description: "Модули, сервисы, API, БД, frontend, DevOps, безопасность"
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: "Compatibility Check + Migration/Rollback"
+    validations:
+      required: true

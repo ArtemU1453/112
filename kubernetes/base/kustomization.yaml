@@ -1,0 +1,11 @@
+# ЕАСУР — Kustomize base (общие ресурсы). Прикладное развёртывание — Helm-чарт helm/emergency-112.
+# Данная база задаёт namespace и общие метаданные; оверлеи окружений накладывают отличия.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespace.yaml
+
+commonLabels:
+  app.kubernetes.io/part-of: emergency-112
+  app.kubernetes.io/managed-by: kustomize

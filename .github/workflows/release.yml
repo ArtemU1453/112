@@ -1,0 +1,43 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Версия релиза (SemVer, напр. v1.0.0)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  validate-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Проверка формата SemVer
+        run: |
+          REF="${{ github.event.inputs.version || github.ref_name }}"
+          echo "Release ref: $REF"
+          echo "$REF" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$' \
+            || { echo "::error::Тег не соответствует SemVer vMAJOR.MINOR.PATCH (Release Governance Standard)"; exit 1; }
+
+  changelog:
+    needs: validate-version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Проверка наличия CHANGELOG
+        run: |
+          test -f CHANGELOG.md || { echo "::error::Отсутствует CHANGELOG.md (Release Governance Standard)"; exit 1; }
+      - name: Создать GitHub Release (черновик)
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          generate_release_notes: true
+          name: "ЕАСУР ${{ github.event.inputs.version || github.ref_name }}"

@@ -1,0 +1,18 @@
+# ЕАСУР — Dev Container: рабочее окружение + инфраструктура разработки.
+# Инфраструктура переиспользуется из docker/compose.dev.yml (Environment Governance Standard).
+name: easur-devcontainer
+
+services:
+  workspace:
+    image: mcr.microsoft.com/devcontainers/base:ubuntu-24.04
+    command: sleep infinity
+    volumes:
+      - ..:/workspace:cached
+      - /var/run/docker.sock:/var/run/docker-host.sock
+    working_dir: /workspace
+    network_mode: service:infra-net-anchor
+
+  # Якорь сети, чтобы workspace разделял сеть с инфраструктурой разработки.
+  infra-net-anchor:
+    image: alpine:3.20
+    command: sleep infinity

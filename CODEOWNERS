@@ -1,0 +1,40 @@
+# ЕАСУР — владельцы кода (Repository Governance Standard)
+# Синтаксис: <path> <owner...>. Владельцы — обязательные ревьюеры соответствующих модулей.
+# Реальные учётные записи/команды назначаются администратором репозитория; ниже — карта владения
+# по модулям (плейсхолдер-владельцы в виде команд, заменяются на реальные при настройке проекта).
+
+# Значение по умолчанию — команда платформы
+*                                   @easur/platform-team
+
+# Архитектура и управление — архитектурный совет (обязателен для изменений Baseline)
+/docs/                              @easur/architecture-board
+/docs/adr/                          @easur/architecture-board
+/docs/rfc/                          @easur/architecture-board
+/docs/governance/                   @easur/architecture-board
+/config/toolchain/                  @easur/architecture-board @easur/devops-team
+
+# Backend-сервисы (bounded contexts)
+/services/auth-service/             @easur/team-identity
+/services/incident-service/         @easur/team-core
+/services/dispatch-service/         @easur/team-dispatch
+/services/telephony-service/        @easur/team-telephony
+/services/gis-service/              @easur/team-gis
+/services/audit-service/            @easur/team-core
+/services/notification-service/     @easur/team-notification
+/services/realtime-service/         @easur/team-core
+/services/gateway-service/          @easur/team-platform
+
+# Приложения
+/frontend/                          @easur/team-frontend
+/apps/                              @easur/team-frontend
+
+# AI
+/ai-service/                        @easur/team-ai
+
+# Инфраструктура и доставка
+/helm/                              @easur/devops-team
+/kubernetes/                        @easur/devops-team
+/docker/                            @easur/devops-team
+/infrastructure/                    @easur/devops-team
+/.github/                           @easur/devops-team
+/.gitlab-ci.yml                     @easur/devops-team

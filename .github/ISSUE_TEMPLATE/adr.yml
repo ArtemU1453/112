@@ -1,0 +1,43 @@
+name: "📐 ADR — Architecture Decision Record"
+description: "Предложить архитектурное решение (создаёт ADR в docs/adr/)"
+title: "[ADR] <краткое название решения>"
+labels: ["type:adr", "area:architecture"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ADR фиксирует принятое архитектурное решение. Изменение утверждённого ADR — через RFC.
+        Канонический процесс: docs/adr/README.md. Не указывайте номера версий (каталог версий — TVMS).
+  - type: textarea
+    id: context
+    attributes:
+      label: "Контекст"
+      description: "Проблема и силы, требующие решения"
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: "Рассматриваемые варианты"
+      description: "Альтернативы с плюсами/минусами"
+    validations:
+      required: true
+  - type: textarea
+    id: decision
+    attributes:
+      label: "Предлагаемое решение"
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: "Обоснование"
+      description: "Причины, преимущества, недостатки, компромиссы, условия пересмотра"
+    validations:
+      required: true
+  - type: textarea
+    id: consequences
+    attributes:
+      label: "Последствия и синхронизация документов"
+    validations:
+      required: true

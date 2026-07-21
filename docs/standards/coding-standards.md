@@ -13,7 +13,8 @@
 - Никаких TODO/заглушек/мёртвого кода в основной ветке (Constitution, ARTICLE 3).
 
 ## Java
-- Версия: Java 21; Spring Boot 3.3. Форматирование — Google Java Format / IDE-конвенции проекта.
+- Версии Java (LTS) и Spring Boot — по каталогу версий (`config/toolchain/versions.yaml`, TVMS).
+  Форматирование — Google Java Format / IDE-конвенции проекта.
 - Иммутабельность: DTO — `record`; сущности — инкапсуляция инвариантов в домене (без анемичных
   сеттеров для инвариантных полей).
 - Слои: `domain` не зависит от Spring/JPA-специфики там, где возможно; бизнес-правила — в домене.
@@ -34,7 +35,7 @@
 - Форматирование/линт — ESLint + Prettier; сборка — Vite; проверка типов `tsc --noEmit` в CI.
 
 ## Python (ai-service)
-- Python 3.12; FastAPI; типизация (type hints) обязательна; `from __future__ import annotations`.
+- Python (версия — по каталогу версий); FastAPI; типизация (type hints) обязательна; `from __future__ import annotations`.
 - Пакетная структура: `app/{routers,services,models,config}`; бизнес-логика — в `services`.
 - Валидация — Pydantic-модели; ошибки — HTTP-исключения FastAPI.
 - Тесты — pytest; конфигурация — через переменные окружения (`config.py`).

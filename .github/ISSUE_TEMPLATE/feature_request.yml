@@ -1,0 +1,44 @@
+name: "✨ Feature Request"
+description: "Предложить функциональность (Backlog: Feature/Story)"
+title: "[FEATURE][<CTX>-000] <краткое описание>"
+labels: ["type:feature", "status:triage"]
+body:
+  - type: input
+    id: backlog-id
+    attributes:
+      label: "Идентификатор Backlog"
+      placeholder: "DISP-000"
+    validations:
+      required: true
+  - type: textarea
+    id: value
+    attributes:
+      label: "Бизнес-ценность"
+      description: "Зачем это нужно; связь с Vision/целями"
+    validations:
+      required: true
+  - type: textarea
+    id: story
+    attributes:
+      label: "Пользовательская история"
+      placeholder: "Как <роль>, я хочу <возможность>, чтобы <ценность>"
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: "Критерии приёмки"
+      description: "Проверяемые условия (предпочтительно Given/When/Then)"
+    validations:
+      required: true
+  - type: textarea
+    id: architecture
+    attributes:
+      label: "Архитектурное влияние"
+      description: "Укладывается ли в утверждённую архитектуру? Если нужен RFC — указать."
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: "Зависимости"

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "🔒 Уязвимость безопасности"
+    url: https://github.com/ArtemU1453/112/blob/main/SECURITY.md
+    about: "Не создавайте публичный issue. Следуйте политике SECURITY.md."
+  - name: "💬 Вопрос / обсуждение"
+    url: https://github.com/ArtemU1453/112/discussions
+    about: "Общие вопросы — в Discussions (см. SUPPORT.md)."
+  - name: "📘 Документация"
+    url: https://github.com/ArtemU1453/112/blob/main/docs/README.md
+    about: "Индекс архитектурной и инженерной документации."

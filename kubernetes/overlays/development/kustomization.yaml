@@ -1,0 +1,12 @@
+# ЕАСУР — Kustomize overlay: development (Environment Governance Standard).
+# Отличия окружения (namespace-суффикс, метки). Прикладные ресурсы разворачиваются Helm-чартом;
+# оверлей управляет окружение-специфичной инфраструктурной обвязкой.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+namePrefix: development-
+commonLabels:
+  app.kubernetes.io/environment: development

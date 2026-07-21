@@ -19,15 +19,19 @@ Principles · Documentation Standards.
 
 | Область | Решение | ADR |
 |---------|---------|-----|
-| Backend | Java 21 (LTS) + Spring Boot 3.3; ai-service — Python/FastAPI | ADR-001 |
+| Backend | Java (LTS) + Spring Boot; ai-service — Python/FastAPI | ADR-001 |
 | Стиль | Микросервисы, событийная интеграция, Clean Arch, гексагон, CQRS точечно | ADR-002 |
 | Данные | PostgreSQL + PostGIS + JSONB; Redis; Liquibase | ADR-003 |
-| Frontend | React 19 + TS, Redux Toolkit, MUI, OpenLayers, Vite | ADR-004 |
+| Frontend | React + TS, Redux Toolkit, MUI, OpenLayers, Vite | ADR-004 |
 | Платформа | Docker, Kubernetes, Helm; Compose локально | ADR-005 |
-| CI/CD | GitLab CI/CD | ADR-006 |
+| CI/CD | GitHub Actions (осн.) + GitLab CI/CD | ADR-006, ADR-009 |
 | Auth | Keycloak (OIDC/OAuth2, RBAC) | ADR-007 |
 | Брокер | Apache Kafka | ADR-008 |
 | Наблюдаемость | Prometheus, Grafana, Loki | Architecture.md |
+
+> Конкретные версии инструментов/платформ не фиксируются в данном документе — они определяются
+> единым каталогом версий (`config/toolchain/versions.yaml`, TVMS) и связаны с возможностями через
+> Technology Mapping (`docs/architecture/technology-mapping.md`, TAP).
 
 ## Правило неизменности (Architecture Freeze)
 

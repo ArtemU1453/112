@@ -25,6 +25,7 @@
 - [Project Constitution](governance/project-constitution.md) — фундаментальные правила
 - [Architecture Baseline](governance/architecture-baseline.md) — эталон архитектуры, Freeze, Drift
 - [Engineering Handbook](governance/engineering-handbook.md) — инженерные процессы
+- [Enterprise Architecture Governance Framework](governance/Enterprise-Architecture-Governance-Framework.md) — пирамида документов, контрольные точки, трассируемость
 
 ## Архитектура
 
@@ -45,6 +46,19 @@
 - [Domain Modeling (DMS)](standards/domain-modeling-standard.md)
 - [API Governance (AGS)](standards/api-governance-standard.md)
 - [Database Governance (DGS)](standards/database-governance-standard.md)
+
+### Инженерная основа (Stage 2)
+
+- [Repository Governance Standard](standards/Repository-Governance-Standard.md)
+- [Dependency Governance Standard (DepGS)](standards/Dependency-Governance-Standard.md)
+- [Release Governance Standard](standards/Release-Governance-Standard.md)
+- [Toolchain Governance Standard](standards/Toolchain-Governance-Standard.md)
+- [Environment Governance Standard](standards/Environment-Governance-Standard.md)
+- [Technology Abstraction Policy (TAP)](standards/Technology-Abstraction-Policy.md) · [Technology Mapping](architecture/technology-mapping.md)
+- [Logging Standards](standards/logging-standards.md) · [Configuration Standards](standards/configuration-standards.md)
+- [Testing Strategy](standards/testing-strategy.md) · [Naming Standards](standards/naming-standards.md) · [Security Standards](standards/security-standards.md)
+- Каталог версий (SSOT): [`config/toolchain/`](../config/toolchain/README.md)
+- Шаблоны документов: [`docs/templates/`](templates/) · Гайды разработчика: [`docs/developer-experience/`](developer-experience/quick-start.md)
 
 ## Риски
 

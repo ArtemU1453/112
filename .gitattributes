@@ -1,0 +1,41 @@
+# ЕАСУР — нормализация атрибутов файлов (Repository Governance Standard)
+
+# По умолчанию: автоматическое определение текстовых файлов, LF в репозитории
+* text=auto eol=lf
+
+# Явно текстовые форматы (LF)
+*.java     text eol=lf
+*.kt       text eol=lf
+*.ts       text eol=lf
+*.tsx      text eol=lf
+*.js       text eol=lf
+*.jsx      text eol=lf
+*.py       text eol=lf
+*.sql      text eol=lf
+*.xml      text eol=lf
+*.yml      text eol=lf
+*.yaml     text eol=lf
+*.json     text eol=lf
+*.md       text eol=lf
+*.sh       text eol=lf
+*.gradle   text eol=lf
+*.properties text eol=lf
+Dockerfile text eol=lf
+*.env.example text eol=lf
+
+# Windows-скрипты — CRLF
+*.bat      text eol=crlf
+*.cmd      text eol=crlf
+
+# Бинарные форматы — без нормализации
+*.png      binary
+*.jpg      binary
+*.jpeg     binary
+*.gif      binary
+*.ico      binary
+*.pdf      binary
+*.jar      binary
+*.zip      binary
+*.gz       binary
+*.woff     binary
+*.woff2    binary

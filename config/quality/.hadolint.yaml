@@ -1,0 +1,8 @@
+# ЕАСУР — конфигурация hadolint (Dockerfile lint, Toolchain Governance Standard)
+failure-threshold: warning
+ignored:
+  - DL3008  # закрепление версий apt — рекомендательно
+  - DL3018  # закрепление версий apk — рекомендательно
+trustedRegistries:
+  - docker.io
+  - registry.gitlab.com

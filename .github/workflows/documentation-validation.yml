@@ -1,0 +1,36 @@
+name: documentation-validation
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "docs/**"
+      - "**/*.md"
+      - ".github/workflows/documentation-validation.yml"
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - "docs/**"
+      - "**/*.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Проверка обязательных документов и ссылок
+        run: python scripts/validate_docs.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: markdownlint (docs)
+        run: |
+          npm install -g markdownlint-cli2
+          markdownlint-cli2 --config config/quality/.markdownlint.jsonc "docs/**/*.md"

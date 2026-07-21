@@ -1,3 +1,7 @@
+# ЕАСУР — .gitignore (Repository Governance Standard)
+# Сгенерированные артефакты, зависимости, секреты и локальные данные не хранятся в репозитории.
+
+# --- Сборочные артефакты ---
 target/
 *.class
 *.jar
@@ -5,18 +9,39 @@ target/
 node_modules/
 dist/
 build/
+# Каталог сборочной конфигурации Maven (parent/BOM) НЕ является build-артефактом — сохраняем
+!libraries/build/
+!libraries/build/**
+
+# --- Секреты и локальная конфигурация окружения ---
 .env
 .env.local
+*.local.env
+# Шаблоны окружений (без секретов) — сохраняем
+!environments/*.env.example
+
+# --- Python ---
 __pycache__/
 *.pyc
 .pytest_cache/
 .venv/
 venv/
+
+# --- IDE ---
 .idea/
 *.iml
-.vscode/
+# .vscode: игнорируем всё, кроме общего committed-набора (Toolchain Governance Standard)
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# --- Прочее ---
 .DS_Store
 *.log
+
+# --- Локальные данные инфраструктуры/моделей ---
 models/whisper/
 grafana-data/
 postgres-data/

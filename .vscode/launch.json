@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Debug: incident-service",
+      "request": "launch",
+      "mainClass": "by.mchs.e112.incident.IncidentServiceApplication",
+      "projectName": "incident-service"
+    },
+    {
+      "type": "debugpy",
+      "name": "Debug: ai-service (uvicorn)",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["app.main:app", "--reload"],
+      "cwd": "${workspaceFolder}/ai-service"
+    },
+    {
+      "type": "chrome",
+      "name": "Debug: frontend (Vite)",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/frontend/dispatcher/src"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+name: "🐛 Bug Report"
+description: "Сообщить о дефекте (Backlog: Bug)"
+title: "[BUG][<CTX>-000] <краткое описание>"
+labels: ["type:bug", "status:triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Не сообщайте об уязвимостях безопасности здесь — используйте SECURITY.md.
+  - type: input
+    id: backlog-id
+    attributes:
+      label: "Идентификатор Backlog"
+      description: "Префикс контекста + номер (Backlog Structure), напр. INC-014"
+      placeholder: "INC-000"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: "Описание дефекта"
+      description: "Что не так относительно ожидаемого поведения"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Шаги воспроизведения"
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Ожидаемое поведение"
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: "Фактическое поведение"
+    validations:
+      required: true
+  - type: dropdown
+    id: service
+    attributes:
+      label: "Затронутый сервис/модуль"
+      options:
+        - gateway-service
+        - auth-service
+        - incident-service
+        - dispatch-service
+        - telephony-service
+        - gis-service
+        - audit-service
+        - notification-service
+        - realtime-service
+        - ai-service
+        - frontend-dispatcher
+        - infrastructure/other
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: "Окружение"
+      description: "Local/Development/QA/Staging/Production (Environment Governance Standard)"
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: "Логи/дополнительно"
+      description: "Логи без чувствительных данных (Logging Standards)"
