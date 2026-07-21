@@ -343,3 +343,20 @@ integration:
     recommended: "0.27"
     category: Supported
     note: "Пример self-hosted PKI/УЦ для mTLS/сертификатов (ADR-023, CAP-MSGSIGN-001)."
+
+simulation:
+  simpy:
+    min: "4.1"
+    recommended: "4.1"
+    category: Supported
+    note: "Пример self-hosted библиотеки дискретно-событийной симуляции (ADR-026, CAP-SIM-001); движок не фиксируется."
+  postgresSimulation:
+    min: "16"
+    recommended: "17"
+    category: Supported
+    note: "Изолированное хранилище состояний двойника/истории экспериментов (ADR-026); отдельный контур, не прод."
+  syntheticDataToolkit:
+    min: "current"
+    recommended: "current"
+    category: Experimental
+    note: "Генерация синтетических/обезличенных данных (ADR-027, CAP-SYNTHDATA-001); методики — Synthetic Data Standard."

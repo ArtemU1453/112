@@ -53,6 +53,10 @@
 | CAP-AIANALYTICS-001 | Аналитический ИИ (адаптеры, объяснимость) | ADR-021 | Адаптеры моделей/методов (self-hosted, с методикой) | Approved | Stage 8 |
 | CAP-INTEG-PLATFORM-001 | Национальная интеграционная платформа (ESB/gateway) | ADR-022 | Self-hosted integration gateway/ESB (адаптеры транспортов) | Approved | Stage 9 |
 | CAP-MSGSIGN-001 | Безопасность интеграций (mTLS, подпись, PKI) | ADR-023 | mTLS + JWS-подпись + ведомственная PKI (Vault) | Approved | Stage 9 |
+| CAP-DTWIN-001 | Национальный цифровой двойник (изолированная модель) | ADR-026 | Self-hosted модель двойника (движок не фиксируется) | Approved | Stage 12 |
+| CAP-SIM-001 | Платформа моделирования (дискретно-событийная симуляция) | ADR-026 | Self-hosted движок симуляции (абстрагирован) | Approved | Stage 12 |
+| CAP-AIEXP-001 | Изолированный фреймворк экспериментов с ИИ | ADR-027 | Self-hosted среда экспериментов (адаптеры моделей) | Approved | Stage 12 |
+| CAP-SYNTHDATA-001 | Генерация синтетических/обезличенных данных | ADR-027 | Self-hosted генерация (методики Synthetic Data Standard) | Approved | Stage 12 |
 
 ## Возможности со статусом Proposed
 
