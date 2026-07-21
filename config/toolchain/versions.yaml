@@ -255,3 +255,25 @@ platformInfra:
     recommended: "1.15"
     category: Supported
     note: "Управление TLS-сертификатами в кластере."
+
+geospatial:
+  postgis:
+    min: "3.4"
+    recommended: "3.5"
+    category: Supported
+    note: "Геопространственные запросы (ADR-003); дублирует data.postgis — единый источник — data."
+  osrm:
+    min: "5.27"
+    recommended: "5.27"
+    category: Supported
+    note: "Пример self-hosted маршрутного движка (ADR-014); движок не фиксируется (CAP-ROUTING-001)."
+  martin:
+    min: "0.14"
+    recommended: "0.14"
+    category: Supported
+    note: "Пример self-hosted тайл-сервера векторных тайлов (ADR-015, CAP-MAP-001)."
+  openlayers:
+    min: "9"
+    recommended: "10"
+    category: Supported
+    note: "Клиентская картография АРМ (ADR-004)."

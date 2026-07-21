@@ -1,0 +1,43 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Routing API (internal)
+  version: 1.0.0
+  description: >
+    Единый сервис маршрутизации (Stage 6.5, ADR-014). Построение маршрута, альтернативы, ETA,
+    расстояние, ограничения/объезды. Поставщик не фиксируется (CAP-ROUTING-001, self-hosted).
+servers: [{ url: https://api.112.by/internal/routing/v1 }]
+paths:
+  /routes:
+    post:
+      summary: Построить маршрут (с альтернативами и ETA)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                origin: { $ref: '#/components/schemas/Coordinate' }
+                destination: { $ref: '#/components/schemas/Coordinate' }
+                alternatives: { type: boolean, default: true }
+                avoidClosures: { type: boolean, default: true }
+              required: [origin, destination]
+      responses:
+        '200': { description: Маршруты, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Route' } } } } }
+components:
+  schemas:
+    Coordinate:
+      type: object
+      properties: { lat: { type: number }, lon: { type: number } }
+      required: [lat, lon]
+    Route:
+      type: object
+      properties:
+        primary: { type: boolean }
+        distanceMeters: { type: number }
+        etaSeconds: { type: integer }
+        geometry: { type: string, description: Закодированная геометрия (LineString) }
+        restrictions: { type: array, items: { type: string } }
+      required: [distanceMeters, etaSeconds]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]

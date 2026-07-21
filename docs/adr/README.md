@@ -24,5 +24,7 @@ Architecture Decision Records фиксируют значимые архитек
 | [ADR-011](ADR-011-secrets-management.md) | Управление секретами (Vault + External Secrets) | Accepted |
 | [ADR-012](ADR-012-distributed-tracing.md) | Распределённая трассировка (OpenTelemetry + Tempo) | Accepted |
 | [ADR-013](ADR-013-object-storage.md) | Объектное хранилище (S3-совместимое, self-hosted) | Accepted |
+| [ADR-014](ADR-014-routing-navigation-abstraction.md) | Абстракция маршрутизации и навигации (self-hosted) | Accepted |
+| [ADR-015](ADR-015-cartographic-telemetry-provider-abstraction.md) | Абстракция картографии и телеметрии (self-hosted) | Accepted |
 
 Нумерация сквозная и неизменяемая. Новый ADR получает следующий свободный номер.

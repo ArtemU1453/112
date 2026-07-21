@@ -42,6 +42,9 @@
 | CAP-AI-001 | Интеграция ИИ (STT/TTS/LLM/OCR/классификация/NER) | AI Provider Abstraction Standard | Адаптеры провайдеров (модель не фиксируется) | Approved | Stage 4 |
 | CAP-SEARCH-001 | Универсальный поиск (полнотекст/атрибуты) | — (RFC ожидается) | Поисковый движок (S3-независим; TBD) | Proposed | — |
 | CAP-DOC-001 | Генерация/экспорт документов | Document Lifecycle Management Standard | Адаптер рендеринга (движок TBD) | Proposed | — |
+| CAP-ROUTING-001 | Маршрутизация/навигация (ETA, расстояние, объезды) | ADR-014 | Self-hosted OSS-движок (OSRM/Valhalla/GraphHopper) | Approved | Stage 6 |
+| CAP-MAP-001 | Картографические данные/слои/тайлы | ADR-015 | Self-hosted (открытые данные/OSM-совместимые) | Approved | Stage 6 |
+| CAP-TELEMETRY-001 | Телеметрия местоположения техники (адаптеры) | ADR-015 | Адаптеры источников (GPS/АРМ/трекеры) | Approved | Stage 6 |
 
 ## Возможности со статусом Proposed
 

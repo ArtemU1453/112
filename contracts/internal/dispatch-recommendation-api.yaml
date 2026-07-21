@@ -1,0 +1,47 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Dispatch Recommendation API (internal)
+  version: 1.0.0
+  description: >
+    Рекомендации по выбору подразделений (Stage 6.6). Учитывает расстояние/ETA/специализацию/
+    готовность/резерв/тип/сложность/нормативы. Система только рекомендует; решение — за диспетчером.
+servers: [{ url: https://api.112.by/internal/dispatch-recommendation/v1 }]
+paths:
+  /recommendations:
+    post:
+      summary: Сформировать рекомендацию нарядов для происшествия
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                incidentId: { type: string, format: uuid }
+                incidentType: { type: string }
+                location: { type: object, properties: { lat: { type: number }, lon: { type: number } } }
+              required: [incidentId, incidentType]
+      responses:
+        '200': { description: Рекомендация (PROPOSED), content: { application/json: { schema: { $ref: '#/components/schemas/DispatchRecommendation' } } } }
+components:
+  schemas:
+    DispatchRecommendation:
+      type: object
+      properties:
+        incidentId: { type: string, format: uuid }
+        status: { type: string, enum: [PROPOSED], default: PROPOSED }
+        candidates:
+          type: array
+          items:
+            type: object
+            properties:
+              unitId: { type: string, format: uuid }
+              type: { type: string }
+              distanceMeters: { type: number }
+              etaSeconds: { type: integer }
+              readiness: { type: string }
+              rationale: { type: string }
+        note: { type: string, example: "Требует утверждения диспетчером; автонаправление запрещено" }
+      required: [incidentId, status, candidates]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]

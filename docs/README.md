@@ -106,6 +106,21 @@
   [Incident Classification](standards/Incident-Classification-Standard.md)
 - Контракты операций (API First): [`contracts/internal`](../contracts/README.md), [`contracts/admin`](../contracts/README.md)
 
+## GIS & Resource Management (Stage 6)
+
+- [GIS Architecture](gis/gis-architecture.md) — маппинг 6.1–6.10, инварианты · [Geospatial Data Model](gis/geospatial-data-model.md)
+- ADR: [ADR-014 Routing/Navigation](adr/ADR-014-routing-navigation-abstraction.md) · [ADR-015 Cartography/Telemetry](adr/ADR-015-cartographic-telemetry-provider-abstraction.md); [RFC-0003](rfc/RFC-0003-gis-routing-telemetry.md)
+- Стандарты (обязательные): [Routing](standards/Routing-Standard.md) · [Address Intelligence](standards/Address-Intelligence-Standard.md) ·
+  [Resource Registry](standards/Resource-Registry-Standard.md) · [Operational Mapping](standards/Operational-Mapping-Standard.md) ·
+  [Dispatch Recommendation](standards/Dispatch-Recommendation-Standard.md) · [Telemetry Integration](standards/Telemetry-Integration-Standard.md) ·
+  [Spatial Security](standards/Spatial-Security-Standard.md) · [Geospatial Data Governance](standards/Geospatial-Data-Governance-Standard.md)
+- Стандарты (дополнительные): [CRS](standards/Coordinate-Reference-System-Standard.md) · [Map Layer Governance](standards/Map-Layer-Governance-Standard.md) ·
+  [Address Registry](standards/Address-Registry-Standard.md) · [Routing Governance](standards/Routing-Governance-Standard.md) ·
+  [Resource Availability](standards/Resource-Availability-Standard.md) · [Operational Geography](standards/Operational-Geography-Standard.md) ·
+  [Telemetry Abstraction](standards/Telemetry-Abstraction-Standard.md) · [GIS Performance](standards/GIS-Performance-Standard.md) ·
+  [Geospatial Privacy](standards/Geospatial-Privacy-Standard.md) · [Spatial Analytics Governance](standards/Spatial-Analytics-Governance-Standard.md)
+- Контракты 6.1–6.10 (API First): [`contracts/internal`](../contracts/README.md)
+
 ## Риски
 
 - [Risk Register](risk/risk-register.md)

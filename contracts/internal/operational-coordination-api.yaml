@@ -1,0 +1,39 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Operational Coordination API (internal)
+  version: 1.0.0
+  description: >
+    Управление реагированием (Stage 6.9): назначение подразделений, изменение состава, запрос
+    усиления, передача инцидента, отмена, мультислужебная координация. Все действия — по
+    подтверждению диспетчера; фиксируются. dispatch-service.
+servers: [{ url: https://api.112.by/internal/coordination/v1 }]
+paths:
+  /incidents/{incidentId}/assign:
+    post:
+      summary: Назначить подразделения (после утверждения диспетчером)
+      parameters: [{ name: incidentId, in: path, required: true, schema: { type: string, format: uuid } }]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, properties: { unitIds: { type: array, items: { type: string, format: uuid } }, approvedBy: { type: string } }, required: [unitIds, approvedBy] } } } }
+      responses: { '200': { description: Назначено } }
+  /incidents/{incidentId}/reinforce:
+    post:
+      summary: Запросить усиление
+      parameters: [{ name: incidentId, in: path, required: true, schema: { type: string, format: uuid } }]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, properties: { unitIds: { type: array, items: { type: string, format: uuid } }, reason: { type: string } }, required: [unitIds] } } } }
+      responses: { '200': { description: OK } }
+  /incidents/{incidentId}/transfer:
+    post:
+      summary: Передать инцидент (другой службе/зоне)
+      parameters: [{ name: incidentId, in: path, required: true, schema: { type: string, format: uuid } }]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, properties: { target: { type: string }, reason: { type: string } }, required: [target] } } } }
+      responses: { '200': { description: OK } }
+  /incidents/{incidentId}/cancel:
+    post:
+      summary: Отменить реагирование (с обоснованием и фиксацией)
+      parameters: [{ name: incidentId, in: path, required: true, schema: { type: string, format: uuid } }]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, properties: { reason: { type: string }, approvedBy: { type: string } }, required: [reason, approvedBy] } } } }
+      responses: { '200': { description: OK } }
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []

@@ -1,0 +1,38 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Resource Registry API (internal)
+  version: 1.0.0
+  description: >
+    Реестр сил и средств (Stage 6.3). Реализуется dispatch-service. Единые идентификаторы (UUID),
+    статус/местоположение/готовность/специализация/доступность/ограничения. Изменения фиксируются.
+servers: [{ url: https://api.112.by/internal/resources/v1 }]
+paths:
+  /units:
+    get:
+      summary: Список подразделений/техники (фильтр по типу/статусу)
+      parameters:
+        - { name: type, in: query, schema: { type: string } }
+        - { name: status, in: query, schema: { type: string } }
+      responses:
+        '200': { description: Список, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/ResourceUnit' } } } } }
+    post:
+      summary: Зарегистрировать объект
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/ResourceUnit' } } } }
+      responses: { '201': { description: Создан } }
+components:
+  schemas:
+    ResourceUnit:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        callSign: { type: string }
+        type: { type: string, enum: [FIRE_TRUCK, LADDER_TRUCK, AMBULANCE, RESCUE_SQUAD, POLICE_PATROL, GAS_SERVICE, HAZMAT_UNIT, WATER_RESCUE, COMMAND_VEHICLE] }
+        status: { type: string, enum: [AVAILABLE, DISPATCHED, EN_ROUTE, ON_SCENE, RETURNING, OUT_OF_SERVICE] }
+        stationId: { type: string, format: uuid }
+        location: { type: object, properties: { lat: { type: number }, lon: { type: number } } }
+        specialization: { type: string }
+        readiness: { type: string, enum: [READY, MAINTENANCE, RESERVE] }
+        constraints: { type: array, items: { type: string } }
+      required: [id, callSign, type, status]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]
