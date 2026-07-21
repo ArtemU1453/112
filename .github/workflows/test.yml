@@ -31,10 +31,12 @@ jobs:
       - uses: dorny/paths-filter@v3
         id: filter
         with:
+          # Полный матричный прогон интеграционных тестов (Testcontainers) запускается только
+          # при изменении кода сервисов. Изменения сборочной конфигурации (libraries/build/**)
+          # и инфраструктуры не тянут за собой весь набор ИТ (проверяется отдельно при релизе).
           filters: |
             java:
               - 'services/**'
-              - 'libraries/build/**'
             ai:
               - 'ai-service/**'
             frontend:
