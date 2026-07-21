@@ -1,4 +1,4 @@
-package by.mchs.e112.auth.config;
+package by.mchs.e112.analytics.config;
 
 import java.util.Collection;
 import java.util.List;
@@ -18,6 +18,11 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * Ресурс-сервер OAuth2/JWT (Keycloak). Аналитические эндпоинты доступны только аутентифицированным
+ * пользователям; служебные пути (actuator, OpenAPI) открыты. Роли реалма извлекаются как authorities
+ * для возможного ограничения методов (@PreAuthorize) на уровне контроллера.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -36,10 +41,11 @@ public class SecurityConfig {
     }
 
     private Converter<Jwt, AbstractAuthenticationToken> keycloakJwtConverter() {
-        return jwt -> new JwtAuthenticationToken(jwt, extractRealmRoles(jwt), jwt.getSubject());
+        return jwt -> new JwtAuthenticationToken(jwt, extractRealmRoles(jwt),
+            jwt.getClaimAsString("preferred_username") != null
+                ? jwt.getClaimAsString("preferred_username") : jwt.getSubject());
     }
 
-    @SuppressWarnings("unchecked")
     private Collection<GrantedAuthority> extractRealmRoles(Jwt jwt) {
         Map<String, Object> realmAccess = jwt.getClaimAsMap("realm_access");
         if (realmAccess == null || !(realmAccess.get("roles") instanceof List<?> roles)) {

@@ -35,8 +35,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public Converter<Jwt, AbstractAuthenticationToken> keycloakJwtConverter() {
+    private Converter<Jwt, AbstractAuthenticationToken> keycloakJwtConverter() {
         return jwt -> new JwtAuthenticationToken(jwt, extractRealmRoles(jwt),
             jwt.getClaimAsString("preferred_username") != null
                 ? jwt.getClaimAsString("preferred_username") : jwt.getSubject());

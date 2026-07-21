@@ -114,6 +114,13 @@ services:
     db: false
     kafka: true
     keycloak: true
+  analytics-service:
+    image: analytics-service
+    port: 8089
+    db: true
+    dbName: analytics_db
+    kafka: true
+    keycloak: true
   ai-service:
     image: ai-service
     port: 8090
