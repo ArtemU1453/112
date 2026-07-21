@@ -23,6 +23,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -33,7 +34,8 @@ class DispatchIntegrationIT {
     @Container
     @ServiceConnection
     static PostgreSQLContainer<?> postgres =
-        new PostgreSQLContainer<>("postgis/postgis:17-3.5")
+        new PostgreSQLContainer<>(DockerImageName.parse("postgis/postgis:17-3.5")
+                .asCompatibleSubstituteFor("postgres"))
             .withDatabaseName("dispatch_db").withUsername("e112").withPassword("e112secret");
 
     @Autowired
