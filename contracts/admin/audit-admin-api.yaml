@@ -1,0 +1,61 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Audit Platform API (admin)
+  version: 1.0.0
+  description: >
+    Административный контракт неизменяемого аудита (Audit Platform): поиск, фильтрация, экспорт
+    журналов действий/безопасности/изменений. Записи неизменяемы (append-only).
+servers:
+  - url: https://api.112.by/admin/audit/v1
+paths:
+  /events:
+    get:
+      summary: Поиск событий аудита
+      parameters:
+        - { name: service, in: query, schema: { type: string } }
+        - { name: action, in: query, schema: { type: string } }
+        - { name: actor, in: query, schema: { type: string } }
+        - { name: entityType, in: query, schema: { type: string } }
+        - { name: from, in: query, schema: { type: string, format: date-time } }
+        - { name: to, in: query, schema: { type: string, format: date-time } }
+        - { name: page, in: query, schema: { type: integer, default: 0 } }
+        - { name: size, in: query, schema: { type: integer, default: 20 } }
+      responses:
+        '200':
+          description: Страница событий
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content: { type: array, items: { $ref: '#/components/schemas/AuditEvent' } }
+                  page: { $ref: '../shared/problem-detail.yaml#/components/schemas/Page' }
+  /events/export:
+    get:
+      summary: Экспорт событий аудита
+      parameters:
+        - { name: format, in: query, schema: { type: string, enum: [CSV, JSON] } }
+      responses:
+        '200':
+          description: Файл экспорта
+          content:
+            application/octet-stream:
+              schema: { type: string, format: binary }
+components:
+  schemas:
+    AuditEvent:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        service: { type: string }
+        action: { type: string }
+        actor: { type: string }
+        entityType: { type: string }
+        entityId: { type: string }
+        timestamp: { type: string, format: date-time }
+        details: { type: object, additionalProperties: true }
+      required: [id, service, action, timestamp]
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []

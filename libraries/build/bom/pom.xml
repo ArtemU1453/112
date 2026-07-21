@@ -27,6 +27,23 @@
 
   <dependencyManagement>
     <dependencies>
+      <!-- Внутренние библиотеки Core Platform (Stage 4) — единое версионирование (DepGS) -->
+      <dependency>
+        <groupId>by.mchs.e112</groupId>
+        <artifactId>platform-commons</artifactId>
+        <version>1.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>by.mchs.e112</groupId>
+        <artifactId>platform-abstractions</artifactId>
+        <version>1.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>by.mchs.e112</groupId>
+        <artifactId>platform-sdk</artifactId>
+        <version>1.0.0</version>
+      </dependency>
+
       <!-- Общие внешние зависимости, разделяемые сервисами (единые версии, DepGS) -->
       <dependency>
         <groupId>org.springdoc</groupId>

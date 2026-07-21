@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ЕАСУР — platform-sdk: внутренний SDK Core Platform (Stage 4).
+  Единая точка подключения общих возможностей (безопасность, журналирование, конфигурация, аудит,
+  ошибки, мониторинг, трассировка) для всех сервисов (Internal SDK Governance Standard).
+  Агрегирует platform-commons и platform-abstractions. БЕЗ бизнес-логики.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>by.mchs.e112</groupId>
+  <artifactId>platform-sdk</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+  <name>platform-sdk</name>
+  <description>Внутренний SDK Core Platform ЕАСУР</description>
+  <properties>
+    <maven.compiler.release>21</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>by.mchs.e112</groupId>
+      <artifactId>platform-commons</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>by.mchs.e112</groupId>
+      <artifactId>platform-abstractions</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+  </dependencies>
+</project>

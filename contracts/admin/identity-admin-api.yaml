@@ -1,0 +1,86 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Identity & User Management API (admin)
+  version: 1.0.0
+  description: >
+    Административный контракт управления пользователями, ролями и учётными записями (Identity
+    Platform / User Management Platform). Аутентификация/RBAC — Keycloak (ADR-007). Только
+    администрирование сущностей платформы, без прикладной логики (запрет Stage 4).
+servers:
+  - url: https://api.112.by/admin/identity/v1
+tags: [users, roles]
+paths:
+  /users:
+    get:
+      tags: [users]
+      summary: Список пользователей (пагинация)
+      parameters:
+        - { name: page, in: query, schema: { type: integer, default: 0 } }
+        - { name: size, in: query, schema: { type: integer, default: 20 } }
+      responses:
+        '200':
+          description: Страница пользователей
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content: { type: array, items: { $ref: '#/components/schemas/User' } }
+                  page: { $ref: '../shared/problem-detail.yaml#/components/schemas/Page' }
+    post:
+      tags: [users]
+      summary: Создать пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/UserCreate' }
+      responses:
+        '201':
+          description: Создан
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+        '409': { $ref: '#/components/responses/Conflict' }
+  /users/{id}/roles:
+    put:
+      tags: [roles]
+      summary: Назначить роли пользователю (RBAC)
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: array, items: { type: string } }
+      responses:
+        '204': { description: Обновлено }
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        username: { type: string }
+        status: { type: string, enum: [ACTIVE, BLOCKED] }
+        roles: { type: array, items: { type: string } }
+      required: [id, username, status]
+    UserCreate:
+      type: object
+      properties:
+        username: { type: string }
+        email: { type: string, format: email }
+        roles: { type: array, items: { type: string } }
+      required: [username]
+    ProblemDetail:
+      $ref: '../shared/problem-detail.yaml#/components/schemas/ProblemDetail'
+  responses:
+    Conflict:
+      description: Конфликт
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/ProblemDetail' }
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []

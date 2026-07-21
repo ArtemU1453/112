@@ -1,0 +1,55 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Search Platform API (internal)
+  version: 1.0.0
+  description: >
+    Внутренний контракт универсального поиска (Search Platform): полнотекстовый поиск, фильтры по
+    атрибутам, сортировка, пагинация. Поисковый движок не фиксируется (CAP-SEARCH-001, TAP).
+servers:
+  - url: https://api.112.by/internal/search/v1
+paths:
+  /search:
+    post:
+      summary: Выполнить поиск
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/SearchQuery' }
+      responses:
+        '200':
+          description: Результаты
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/SearchResult' }
+components:
+  schemas:
+    SearchQuery:
+      type: object
+      properties:
+        index: { type: string }
+        text: { type: string }
+        filters:
+          type: object
+          additionalProperties: true
+        page: { type: integer, default: 0 }
+        size: { type: integer, default: 20 }
+        sort: { type: string, description: "field,asc|desc" }
+      required: [index]
+    SearchResult:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string }
+              score: { type: number }
+              source: { type: object, additionalProperties: true }
+        page:
+          $ref: '../shared/problem-detail.yaml#/components/schemas/Page'
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []
