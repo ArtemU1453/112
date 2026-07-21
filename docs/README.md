@@ -174,6 +174,29 @@
   [Integration SLA](standards/Integration-SLA-Standard.md) · [Cross-System Audit](standards/Cross-System-Audit-Standard.md)
 - Контракты 9.x (API First): [`contracts/external`](../contracts/external/README.md), [`contracts/admin`](../contracts/README.md)
 
+## Validation, Certification & National Operation (Stage 10)
+
+- Индексы: [Эксплуатация и ввод в эксплуатацию](operations/README.md) · [Итоговый аудит проекта](audit/README.md)
+- Готовность/приёмка: [Production Readiness Checklist](operations/production-readiness-checklist.md) ·
+  [Operational Readiness Review](operations/operational-readiness-review.md) ·
+  [Post Deployment Validation Guide](operations/post-deployment-validation-guide.md)
+- Сертификация: [Performance Certification](operations/performance-certification-report.md) ·
+  [Security Certification](operations/security-certification-report.md) ·
+  [Disaster Recovery Certification](operations/disaster-recovery-certification.md)
+- Развёртывание/эксплуатация: [Deployment Program](operations/deployment-program.md) ·
+  [Go-Live Playbook](operations/go-live-playbook.md) · [Operations Handbook](operations/operations-handbook.md) ·
+  [Support Handbook](operations/support-handbook.md) · [Production Runbook](operations/production-runbook.md) ·
+  [Training Handbook](operations/training-handbook.md)
+- ADR: [ADR-024 ввод в эксплуатацию](adr/ADR-024-production-go-live-operational-acceptance.md); [RFC-0007](rfc/RFC-0007-national-deployment-go-live.md)
+- Стандарты (обязательные): [Production Readiness](standards/Production-Readiness-Standard.md) ·
+  [Operational Acceptance](standards/Operational-Acceptance-Standard.md) · [Release Acceptance](standards/Release-Acceptance-Standard.md) ·
+  [National Deployment](standards/National-Deployment-Standard.md) · [Production Support](standards/Production-Support-Standard.md) ·
+  [Incident Escalation](standards/Incident-Escalation-Standard.md) · [Maintenance Window](standards/Maintenance-Window-Standard.md) ·
+  [Business Continuity Validation](standards/Business-Continuity-Validation-Standard.md) ·
+  [Service Acceptance](standards/Service-Acceptance-Standard.md) · [Long-Term Support](standards/Long-Term-Support-Standard.md)
+- Итоговые отчёты: [Architecture Compliance](audit/architecture-compliance-report.md) ·
+  [Project Completion](audit/project-completion-report.md) · [Production Readiness](audit/production-readiness-report.md)
+
 ## Риски
 
 - [Risk Register](risk/risk-register.md)
