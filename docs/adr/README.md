@@ -38,5 +38,6 @@ Architecture Decision Records фиксируют значимые архитек
 | [ADR-025](ADR-025-architecture-review-board-continuous-evolution.md) | Architecture Review Board и непрерывная эволюция | Accepted |
 | [ADR-026](ADR-026-national-digital-twin-simulation-platform.md) | Национальный цифровой двойник и платформа моделирования (изолированная) | Accepted |
 | [ADR-027](ADR-027-ai-experimentation-synthetic-data-isolation.md) | Экспериментирование с ИИ и изоляция синтетических данных | Accepted |
+| [ADR-028](ADR-028-national-knowledge-decision-support-platform.md) | Национальная платформа знаний и поддержки решений | Accepted |
 
 Нумерация сквозная и неизменяемая. Новый ADR получает следующий свободный номер.
