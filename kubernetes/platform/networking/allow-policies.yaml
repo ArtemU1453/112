@@ -1,0 +1,60 @@
+# ЕАСУР — явные разрешения (least privilege). Сегментация по зонам (network/segmentation.yaml).
+# DNS-резолвинг разрешён всем подам прикладного namespace.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns
+  namespace: emergency-112
+spec:
+  podSelector: {}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+---
+# Приложения могут обращаться к зоне данных (БД/Kafka/Redis).
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-app-to-data
+  namespace: emergency-112-data
+spec:
+  podSelector: {}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              app.kubernetes.io/part-of: emergency-112
+      ports:
+        - protocol: TCP
+          port: 5432
+        - protocol: TCP
+          port: 9092
+        - protocol: TCP
+          port: 6379
+---
+# Ingress-контроллер (edge) может обращаться к шлюзу приложений.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-to-gateway
+  namespace: emergency-112
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: gateway-service
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 8080

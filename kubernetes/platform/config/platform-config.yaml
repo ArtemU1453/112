@@ -1,0 +1,13 @@
+# ЕАСУР — платформенный ConfigMap (несекретные параметры). Секреты — через ExternalSecret (ADR-011).
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: platform-config
+  namespace: emergency-112-platform
+  labels:
+    app.kubernetes.io/part-of: emergency-112
+data:
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector.emergency-112-monitoring:4317"
+  LOG_FORMAT: "json"
+  TIME_ZONE: "Europe/Minsk"
+  AIR_GAPPED: "true"

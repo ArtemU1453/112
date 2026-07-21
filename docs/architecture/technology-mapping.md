@@ -32,15 +32,18 @@
 | CAP-OBS-001 | Метрики/мониторинг | Architecture.md | Prometheus | Approved | Baseline v1.0 |
 | CAP-OBS-002 | Логи (агрегация) | Architecture.md | Loki | Approved | Baseline v1.0 |
 | CAP-OBS-003 | Визуализация/дашборды | Architecture.md | Grafana | Approved | Baseline v1.0 |
-| CAP-SECRETS-001 | Централизованное хранилище секретов | — (RFC ожидается) | Внешний секрет-менеджер (Vault/эквивалент) | Proposed | — |
-| CAP-STORAGE-001 | Объектное хранилище (записи, вложения) | — (RFC ожидается) | Object Storage (S3-совместимое) | Proposed | — |
-| CAP-TRACE-001 | Распределённая трассировка | — (RFC ожидается) | OpenTelemetry-совместимая трассировка | Proposed | — |
+| CAP-IAC-001 | Infrastructure as Code | ADR-010 | Terraform + Ansible | Approved | Stage 3 |
+| CAP-SECRETS-001 | Централизованное хранилище секретов | ADR-011 | HashiCorp Vault + External Secrets | Approved | Stage 3 |
+| CAP-STORAGE-001 | Объектное хранилище (бэкапы, артефакты, зеркала) | ADR-013 | S3-совместимое (self-hosted, напр. MinIO) | Approved | Stage 3 |
+| CAP-TRACE-001 | Распределённая трассировка | ADR-012 | OpenTelemetry + Grafana Tempo | Approved | Stage 3 |
+| CAP-REGISTRY-001 | Реестр контейнерных образов (локальный) | ADR-005, ADR-010 | OCI-реестр (self-hosted/зеркало) | Approved | Stage 3 |
 
 ## Возможности со статусом Proposed
 
-`CAP-SECRETS-001`, `CAP-STORAGE-001`, `CAP-TRACE-001` — требования зафиксированы, конкретная
-технология не утверждена. Утверждение — через RFC + новый ADR с обновлением данной таблицы
-(TAP «Изменение технологии»). До утверждения документы ссылаются на возможность, а не продукт.
+На текущем этапе таких возможностей нет: `CAP-SECRETS-001`, `CAP-STORAGE-001`, `CAP-TRACE-001`
+переведены в Approved на Stage 3 (ADR-011/013/012, RFC-0002). Новые возможности со статусом
+Proposed добавляются здесь и утверждаются через RFC + новый ADR (TAP «Изменение технологии»);
+до утверждения документы ссылаются на возможность, а не продукт.
 
 ## Синхронизация
 

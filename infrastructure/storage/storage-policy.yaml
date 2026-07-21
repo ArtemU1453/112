@@ -1,0 +1,19 @@
+# ЕАСУР — политика классов хранения (декларативное описание; реализуется StorageClass'ами).
+storage_classes:
+  - name: easur-standard
+    default: true
+    reclaim_policy: Retain
+    volume_binding_mode: WaitForFirstConsumer
+    allow_volume_expansion: true
+    use_for: [general, stateful]
+  - name: easur-fast
+    default: false
+    reclaim_policy: Retain
+    volume_binding_mode: WaitForFirstConsumer
+    allow_volume_expansion: true
+    use_for: [database]
+object_storage:
+  api: s3
+  self_hosted: true          # ADR-013
+  use_for: [backups, artifacts, sbom, mirrors]
+  versioning: enabled

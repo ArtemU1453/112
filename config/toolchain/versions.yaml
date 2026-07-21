@@ -208,3 +208,50 @@ ci:
     recommended: "current"
     category: Supported
     note: "Основная CI-платформа (см. ADR-009). GitLab CI сохранён (ADR-006)."
+
+platformInfra:
+  terraform:
+    min: "1.8"
+    recommended: "1.9"
+    category: Supported
+    note: "IaC — платформенный слой Kubernetes (ADR-010)."
+  ansible:
+    min: "2.16"
+    recommended: "2.17"
+    category: Supported
+    note: "Подготовка узлов/ОС, офлайн-операции (ADR-010)."
+  vault:
+    min: "1.17"
+    recommended: "1.17"
+    category: Supported
+    note: "Централизованное управление секретами (ADR-011)."
+  externalSecrets:
+    min: "0.10"
+    recommended: "0.10"
+    category: Supported
+    note: "External Secrets Operator — синхронизация секретов в K8s (ADR-011)."
+  opentelemetryCollector:
+    min: "0.105"
+    recommended: "0.108"
+    category: Supported
+    note: "Сбор трасс/метрик/логов (ADR-012)."
+  tempo:
+    min: "2.5"
+    recommended: "2.6"
+    category: Supported
+    note: "Backend распределённой трассировки (ADR-012)."
+  minio:
+    min: "RELEASE.2024-06-01"
+    recommended: "RELEASE.2024-08-01"
+    category: Supported
+    note: "S3-совместимое объектное хранилище, self-hosted (ADR-013)."
+  ingressNginx:
+    min: "1.11"
+    recommended: "1.11"
+    category: Supported
+    note: "Ingress-контроллер (API Gateway Platform)."
+  certManager:
+    min: "1.15"
+    recommended: "1.15"
+    category: Supported
+    note: "Управление TLS-сертификатами в кластере."

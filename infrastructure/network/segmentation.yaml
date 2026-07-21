@@ -1,0 +1,22 @@
+# ЕАСУР — эталонная модель сегментации сети (декларативное описание зон и разрешённых потоков).
+# Применяется как источник для NetworkPolicy (kubernetes/platform/networking).
+zones:
+  - name: edge
+    description: Внешний периметр (Ingress-контроллер, API Gateway)
+    allow_ingress_from: [external]
+    allow_egress_to: [application]
+  - name: application
+    description: Прикладные сервисы (bounded contexts)
+    allow_ingress_from: [edge, application]
+    allow_egress_to: [data, platform, application]
+  - name: data
+    description: PostgreSQL, Kafka, Redis, объектное хранилище
+    allow_ingress_from: [application, platform]
+    allow_egress_to: [data]
+  - name: platform
+    description: Мониторинг, логирование, трассировка, секреты (Vault)
+    allow_ingress_from: [application, data, platform]
+    allow_egress_to: [platform, data]
+external_egress:
+  air_gapped: deny   # в изолированном контуре внешний egress запрещён (AGSDS)
+  connected: restricted

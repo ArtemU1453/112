@@ -1,0 +1,20 @@
+# ЕАСУР — платформенный слой Kubernetes (Stage 3). Применяется: kubectl apply -k kubernetes/platform
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+commonLabels:
+  app.kubernetes.io/managed-by: kustomize
+  app.kubernetes.io/part-of: emergency-112
+
+resources:
+  - namespaces/namespaces.yaml
+  - namespaces/resource-quotas.yaml
+  - rbac/service-accounts.yaml
+  - rbac/roles.yaml
+  - rbac/role-bindings.yaml
+  - networking/default-deny.yaml
+  - networking/allow-policies.yaml
+  - networking/ingress.yaml
+  - storage/storage-classes.yaml
+  - config/platform-config.yaml
+  - config/secret-store.yaml

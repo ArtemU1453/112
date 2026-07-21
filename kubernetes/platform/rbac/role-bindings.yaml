@@ -1,0 +1,27 @@
+# ЕАСУР — привязки ролей (IAM). Принцип минимальных привилегий.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: app-deployer-binding
+  namespace: emergency-112
+subjects:
+  - kind: ServiceAccount
+    name: platform-deployer
+    namespace: emergency-112
+roleRef:
+  kind: Role
+  name: app-deployer
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: monitoring-viewer-binding
+subjects:
+  - kind: ServiceAccount
+    name: monitoring-agent
+    namespace: emergency-112-monitoring
+roleRef:
+  kind: ClusterRole
+  name: monitoring-viewer
+  apiGroup: rbac.authorization.k8s.io

@@ -20,5 +20,9 @@ Architecture Decision Records фиксируют значимые архитек
 | [ADR-007](ADR-007-authorization.md) | Система авторизации | Accepted |
 | [ADR-008](ADR-008-message-broker.md) | Брокер сообщений | Accepted |
 | [ADR-009](ADR-009-ci-platform-github-actions.md) | Основная CI-платформа: GitHub Actions (дополняет ADR-006) | Accepted |
+| [ADR-010](ADR-010-iac-tooling.md) | Инструменты Infrastructure as Code (Terraform + Ansible) | Accepted |
+| [ADR-011](ADR-011-secrets-management.md) | Управление секретами (Vault + External Secrets) | Accepted |
+| [ADR-012](ADR-012-distributed-tracing.md) | Распределённая трассировка (OpenTelemetry + Tempo) | Accepted |
+| [ADR-013](ADR-013-object-storage.md) | Объектное хранилище (S3-совместимое, self-hosted) | Accepted |
 
 Нумерация сквозная и неизменяемая. Новый ADR получает следующий свободный номер.

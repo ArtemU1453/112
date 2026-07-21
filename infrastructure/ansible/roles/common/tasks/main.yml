@@ -1,0 +1,26 @@
+# ЕАСУР — базовая подготовка узла (ADR-010). Идемпотентно.
+---
+- name: Установить часовой пояс
+  community.general.timezone:
+    name: "{{ timezone }}"
+
+- name: Настроить синхронизацию времени (NTP; критично для изолированных площадок, AGSDS)
+  ansible.builtin.template:
+    src: chrony.conf.j2
+    dest: /etc/chrony/chrony.conf
+    mode: "0644"
+  notify: restart chrony
+
+- name: Отключить swap (требование Kubernetes)
+  ansible.builtin.command: swapoff -a
+  changed_when: false
+
+- name: Задать параметры sysctl для сети Kubernetes
+  ansible.posix.sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+    reload: true
+  loop:
+    - { name: "net.bridge.bridge-nf-call-iptables", value: "1" }
+    - { name: "net.ipv4.ip_forward", value: "1" }
