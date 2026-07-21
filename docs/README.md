@@ -94,6 +94,18 @@
   [Operational Telemetry](standards/Operational-Telemetry-Standard.md) ·
   [Service Maturity Model](standards/Service-Maturity-Model.md)
 
+## Emergency Operations Platform (Stage 5)
+
+- [Emergency Operations Platform Architecture](emergency/emergency-operations-platform-architecture.md) — маппинг 5.1–5.10, трассируемость
+- [Emergency Domain Model](emergency/emergency-domain-model.md) · [Operational State Machine](emergency/operational-state-machine.md) ·
+  [Emergency Data Dictionary](emergency/emergency-data-dictionary.md)
+- Стандарты: [Incident Lifecycle](standards/Incident-Lifecycle-Standard.md) ·
+  [Dispatcher Workflow](standards/Dispatcher-Workflow-Standard.md) · [Call Processing](standards/Call-Processing-Standard.md) ·
+  [Speech Processing](standards/Speech-Processing-Standard.md) · [AI Assistance Policy](standards/AI-Assistance-Policy.md) ·
+  [Operational Decision Support](standards/Operational-Decision-Support-Standard.md) ·
+  [Incident Classification](standards/Incident-Classification-Standard.md)
+- Контракты операций (API First): [`contracts/internal`](../contracts/README.md), [`contracts/admin`](../contracts/README.md)
+
 ## Риски
 
 - [Risk Register](risk/risk-register.md)

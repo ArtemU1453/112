@@ -1,0 +1,45 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Recording Platform API (internal)
+  version: 1.0.0
+  description: >
+    Хранение/поиск/экспорт записей разговоров с контролем целостности и политиками хранения
+    (Stage 5.2, Call Processing Standard). Хранилище — File Storage Abstraction (ADR-013).
+    Удаление в обход политик запрещено.
+servers: [{ url: https://api.112.by/internal/recordings/v1 }]
+paths:
+  /recordings/{callId}:
+    get:
+      summary: Получить метаданные записи
+      parameters: [{ name: callId, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses:
+        '200': { description: Метаданные, content: { application/json: { schema: { $ref: '#/components/schemas/Recording' } } } }
+        '404': { description: Не найдено }
+  /recordings/search:
+    get:
+      summary: Поиск записей (индексирование/поиск)
+      parameters:
+        - { name: phone, in: query, schema: { type: string } }
+        - { name: from, in: query, schema: { type: string, format: date-time } }
+        - { name: to, in: query, schema: { type: string, format: date-time } }
+      responses:
+        '200': { description: Результаты, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Recording' } } } } }
+  /recordings/{callId}/export:
+    get:
+      summary: Экспорт записи (по правам, с журналом доступа)
+      parameters: [{ name: callId, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses: { '200': { description: Файл, content: { application/octet-stream: { schema: { type: string, format: binary } } } } }
+components:
+  schemas:
+    Recording:
+      type: object
+      properties:
+        callId: { type: string, format: uuid }
+        storageKey: { type: string }
+        durationMs: { type: integer }
+        checksum: { type: string, description: Контроль целостности }
+        retentionUntil: { type: string, format: date, description: Дата по политике хранения }
+        createdAt: { type: string, format: date-time }
+      required: [callId, storageKey, checksum]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]

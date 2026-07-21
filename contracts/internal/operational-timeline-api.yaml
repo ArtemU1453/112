@@ -1,0 +1,31 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Operational Timeline API (internal)
+  version: 1.0.0
+  description: >
+    Единая операционная временная шкала (Stage 5.9). Фиксирует все события обработки от поступления
+    вызова до завершения. Обеспечивает сквозную трассируемость.
+servers: [{ url: https://api.112.by/internal/timeline/v1 }]
+paths:
+  /timeline/{incidentId}:
+    get:
+      summary: Временная шкала происшествия
+      parameters: [{ name: incidentId, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses:
+        '200': { description: События, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/TimelineEvent' } } } } }
+components:
+  schemas:
+    TimelineEvent:
+      type: object
+      properties:
+        at: { type: string, format: date-time }
+        kind:
+          type: string
+          enum: [CALL_RECEIVED, RECORDING_STARTED, SPEECH_PROCESSED, ENTITY_CONFIRMED,
+                 INCIDENT_UPDATED, DISPATCHER_ACTION, RECOMMENDATION, UNIT_DISPATCHED, COMPLETED]
+        actor: { type: string, description: Пользователь/система/ИИ }
+        correlationId: { type: string }
+        detail: { type: object, additionalProperties: true }
+      required: [at, kind, actor]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]

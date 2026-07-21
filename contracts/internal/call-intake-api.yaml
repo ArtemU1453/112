@@ -1,0 +1,51 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Emergency Call Intake API (internal)
+  version: 1.0.0
+  description: >
+    Приём и управление жизненным циклом экстренного вызова (Stage 5.1). Реализуется
+    telephony-service. Состояния — CallStatus (Operational State Machine). API First.
+servers: [{ url: https://api.112.by/internal/calls/v1 }]
+paths:
+  /calls:
+    post:
+      summary: Зарегистрировать входящий вызов (приём)
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/CallCreate' } } }
+      responses:
+        '201': { description: Создан, content: { application/json: { schema: { $ref: '#/components/schemas/Call' } } } }
+  /calls/{id}/hold:
+    post: { summary: Удержание вызова, parameters: [{ $ref: '#/components/parameters/CallId' }], responses: { '204': { description: OK } } }
+  /calls/{id}/transfer:
+    post:
+      summary: Переадресация вызова
+      parameters: [{ $ref: '#/components/parameters/CallId' }]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, properties: { target: { type: string } }, required: [target] } } } }
+      responses: { '204': { description: OK } }
+  /calls/{id}/complete:
+    post: { summary: Завершение вызова, parameters: [{ $ref: '#/components/parameters/CallId' }], responses: { '204': { description: OK } } }
+components:
+  parameters:
+    CallId: { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+  schemas:
+    CallCreate:
+      type: object
+      properties:
+        direction: { type: string, enum: [INBOUND, OUTBOUND] }
+        line: { type: string }
+        callerPhone: { type: string }
+      required: [direction, line]
+    Call:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        direction: { type: string, enum: [INBOUND, OUTBOUND] }
+        status: { type: string, enum: [RINGING, ACTIVE, ON_HOLD, COMPLETED, MISSED, TRANSCRIBED, ANALYZED] }
+        line: { type: string }
+        startedAt: { type: string, format: date-time }
+        recordingKey: { type: string }
+        incidentId: { type: string, format: uuid }
+      required: [id, direction, status, startedAt]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]

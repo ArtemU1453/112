@@ -1,0 +1,39 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Speech Processing API (internal)
+  version: 1.0.0
+  description: >
+    Обработка речи через адаптеры (Stage 5.3, Speech Processing Standard, AiProvider/CAP-AI-001).
+    STT, язык, реплики, временные метки, уверенность, повторная обработка. Результаты — предложения
+    (AI Assistance Policy).
+servers: [{ url: https://api.112.by/internal/speech/v1 }]
+paths:
+  /transcripts:
+    post:
+      summary: Запустить обработку записи (STT + сегментация)
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, properties: { callId: { type: string, format: uuid }, recordingKey: { type: string }, reprocess: { type: boolean, default: false } }, required: [callId, recordingKey] } } }
+      responses:
+        '202': { description: Принято к обработке, content: { application/json: { schema: { $ref: '#/components/schemas/Transcript' } } } }
+components:
+  schemas:
+    Transcript:
+      type: object
+      properties:
+        callId: { type: string, format: uuid }
+        language: { type: string }
+        segments:
+          type: array
+          items:
+            type: object
+            properties:
+              text: { type: string }
+              speaker: { type: string, description: Если диаризация включена архитектурой }
+              startMs: { type: integer }
+              endMs: { type: integer }
+              confidence: { type: number, minimum: 0, maximum: 1 }
+            required: [text, startMs, endMs, confidence]
+      required: [callId, segments]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]

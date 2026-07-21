@@ -1,0 +1,51 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Information Extraction API (internal)
+  version: 1.0.0
+  description: >
+    Извлечение сущностей из транскрипта и подтверждение оператором (Stage 5.4). Каждая сущность —
+    value/source/probability/confirmation (Emergency Data Dictionary). Результаты ИИ — предложения
+    (AI Assistance Policy); окончательный статус присваивает диспетчер.
+servers: [{ url: https://api.112.by/internal/extraction/v1 }]
+paths:
+  /extractions/{callId}:
+    get:
+      summary: Получить извлечённые сущности вызова
+      parameters: [{ name: callId, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses:
+        '200': { description: Сущности, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/ExtractedEntity' } } } } }
+  /extractions/{callId}/entities/{entityId}/confirm:
+    post:
+      summary: Подтвердить/отредактировать/отклонить сущность (диспетчер)
+      parameters:
+        - { name: callId, in: path, required: true, schema: { type: string, format: uuid } }
+        - { name: entityId, in: path, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                confirmation: { type: string, enum: [CONFIRMED, REJECTED, EDITED] }
+                value: { type: string, description: Новое значение при EDITED }
+              required: [confirmation]
+      responses:
+        '200': { description: Обновлено, content: { application/json: { schema: { $ref: '#/components/schemas/ExtractedEntity' } } } }
+components:
+  schemas:
+    ExtractedEntity:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        type:
+          type: string
+          enum: [address, settlement, street, house_number, landmark, phone, caller_name,
+                 incident_type, casualties, hazardous_materials, vehicles, coordinates, additional]
+        value: { type: string }
+        source: { type: string, enum: [STT, AI, OPERATOR] }
+        probability: { type: number, minimum: 0, maximum: 1 }
+        confirmation: { type: string, enum: [EXTRACTED, CONFIRMED, REJECTED, EDITED] }
+      required: [id, type, value, source, probability, confirmation]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]
