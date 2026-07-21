@@ -35,5 +35,6 @@ Architecture Decision Records фиксируют значимые архитек
 | [ADR-022](ADR-022-national-integration-platform.md) | Национальная интеграционная платформа (ESB/gateway, self-hosted) | Accepted |
 | [ADR-023](ADR-023-integration-security-pki.md) | Безопасность интеграций: mTLS, подпись сообщений, PKI | Accepted |
 | [ADR-024](ADR-024-production-go-live-operational-acceptance.md) | Ввод в промышленную эксплуатацию и операционная приёмка | Accepted |
+| [ADR-025](ADR-025-architecture-review-board-continuous-evolution.md) | Architecture Review Board и непрерывная эволюция | Accepted |
 
 Нумерация сквозная и неизменяемая. Новый ADR получает следующий свободный номер.

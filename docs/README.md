@@ -197,6 +197,32 @@
 - Итоговые отчёты: [Architecture Compliance](audit/architecture-compliance-report.md) ·
   [Project Completion](audit/project-completion-report.md) · [Production Readiness](audit/production-readiness-report.md)
 
+## Long-Term Operations, Evolution & Continuous Improvement (Stage 11)
+
+- Индекс: [Эволюция и долгосрочное сопровождение](evolution/README.md)
+- Стратегия/дорожные карты: [Enterprise Evolution Strategy](evolution/enterprise-evolution-strategy.md) ·
+  [Technology Roadmap](evolution/technology-roadmap.md) ·
+  [Enterprise Evolution Roadmap (1/3/5/10 лет)](evolution/enterprise-evolution-roadmap.md)
+- Жизненный цикл/эволюция: [Lifecycle Management Guide](evolution/lifecycle-management-guide.md) ·
+  [Architecture Review Handbook](evolution/architecture-review-handbook.md) ·
+  [Technical Debt Register](evolution/technical-debt-register.md)
+- Знания/релизы/инновации/улучшение: [Knowledge Management Guide](evolution/knowledge-management-guide.md) ·
+  [Release Management Handbook](evolution/release-management-handbook.md) ·
+  [Innovation Framework](evolution/innovation-framework.md) ·
+  [Continuous Improvement Framework](evolution/continuous-improvement-framework.md) ·
+  [Long-Term Support Policy](evolution/long-term-support-policy.md)
+- ADR/RFC: [ADR-025 ARB и непрерывная эволюция](adr/ADR-025-architecture-review-board-continuous-evolution.md) ·
+  [RFC-0008](rfc/RFC-0008-long-term-evolution-governance.md)
+- Стандарты (обязательные): [Architecture Evolution](standards/Architecture-Evolution-Standard.md) ·
+  [Technical Debt Governance](standards/Technical-Debt-Governance-Standard.md) ·
+  [Component Lifecycle](standards/Component-Lifecycle-Standard.md) ·
+  [Continuous Compliance](standards/Continuous-Compliance-Standard.md) ·
+  [Knowledge Governance](standards/Knowledge-Governance-Standard.md) ·
+  [Modernization](standards/Modernization-Standard.md) · [Innovation Governance](standards/Innovation-Governance-Standard.md) ·
+  [Upgrade Compatibility](standards/Upgrade-Compatibility-Standard.md) ·
+  [Deprecation Policy](standards/Deprecation-Policy-Standard.md) ·
+  [Long-Term Maintenance](standards/Long-Term-Maintenance-Standard.md)
+
 ## Риски
 
 - [Risk Register](risk/risk-register.md)
