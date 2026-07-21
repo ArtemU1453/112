@@ -277,3 +277,25 @@ geospatial:
     recommended: "10"
     category: Supported
     note: "Клиентская картография АРМ (ADR-004)."
+
+mobile:
+  flutter:
+    min: "3.24"
+    recommended: "3.24"
+    category: Supported
+    note: "Пример единого кросс-платформенного стека (ADR-016); фреймворк фиксируется реализацией (CAP-MOBILE-001)."
+  dart:
+    min: "3.5"
+    recommended: "3.5"
+    category: Supported
+    note: "Язык мобильного стека (при выборе Flutter, ADR-016)."
+  sqlcipher:
+    min: "4.6"
+    recommended: "4.6"
+    category: Supported
+    note: "Шифрованное локальное хранилище (offline-first, ADR-017; Mobile Security Standard)."
+  androidTargetSdk:
+    min: "34"
+    recommended: "35"
+    category: Supported
+    note: "Целевая ОС полевых устройств (ADR-016)."

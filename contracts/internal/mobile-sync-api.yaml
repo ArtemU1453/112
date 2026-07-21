@@ -1,0 +1,78 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Mobile Sync API (internal)
+  version: 1.0.0
+  description: >
+    Единый контракт двусторонней offline-синхронизации (Stage 7.4/7.5, ADR-017). Общий для всех
+    мобильных приложений (запрет app-специфичных API). Дельта pull/push, версии, контрольные суммы.
+servers: [{ url: https://api.112.by/internal/sync/v1 }]
+paths:
+  /sync/pull:
+    post:
+      summary: Получить изменения с сервера (дельта с курсора)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cursor: { type: string, description: Курсор/версия последней синхронизации }
+                scopes: { type: array, items: { type: string }, description: Области (частичная синхронизация) }
+              required: [cursor]
+      responses:
+        '200':
+          description: Изменения
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  changes: { type: array, items: { $ref: '#/components/schemas/ChangeRecord' } }
+                  nextCursor: { type: string }
+                  checksum: { type: string }
+  /sync/push:
+    post:
+      summary: Отправить накопленные изменения (outbox, идемпотентно)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                batchId: { type: string, description: Ключ идемпотентности пакета }
+                changes: { type: array, items: { $ref: '#/components/schemas/ChangeRecord' } }
+                checksum: { type: string }
+              required: [batchId, changes]
+      responses:
+        '200':
+          description: Результат применения (принято/конфликты)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accepted: { type: array, items: { type: string } }
+                  conflicts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        entityId: { type: string }
+                        serverVersion: { type: integer }
+                        resolution: { type: string, enum: [SERVER_WINS, CLIENT_WINS, MANUAL_REQUIRED] }
+components:
+  schemas:
+    ChangeRecord:
+      type: object
+      properties:
+        entityType: { type: string }
+        entityId: { type: string, format: uuid }
+        op: { type: string, enum: [CREATE, UPDATE, DELETE] }
+        version: { type: integer }
+        payload: { type: object, additionalProperties: true }
+        clientTimestamp: { type: string, format: date-time }
+      required: [entityType, entityId, op, version]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]

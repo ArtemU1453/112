@@ -1,0 +1,52 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — MDM Integration API (internal)
+  version: 1.0.0
+  description: >
+    Интеграция с MDM/EMM через абстракцию (Stage 7.10, ADR-018). Регистрация устройств, compliance,
+    удалённая блокировка/стирание, сертификаты. Без привязки к поставщику. Общий контракт.
+servers: [{ url: https://api.112.by/internal/mdm/v1 }]
+paths:
+  /devices:
+    post:
+      summary: Зарегистрировать устройство (enrollment)
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/DeviceEnrollment' } } } }
+      responses: { '201': { description: Зарегистрировано } }
+  /devices/{id}/compliance:
+    get:
+      summary: Статус соответствия политике безопасности
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: Compliance, content: { application/json: { schema: { $ref: '#/components/schemas/Compliance' } } } }
+  /devices/{id}/lock:
+    post:
+      summary: Удалённая блокировка устройства
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '202': { description: Команда принята } }
+  /devices/{id}/wipe:
+    post:
+      summary: Удалённое стирание корпоративных данных
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, properties: { scope: { type: string, enum: [CORPORATE_ONLY, FULL] }, approvedBy: { type: string } }, required: [scope, approvedBy] } } } }
+      responses: { '202': { description: Команда принята } }
+components:
+  schemas:
+    DeviceEnrollment:
+      type: object
+      properties:
+        deviceId: { type: string }
+        userId: { type: string, format: uuid }
+        unitId: { type: string, format: uuid }
+        platform: { type: string, enum: [ANDROID, IOS] }
+      required: [deviceId, userId, platform]
+    Compliance:
+      type: object
+      properties:
+        compliant: { type: boolean }
+        encryption: { type: boolean }
+        screenLock: { type: boolean }
+        tampered: { type: boolean }
+        osVersion: { type: string }
+      required: [compliant]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]
