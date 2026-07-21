@@ -4,7 +4,7 @@
 set -euo pipefail
 DEST="${1:-/backups}"
 STAMP="$(date +%Y%m%d_%H%M%S)"
-DATABASES=(incident_db dispatch_db telephony_db gis_db audit_db notification_db auth_db keycloak)
+DATABASES=(incident_db dispatch_db telephony_db gis_db audit_db notification_db auth_db analytics_db keycloak)
 mkdir -p "$DEST/$STAMP"
 for db in "${DATABASES[@]}"; do
   echo "backup: $db"
