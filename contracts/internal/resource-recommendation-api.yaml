@@ -1,0 +1,45 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Resource Recommendation API (internal)
+  version: 1.0.0
+  description: >
+    Рекомендации сил и средств (Stage 5.8). На основе типа/подтверждённых данных/регламентов/
+    состояния сил. Диспетчер утверждает или изменяет. Автонаправление без подтверждения запрещено.
+servers: [{ url: https://api.112.by/internal/recommendations/v1 }]
+paths:
+  /recommendations/{incidentId}:
+    get:
+      summary: Сформировать рекомендацию нарядов
+      parameters: [{ name: incidentId, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses:
+        '200': { description: Рекомендация (статус PROPOSED), content: { application/json: { schema: { $ref: '#/components/schemas/Recommendation' } } } }
+  /recommendations/{id}/approve:
+    post:
+      summary: Утвердить/изменить/отклонить рекомендацию (диспетчер) → направление только после утверждения
+      parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                decision: { type: string, enum: [APPROVED, MODIFIED, DECLINED] }
+                units: { type: array, items: { type: string }, description: Изменённый состав при MODIFIED }
+              required: [decision]
+      responses: { '200': { description: OK } }
+components:
+  schemas:
+    Recommendation:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        incidentId: { type: string, format: uuid }
+        status: { type: string, enum: [PROPOSED, APPROVED, MODIFIED, DECLINED] }
+        proposedUnits:
+          type: array
+          items: { type: object, properties: { unitType: { type: string }, count: { type: integer } } }
+        rationale: { type: string }
+      required: [id, incidentId, status, proposedUnits]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]

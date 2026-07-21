@@ -1,0 +1,62 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Incident Card API (internal)
+  version: 1.0.0
+  description: >
+    Карточка происшествия (Stage 5.5, Incident Lifecycle Standard). Реализуется incident-service.
+    Версии/история/вложения/связи/статусы. Любое изменение фиксируется (запрет обхода журнала).
+servers: [{ url: https://api.112.by/internal/incidents/v1 }]
+paths:
+  /incidents:
+    post:
+      summary: Создать карточку
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/IncidentCreate' } } } }
+      responses:
+        '201': { description: Создана, content: { application/json: { schema: { $ref: '#/components/schemas/Incident' } } } }
+  /incidents/{id}/status:
+    put:
+      summary: Сменить статус (валидируется по Operational State Machine)
+      parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, properties: { status: { type: string }, reason: { type: string } }, required: [status] } } } }
+      responses:
+        '200': { description: OK }
+        '409': { description: Недопустимый переход или конфликт версий }
+  /incidents/{id}/history:
+    get:
+      summary: Журнал изменений карточки
+      parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses: { '200': { description: История, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/HistoryEntry' } } } } } }
+components:
+  schemas:
+    IncidentCreate:
+      type: object
+      properties:
+        type: { type: string, enum: [FIRE, MEDICAL, POLICE, GAS_LEAK, TRAFFIC_ACCIDENT, WATER_RESCUE, HAZMAT, TECHNOLOGICAL, NATURAL, FALSE_ALARM, OTHER] }
+        priority: { type: string, enum: [CRITICAL, HIGH, MEDIUM, LOW] }
+        address: { type: string }
+        description: { type: string }
+        casualties: { type: integer }
+        callId: { type: string, format: uuid }
+      required: [type, priority]
+    Incident:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        number: { type: string }
+        type: { type: string }
+        priority: { type: string }
+        status: { type: string, enum: [RECEIVED, CLASSIFIED, DISPATCHED, IN_PROGRESS, RESOLVED, CLOSED, CANCELLED] }
+        version: { type: integer }
+        createdAt: { type: string, format: date-time }
+      required: [id, number, type, priority, status, version]
+    HistoryEntry:
+      type: object
+      properties:
+        at: { type: string, format: date-time }
+        actor: { type: string }
+        change: { type: string }
+        fromStatus: { type: string }
+        toStatus: { type: string }
+      required: [at, actor, change]
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+security: [{ bearerAuth: [] }]
