@@ -1,0 +1,35 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Decision Intelligence API (internal)
+  version: 1.0.0
+  description: >
+    Аналитическая поддержка решений (Stage 8.4, ADR-021). Тенденции/аномалии/прогноз/рекомендации/
+    перегрузка/зоны риска. Каждый вывод — с объяснением и использованными данными (AI Explainability).
+    ИИ не принимает решения автоматически.
+servers: [{ url: https://api.112.by/internal/decision-intelligence/v1 }]
+paths:
+  /insights:
+    get:
+      summary: Получить аналитические выводы (с объяснением)
+      parameters:
+        - { name: kind, in: query, schema: { type: string, enum: [TREND, ANOMALY, OVERLOAD, RISK_ZONE, RESOURCE_RECOMMENDATION] } }
+        - { name: scope, in: query, schema: { type: string } }
+      responses:
+        '200': { description: Выводы, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Insight' } } } } }
+components:
+  schemas:
+    Insight:
+      type: object
+      properties:
+        kind: { type: string }
+        summary: { type: string }
+        explanation: { type: string, description: Объяснение вывода (обязательно) }
+        usedData: { type: array, items: { type: string }, description: Использованные данные (обязательно) }
+        confidence: { type: number, minimum: 0, maximum: 1 }
+        methodologyRef: { type: string, description: Ссылка на методику (Statistical Methodology) }
+        advisoryOnly: { type: boolean, default: true, description: Только рекомендация; решение — за человеком }
+      required: [kind, summary, explanation, usedData, advisoryOnly]
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []

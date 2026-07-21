@@ -141,6 +141,23 @@
   [`apps/mobile-command`](../apps/mobile-command/README.md); токены [`libraries/mobile-design-tokens`](../libraries/mobile-design-tokens/README.md)
 - Контракты 7.x (API First): [`contracts/internal`](../contracts/README.md)
 
+## Analytics & National Situational Awareness (Stage 8)
+
+- Архитектура: [Analytics](analytics/analytics-architecture.md) · [BI](analytics/bi-architecture.md) ·
+  [Data Warehouse](analytics/data-warehouse-architecture.md) · [National Situation Center](analytics/national-situation-center-architecture.md)
+- ADR: [ADR-019 DWH](adr/ADR-019-analytics-data-warehouse.md) · [ADR-020 BI](adr/ADR-020-bi-visualization.md) ·
+  [ADR-021 AI-аналитика](adr/ADR-021-ai-analytics-abstraction.md); [RFC-0005](rfc/RFC-0005-analytics-platform.md)
+- Стандарты (обязательные): [Reporting](standards/Reporting-Standard.md) · [KPI Governance](standards/KPI-Governance-Standard.md) ·
+  [Decision Intelligence](standards/Decision-Intelligence-Standard.md) · [Forecasting](standards/Forecasting-Standard.md) ·
+  [Data Quality](standards/Data-Quality-Standard.md) · [Executive Dashboard](standards/Executive-Dashboard-Standard.md)
+- Стандарты (дополнительные): [Analytics Governance](standards/Analytics-Governance-Standard.md) ·
+  [Metrics Catalog](standards/Metrics-Catalog-Standard.md) · [Data Lineage](standards/Data-Lineage-Standard.md) ·
+  [Master Data Governance](standards/Master-Data-Governance-Standard.md) · [BI Security](standards/BI-Security-Standard.md) ·
+  [Dashboard Design](standards/Dashboard-Design-Standard.md) · [AI Explainability](standards/AI-Explainability-Standard.md) ·
+  [Forecast Validation](standards/Forecast-Validation-Standard.md) · [Statistical Methodology](standards/Statistical-Methodology-Standard.md) ·
+  [Data Retention for Analytics](standards/Data-Retention-for-Analytics-Standard.md)
+- Контракты 8.1–8.10 (API First): [`contracts/`](../contracts/README.md)
+
 ## Риски
 
 - [Risk Register](risk/risk-register.md)

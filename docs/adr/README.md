@@ -29,5 +29,8 @@ Architecture Decision Records фиксируют значимые архитек
 | [ADR-016](ADR-016-mobile-technology-stack.md) | Технологический стек мобильной экосистемы (единый) | Accepted |
 | [ADR-017](ADR-017-offline-first-synchronization.md) | Offline-First и синхронизация данных | Accepted |
 | [ADR-018](ADR-018-mdm-integration-abstraction.md) | Абстракция интеграции с MDM | Accepted |
+| [ADR-019](ADR-019-analytics-data-warehouse.md) | Аналитическое хранилище данных (DWH, self-hosted) | Accepted |
+| [ADR-020](ADR-020-bi-visualization.md) | Платформа BI и визуализации (self-hosted) | Accepted |
+| [ADR-021](ADR-021-ai-analytics-abstraction.md) | Абстракция аналитического ИИ и объяснимость | Accepted |
 
 Нумерация сквозная и неизменяемая. Новый ADR получает следующий свободный номер.

@@ -1,0 +1,38 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — National Situation Center API (internal)
+  version: 1.0.0
+  description: >
+    Национальный ситуационный центр (Stage 8.8). Оперативная обстановка страны: активные
+    происшествия, крупные ЧС, распределение сил, KPI, журнал критических событий. Доступ — высший
+    уровень (BI Security Standard).
+servers: [{ url: https://api.112.by/internal/situation-center/v1 }]
+paths:
+  /overview:
+    get:
+      summary: Национальная оперативная обстановка (снимок)
+      responses:
+        '200':
+          description: Обстановка
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  activeIncidents: { type: integer }
+                  majorEmergencies: { type: array, items: { type: object, additionalProperties: true } }
+                  forcesDistribution: { type: object, additionalProperties: true }
+                  nationalKpi: { type: object, additionalProperties: true }
+  /critical-events:
+    get:
+      summary: Журнал критических событий
+      parameters:
+        - { name: from, in: query, schema: { type: string, format: date-time } }
+        - { name: to, in: query, schema: { type: string, format: date-time } }
+      responses:
+        '200': { description: События, content: { application/json: { schema: { type: array, items: { type: object, additionalProperties: true } } } } }
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []

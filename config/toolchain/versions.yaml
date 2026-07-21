@@ -299,3 +299,25 @@ mobile:
     recommended: "35"
     category: Supported
     note: "Целевая ОС полевых устройств (ADR-016)."
+
+analytics:
+  metabase:
+    min: "0.50"
+    recommended: "0.50"
+    category: Supported
+    note: "Пример self-hosted BI для управленческой аналитики (ADR-020, CAP-BI-001)."
+  grafana:
+    min: "11.2"
+    recommended: "11.2"
+    category: Supported
+    note: "Дашборды реального времени (Stage 3 + ADR-020)."
+  dbt:
+    min: "1.8"
+    recommended: "1.8"
+    category: Supported
+    note: "Трансформации/витрины DWH (ELT, ADR-019); методология — Data Lineage/Quality стандарты."
+  postgresAnalytics:
+    min: "16"
+    recommended: "17"
+    category: Supported
+    note: "Аналитическое хранилище на PostgreSQL/расширениях (ADR-019); OLAP-решение при росте объёмов."

@@ -6,7 +6,8 @@ OpenAPI 3.1. Формат ошибок — RFC 7807 (`shared/problem-detail.yaml
 ## Структура
 | Каталог | Назначение |
 |---------|-----------|
-| `internal/` | Внутренние API платформы (config, notification, file-storage, search, time); операционные Stage 5 (call-intake, recording, speech-processing, information-extraction, incident-card, decision-support, resource-recommendation, operational-timeline); GIS Stage 6 (gis, address-intelligence, resource-registry, resource-availability, routing, dispatch-recommendation, operational-map, resource-tracking, operational-coordination, geospatial-analytics); мобильные общие Stage 7 (mobile-sync, operational-messaging, operational-forms, media, field-telemetry, mdm-integration) |
+| `internal/` | Внутренние API платформы (config, notification, file-storage, search, time); операционные Stage 5 (call-intake, recording, speech-processing, information-extraction, incident-card, decision-support, resource-recommendation, operational-timeline); GIS Stage 6 (gis, address-intelligence, resource-registry, resource-availability, routing, dispatch-recommendation, operational-map, resource-tracking, operational-coordination, geospatial-analytics); мобильные общие Stage 7 (mobile-sync, operational-messaging, operational-forms, media, field-telemetry, mdm-integration); аналитика Stage 8 (operational-analytics, kpi, dashboards, decision-intelligence, data-warehouse, forecasting, situation-center, data-quality, ai-analytics) |
+| `admin/` | + reporting (Stage 8) |
 | `admin/` | Административные API (identity/user management, audit, operational-audit) |
 | `external/` | Внешние API (партнёрские/межведомственные) — по мере утверждения |
 | `shared/` | Переиспользуемые компоненты (ProblemDetail, Page) |
