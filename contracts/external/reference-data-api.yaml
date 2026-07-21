@@ -1,0 +1,37 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Reference Data API (external)
+  version: 1.0.0
+  description: >
+    Нормативно-справочная информация (Stage 9.8). Версии справочников, публикация, синхронизация.
+    Канонические идентификаторы. Только чтение для внешних потребителей.
+servers: [{ url: https://gw.112.by/interagency/reference/v1 }]
+paths:
+  /catalogs:
+    get:
+      summary: Список справочников и их актуальных версий
+      responses: { '200': { description: Справочники, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/CatalogInfo' } } } } } }
+  /catalogs/{code}/versions/{version}:
+    get:
+      summary: Получить конкретную версию справочника (неизменяемую)
+      parameters:
+        - { name: code, in: path, required: true, schema: { type: string } }
+        - { name: version, in: path, required: true, schema: { type: string } }
+      responses:
+        '200': { description: Справочник, content: { application/json: { schema: { type: object, additionalProperties: true } } } }
+components:
+  schemas:
+    CatalogInfo:
+      type: object
+      properties:
+        code: { type: string }
+        name: { type: string }
+        currentVersion: { type: string }
+        publishedAt: { type: string, format: date-time }
+      required: [code, currentVersion]
+  securitySchemes:
+    mutualTls: { type: mutualTLS }
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - mutualTls: []
+    bearerAuth: []

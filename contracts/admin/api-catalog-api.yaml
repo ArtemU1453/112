@@ -1,0 +1,35 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — API Catalog & Lifecycle API (admin)
+  version: 1.0.0
+  description: >
+    Каталог API и управление жизненным циклом (Stage 9.3). Проектирование/публикация/версии/
+    вывод. Все API версионируются (API Versioning Standard).
+servers: [{ url: https://api.112.by/admin/api-catalog/v1 }]
+paths:
+  /apis:
+    get:
+      summary: Каталог опубликованных API/версий
+      responses: { '200': { description: Каталог, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/ApiEntry' } } } } } }
+  /apis/{id}/lifecycle:
+    put:
+      summary: Изменить стадию жизненного цикла API
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, properties: { stage: { type: string, enum: [DESIGN, PUBLISHED, DEPRECATED, RETIRED] } }, required: [stage] } } } }
+      responses: { '200': { description: OK } }
+components:
+  schemas:
+    ApiEntry:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        version: { type: string }
+        stage: { type: string, enum: [DESIGN, PUBLISHED, DEPRECATED, RETIRED] }
+        owner: { type: string }
+        contractRef: { type: string }
+      required: [id, name, version, stage]
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []

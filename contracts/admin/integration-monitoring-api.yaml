@@ -1,0 +1,30 @@
+openapi: 3.1.0
+info:
+  title: ЕАСУР — Integration Monitoring API (admin)
+  version: 1.0.0
+  description: >
+    Мониторинг интеграций (Stage 9.7). Состояние каналов, латентность, ошибки, повторы, потери,
+    нагрузка, SLA. Наблюдаемость обязательна.
+servers: [{ url: https://api.112.by/admin/integration-monitoring/v1 }]
+paths:
+  /channels:
+    get:
+      summary: Состояние интеграционных каналов и показатели SLA
+      responses: { '200': { description: Каналы, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/ChannelStatus' } } } } } }
+components:
+  schemas:
+    ChannelStatus:
+      type: object
+      properties:
+        systemId: { type: string }
+        up: { type: boolean }
+        latencyP95Ms: { type: integer }
+        errorRate: { type: number }
+        retries: { type: integer }
+        lostMessages: { type: integer }
+        slaCompliant: { type: boolean }
+      required: [systemId, up]
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []
