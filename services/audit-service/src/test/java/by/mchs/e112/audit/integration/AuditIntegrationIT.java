@@ -10,6 +10,8 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +30,9 @@ class AuditIntegrationIT {
     static PostgreSQLContainer<?> postgres =
         new PostgreSQLContainer<>("postgres:17-alpine")
             .withDatabaseName("audit_db").withUsername("e112").withPassword("e112secret");
+
+    @MockBean
+    private JwtDecoder jwtDecoder;
 
     @Autowired
     private AuditService auditService;
