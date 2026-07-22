@@ -1,7 +1,10 @@
 package by.mchs.e112.dispatch.integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import by.mchs.e112.dispatch.domain.UnitType;
 import by.mchs.e112.dispatch.dto.AssignmentResponse;
@@ -71,7 +74,10 @@ class DispatchIntegrationIT {
         @Primary
         @SuppressWarnings("unchecked")
         KafkaTemplate<String, Object> kafkaTemplate() {
-            return mock(KafkaTemplate.class);
+            KafkaTemplate<String, Object> template = mock(KafkaTemplate.class);
+            when(template.send(anyString(), any(), any()))
+                .thenReturn(java.util.concurrent.CompletableFuture.completedFuture(null));
+            return template;
         }
     }
 }
