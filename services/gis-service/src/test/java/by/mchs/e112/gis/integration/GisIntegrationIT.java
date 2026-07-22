@@ -12,6 +12,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -30,6 +32,9 @@ class GisIntegrationIT {
         new PostgreSQLContainer<>(DockerImageName.parse("postgis/postgis:17-3.5")
                 .asCompatibleSubstituteFor("postgres"))
             .withDatabaseName("gis_db").withUsername("e112").withPassword("e112secret");
+
+    @MockBean
+    private JwtDecoder jwtDecoder;
 
     @Autowired
     private GeoService geoService;

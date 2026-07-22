@@ -1,7 +1,10 @@
 package by.mchs.e112.telephony.integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import by.mchs.e112.telephony.domain.CallDirection;
 import by.mchs.e112.telephony.dto.CallCompleteRequest;
@@ -12,6 +15,8 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +39,9 @@ class TelephonyIntegrationIT {
     static PostgreSQLContainer<?> postgres =
         new PostgreSQLContainer<>("postgres:17-alpine")
             .withDatabaseName("telephony_db").withUsername("e112").withPassword("e112secret");
+
+    @MockBean
+    private JwtDecoder jwtDecoder;
 
     @Autowired
     private CallService callService;
@@ -64,7 +72,10 @@ class TelephonyIntegrationIT {
         @Primary
         @SuppressWarnings("unchecked")
         KafkaTemplate<String, Object> kafkaTemplate() {
-            return mock(KafkaTemplate.class);
+            KafkaTemplate<String, Object> template = mock(KafkaTemplate.class);
+            when(template.send(anyString(), any(), any()))
+                .thenReturn(java.util.concurrent.CompletableFuture.completedFuture(null));
+            return template;
         }
     }
 }

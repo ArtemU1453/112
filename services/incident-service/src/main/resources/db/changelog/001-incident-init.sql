@@ -42,3 +42,8 @@ CREATE TABLE incident_history (
     CONSTRAINT fk_history_incident FOREIGN KEY (incident_id) REFERENCES incident (id) ON DELETE CASCADE
 );
 --rollback DROP TABLE incident_history; DROP TABLE incident; DROP SEQUENCE incident_number_seq;
+
+--changeset e112:incident-001-pg-trgm
+--comment: Расширение pg_trgm требуется для триграммного GIN-индекса в 002 (в проде создаётся init-скриптом; в changelog — для самодостаточности схемы, напр. Testcontainers). Идемпотентно.
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+--rollback DROP EXTENSION IF EXISTS pg_trgm;

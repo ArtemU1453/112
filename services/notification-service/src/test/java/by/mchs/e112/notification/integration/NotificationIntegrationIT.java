@@ -10,6 +10,8 @@ import by.mchs.e112.notification.service.NotificationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +34,9 @@ class NotificationIntegrationIT {
     static PostgreSQLContainer<?> postgres =
         new PostgreSQLContainer<>("postgres:17-alpine")
             .withDatabaseName("notification_db").withUsername("e112").withPassword("e112secret");
+
+    @MockBean
+    private JwtDecoder jwtDecoder;
 
     @Autowired
     private NotificationService notificationService;

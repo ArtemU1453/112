@@ -1,6 +1,9 @@
 package by.mchs.e112.incident.integration;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.cache.CacheManager;
@@ -21,7 +24,10 @@ public class IntegrationTestConfig {
     @Primary
     @SuppressWarnings("unchecked")
     public KafkaTemplate<String, Object> kafkaTemplate() {
-        return mock(KafkaTemplate.class);
+        KafkaTemplate<String, Object> template = mock(KafkaTemplate.class);
+        when(template.send(anyString(), any(), any()))
+            .thenReturn(java.util.concurrent.CompletableFuture.completedFuture(null));
+        return template;
     }
 
     @Bean

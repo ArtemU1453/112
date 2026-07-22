@@ -17,6 +17,8 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,6 +38,9 @@ class AnalyticsIntegrationIT {
     static PostgreSQLContainer<?> postgres =
         new PostgreSQLContainer<>("postgres:17-alpine")
             .withDatabaseName("analytics_db").withUsername("e112").withPassword("e112secret");
+
+    @MockBean
+    private JwtDecoder jwtDecoder;
 
     @Autowired
     private AnalyticsIngestionService ingestionService;
